@@ -78,7 +78,7 @@ def present_menu():
   9. Exit.
   """
 
-  selection = input("Ender choice (1-9): ")
+  selection = input("Enter choice (1-9): ")
 
   if len(selection) > 1 or not selection.isdecimal():
     output("Valid inputs: 0 - 9")
