@@ -13,9 +13,22 @@ def main():
       "Star Wars: Episode V": 8.7
   }
 
-  # Your code here
-    
-    
+  init()
+
+def present_menu():
+  """prints the menu to the user"""
+  output("here will be -dragons- menu")
+  return False
+
+def output(strg):
+  """outputs input"""
+  print(strg)
+
+def init():
+  """prints welcome and loops menu"""
+  output("********** My Movies Database **********")
+  while True:
+    return present_menu()
 
 if __name__ == "__main__":
   main()
