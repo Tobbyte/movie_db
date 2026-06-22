@@ -58,8 +58,8 @@ def search_item():
 
 
 def present_menu():
-  """ Prints the menu to the user """
-  output("here will be -dragons- menu")
+  """ Prints the menu to the user, asks for input, validates input"""
+  output("Menu:")
 
   """ Options: 
   1. List movies, no input. Print. Return to menu.
@@ -75,9 +75,17 @@ def present_menu():
   7. Search movie, single input:
     - str. Print error or results. Return to menu.
   8. List movies sorted descending, no input. Print. Return to menu.
+  9. Exit.
   """
 
-  return False
+  selection = input("Ender choice (1-9): ")
+
+  if len(selection) > 1 or not selection.isdecimal():
+    output("Valid inputs: 0 - 9")
+    return True
+  
+  return int(selection)
+
 
 
 def output(strg):
@@ -89,7 +97,15 @@ def run(db: dict[str, float]):
   """ Prints welcome and loops menu """
   output("********** My Movies Database **********")
   while True:
-    return present_menu()
+    selection = present_menu()
+    
+    if selection == 9:
+      output("Goodbye")
+      return False
+    
+    
+
+
 
 
 
