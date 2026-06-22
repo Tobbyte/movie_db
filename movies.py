@@ -88,9 +88,11 @@ def present_menu():
 
 
 
-def output(strg):
+def output(strg, space_after = False, space_before = False):
   """ Outputs para """
+  if space_before: print("\n \n")
   print(strg)
+  if space_after: print("\n \n")
 
 
 def run(db: dict[str, float]):
