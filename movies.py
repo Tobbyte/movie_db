@@ -41,7 +41,7 @@ def list_movies(db: dict[str, float],message,  descending = False, by_value = Fa
     for k,v in sort_by_value(db, reverse= descending):
       output(f"{k}: {v}")
 
-  output("~~~", space_after=True)
+  output("~~~")
 
 
 def is_num(inp: str):
@@ -83,7 +83,7 @@ def add_movie(db):
   
   db[name] = float(rating)
 
-  output(f"""Successfully added: "{name}": {rating}""", space_before=True, space_after=True)
+  output(f'Successfully added: "{name}": {rating}', space_before=True)
   return db
 
 
@@ -103,12 +103,12 @@ def del_movie(db: dict[str, float]):
       output("Name required")
     try: 
       del db[tbdeleted]
-      output(f'Successfully removed: "{tbdeleted}"', space_before=True, space_after=True)
+      output(f'Successfully removed: "{tbdeleted}"', space_before=True)
 
       return db
 
     except KeyError:
-      output(f"Movie {tbdeleted} doesn't exist!", space_before=True, space_after=True)
+      output(f"Movie {tbdeleted} doesn't exist!", space_before=True)
       break
   return db
 
@@ -126,7 +126,7 @@ def update_movie(db: dict[str, float]):
     try: 
       db[tbupdated]
     except KeyError:
-      output(f"Movie {tbupdated} doesn't exist!", space_before=True, space_after=True)
+      output(f"Movie {tbupdated} doesn't exist!", space_before=True)
       return db
 
   while new_rating is None or new_rating == "":
@@ -140,7 +140,7 @@ def update_movie(db: dict[str, float]):
       new_rating = None
       output("Rating must be between 0 - 10")
   
-  output(f'Successfully updated: "{tbupdated}": {new_rating}', space_before=True, space_after=True)
+  output(f'Successfully updated: "{tbupdated}": {new_rating}', space_before=True)
   return db
 
 
@@ -175,14 +175,14 @@ def get_statistics(db: dict[str, float]):
   output(f"Average rating: {avg}", space_before=True)
   output(f"Median rating: {median}")
   output(f'Best movie: "{best_name}", {best_rat}')
-  output(f'Worst movie: "{worst_name}", {worst_rat}', space_after=True)
+  output(f'Worst movie: "{worst_name}", {worst_rat}')
 
 
 def get_random(db):
   """ Returns random movie """
 
   name, rating = list(db.items())[randint(0, len(db)-1)]
-  output(f"Your movie for tonight: {name}, it's rated {rating}", space_after=True)
+  output(f"Your movie for tonight: {name}, it's rated {rating}", space_before=True)
 
 
 def search_movie(db: dict[str, float]):
@@ -196,7 +196,7 @@ def search_movie(db: dict[str, float]):
   res = [(k, v) for k, v in db.items() if k.lower().find(inp) != -1]
 
   if not res:
-    output(f'No Movie name contains "{inp}":\n', space_before=True)
+    output(f'No Movie name contains "{inp}":\n')
   else :
     output(f'Movie titles containing "{inp}":\n', space_before=True)
     for r in res:
@@ -206,7 +206,7 @@ def search_movie(db: dict[str, float]):
 
 def idle_after_input():
   """ idles with prompt to continue """
-  input("press Enter to continue")
+  input("\npress Enter to continue")
   return
 
 
@@ -250,10 +250,6 @@ def present_menu():
     output("Invalid input (Enter 0 - 9. Try again)", space_before=True, space_after=True)
     return False
   
-  ## TODO
-  
-  output("\nselected munu item x")
-  
   return int(selection)
 
 def clear_screen():
@@ -274,6 +270,7 @@ def run(db: dict[str, float]):
     clear_screen()
     selection = present_menu()
     clear_screen()
+    output(f"~~~~~~~~~~\nSelected menu item: {selection}\n~~~~~~~~~~")
 
     if selection == 1:
       """ list """
