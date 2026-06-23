@@ -112,9 +112,33 @@ def del_movie(db: dict[str, float]):
 
 
 
-def update_movie():
+def update_movie(db: dict[str, float]):
   """ Updates db item. No validation """
-  pass
+  tbupdated = None
+  new_rating = None
+  while tbupdated is None or tbupdated == "":
+    tbupdated = input("\nEnter movie name to update: ")
+    if tbupdated == "":
+      output("Name required")
+    try: 
+      db[tbupdated]
+    except KeyError:
+      output(f"Movie {tbupdated} doesn't exist!", space_before=True, space_after=True)
+      return db
+
+  while new_rating is None or new_rating == "":
+    new_rating = input("Enter new movies rating (0-10): ")
+    if new_rating == "":
+      output("Rating required")
+    elif not is_num(new_rating):
+      new_rating = None
+      output("Rating must be a number")
+    elif float(new_rating) > 10:
+      new_rating = None
+      output("Rating must be between 0 - 10")
+  
+  output(f'Successfully updated: "{tbupdated}": {new_rating}', space_before=True, space_after=True)
+  return db
 
 
 def get_statistics():
@@ -212,6 +236,9 @@ def run(db: dict[str, float]):
     elif selection == 3:
       """ delete """
       db = del_movie(db)
+    elif selection == 4:
+      """ delete """
+      db = update_movie(db)
     elif selection == 8:
       """ list by rating """
       list_movies(db, descending=True, by_value=True)
