@@ -273,11 +273,11 @@ def run(db: dict[str, float]):
     clear_screen()
     selection = present_menu(menu_items)
     clear_screen()
-    output(f"~~~~~~~~~~\nSelected menu item: {selection}\n~~~~~~~~~~")
+    output(f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~")
 
     if selection == 1:
       """ list """
-      list_movies(db, f"{len(db)} items total:")
+      list_movies(db, f"{len(db)} movies in total:\n")
     elif selection == 2:
       """ add """
       db = add_movie(db)
@@ -298,7 +298,7 @@ def run(db: dict[str, float]):
       search_movie(db)
     elif selection == 8:
       """ list by rating """
-      list_movies(db,"Movies by rating:", descending=True, by_value=True)
+      list_movies(db,"Movies by rating:\n", descending=True, by_value=True)
 
     elif selection == 9:
       output("Goodbye")
