@@ -99,7 +99,7 @@ def present_menu():
   selection = input("Enter choice (1-9): ")
 
   if len(selection) > 1 or not selection.isdecimal():
-    output("Valid inputs: 0 - 9")
+    output("Invalid input (Enter 0 - 9. Try again)")
     return True
   
   return int(selection)
@@ -115,10 +115,10 @@ def output(strg, space_after = False, space_before = False):
 
 def run(db: dict[str, float]):
   """ Prints welcome and loops menu """
-  output("********** My Movies Database **********")
+  output("********** My Movies Database **********",space_before=True)
   while True:
     selection = present_menu()
-    
+
     if selection == 9:
       output("Goodbye")
       return False
