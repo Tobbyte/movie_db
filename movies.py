@@ -1,13 +1,20 @@
 from random import randint
+""" A simple interface to interact with an dummy movie "db" (local dict) """
 
 """
-Disclaimer:
-No ai was used
-limitation:
-passing around db is not fine and reassigning it in run not strictly necessary, but done for clarity
+Constraints imposed by the given task:
+- Passing around the "db" is not fine and reassigning it in run() not strictly
+  necessary, but done for clarity
 
-TODO:
-  - unify input validation across features, f.e. update and add (out of scope of exercise)
+Disclaimer:
+** No ai was used **
+
+TODO (but out of scope of this exercise):
+  - unify input validation across features, f.e. update and add
+  - add: check if already exists, present option to update
+  - update: check if not existing, present option to add
+  - delete: implement search_movie()
+
 """
 
 def main():
@@ -28,11 +35,14 @@ def main():
   run(movies)
 
 def sort_by_value(dic: dict[str, float], reverse = False ):
+  """ Sorts a dict by its values """
+
   return sorted(dic.items(),key=lambda item: item[1], reverse=reverse)
 
 
 def list_movies(db: dict[str, float],message,  descending = False, by_value = False):
-  """ Returns a (optionally sorted descending by value) list of all db items """
+  """ Returns a list of all db items """
+
   output(message, space_before=True)
   if not by_value:
     for k,v in sorted(db.items(), reverse=descending):
@@ -45,7 +55,8 @@ def list_movies(db: dict[str, float],message,  descending = False, by_value = Fa
 
 
 def is_num(inp: str):
-  """ validates if a sting input is a valid number"""
+  """ Validates if a sting input is a valid number"""
+
   if inp == "":
       return False
   try:
@@ -56,11 +67,8 @@ def is_num(inp: str):
 
 
 def add_movie(db):
-  """
-  Adds an item to db. No validation.
-  TODO:
-    - check if already exists, present option to update
-  """
+  """ Adds an item to db. """
+
   name = None
   rating = None
 
@@ -87,13 +95,8 @@ def add_movie(db):
   return db
 
 
-
 def del_movie(db: dict[str, float]):
-  """
-  Removes an item from db 
-  TODO:
-    - implement search_movie()
-  """
+  """ Removes an item from db """
 
   tbdeleted = None
 
@@ -113,12 +116,11 @@ def del_movie(db: dict[str, float]):
   return db
 
 
-
-
 def update_movie(db: dict[str, float]):
-  """ Updates db item. No validation """
+  """ Updates db item. """
   tbupdated = None
   new_rating = None
+
   while tbupdated is None or tbupdated == "":
     tbupdated = input("\nEnter movie name to update: ")
     if tbupdated == "":
@@ -145,10 +147,13 @@ def update_movie(db: dict[str, float]):
 
 
 def get_average(nums: list[float]):
+  """ returns average """
   return sum(nums) / len(nums)
 
 
 def get_median(nums: list[float]):
+  """ returns median """
+
   sorted_nums = sorted(nums)
   if len(sorted_nums) %2 != 0:
     return sorted_nums[len(sorted_nums)//2]
@@ -159,8 +164,8 @@ def get_median(nums: list[float]):
 
 def get_statistics(db: dict[str, float]):
   """
-  Gets statistic about provided data.
-  Returns
+  Gets statistic:
+  - average
   - median
   - top-ranked items
   - bottom-ranged items
@@ -199,21 +204,13 @@ def search_movie(db: dict[str, float]):
       output(f"{r[0]}, {r[1]}")
 
   
-
 def idle_after_input():
-  """ idles with prompt to continue """
+  """ Idles with prompt to continue """
   input("\npress Enter to continue")
-  return
 
 
 def present_menu(menu_items: list[str]):
-  """ Prints the menu to the user, asks for input, validates input"""
-  output("", space_before=True)
-
-  for item in menu_items:
-    output(item)
-
-
+  """ Prints the menu to the user, asks for input. """
   """ Options: 
   1. List movies, no input. Print. Return to menu.
   2. Add movie, single input:
@@ -231,6 +228,11 @@ def present_menu(menu_items: list[str]):
   9. Exit.
   """
 
+  output("", space_before=True)
+
+  for item in menu_items:
+    output(item)
+
   selection = input("Enter choice (1-9): ")
 
   if len(selection) > 1 or not selection.isdecimal():
@@ -239,12 +241,15 @@ def present_menu(menu_items: list[str]):
   
   return int(selection)
 
+
 def clear_screen():
-  """ rudimentary clear console """
+  """ Clear console hack """
   print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
+
 def output(any, space_after = False, space_before = False):
-  """ Outputs para """
+  """ Prints what's given. Optionally adds gap """
+
   if space_before: print("\n \n")
   print(any)
   if space_after: print("\n \n")
@@ -252,7 +257,9 @@ def output(any, space_after = False, space_before = False):
 
 def run(db: dict[str, float]):
   """ Prints welcome and loops menu """
+
   output("********** My Movies Database **********",space_before=True)
+
   menu_items= [
     "Menu:",
     "1. List movies",
@@ -265,6 +272,7 @@ def run(db: dict[str, float]):
     "8. Movies sorted by rating",
     "9. Quit",
   ]
+
   while True:
     clear_screen()
     selection = present_menu(menu_items)
@@ -299,13 +307,9 @@ def run(db: dict[str, float]):
     elif selection == 9:
       output("Goodbye")
       return False
-    #do
 
     idle_after_input()
     
-    
-
-
 
 
 
