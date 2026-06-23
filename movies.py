@@ -16,6 +16,7 @@ TODO (but out of scope of this exercise):
   - update: check if not existing, present option to add
   - delete: implement search
   - fix fail on empty db
+  - add real clear terminal
 
   
 Version 1.0.0
