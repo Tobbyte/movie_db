@@ -56,6 +56,11 @@ def search_item():
   """ Searches for items. Not case sensitive """
   pass
 
+def idle_after_input():
+  """ idles with prompt to continue """
+  input("press any key to continue")
+  return
+
 
 def present_menu():
   """ Prints the menu to the user, asks for input, validates input"""
@@ -117,6 +122,9 @@ def run(db: dict[str, float]):
     if selection == 9:
       output("Goodbye")
       return False
+    #do
+
+    idle_after_input()
     
     
 
