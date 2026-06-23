@@ -31,9 +31,9 @@ def sort_by_value(dic: dict[str, float], reverse = False ):
   return sorted(dic.items(),key=lambda item: item[1], reverse=reverse)
 
 
-def list_movies(db: dict[str, float], descending = False, by_value = False):
+def list_movies(db: dict[str, float],message,  descending = False, by_value = False):
   """ Returns a (optionally sorted descending by value) list of all db items """
-  output(f"~~~ {len(db)} items total: ~~~", space_before=True)
+  output(message, space_before=True)
   if not by_value:
     for k,v in sorted(db.items(), reverse=descending):
       output(f"{k}: {v}")
@@ -273,7 +273,7 @@ def run(db: dict[str, float]):
 
     if selection == 1:
       """ list """
-      list_movies(db)
+      list_movies(db, f"{len(db)} items total:")
     elif selection == 2:
       """ add """
       db = add_movie(db)
@@ -294,7 +294,7 @@ def run(db: dict[str, float]):
       search_movie(db)
     elif selection == 8:
       """ list by rating """
-      list_movies(db, descending=True, by_value=True)
+      list_movies(db,"Movies by rating:", descending=True, by_value=True)
 
     elif selection == 9:
       output("Goodbye")
