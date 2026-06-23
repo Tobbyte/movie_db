@@ -45,7 +45,7 @@ def list_movies(db: dict[str, float],message,  descending = False, by_value = Fa
 
   output(message, space_before=True)
   if not by_value:
-    for k,v in sorted(db.items(), reverse=descending):
+    for k,v in db.items():
       output(f"{k}: {v}")
   else:
     for k,v in sort_by_value(db, reverse= descending):
