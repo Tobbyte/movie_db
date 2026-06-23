@@ -1,3 +1,9 @@
+
+"""
+limitation:
+passing around db is not fine and reassigning it in run not strictly necessary, but done for clarity
+"""
+
 def main():
   # Dictionary to store the movies and the rating
   movies = {
