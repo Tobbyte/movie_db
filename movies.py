@@ -13,7 +13,8 @@ TODO (but out of scope of this exercise):
   - unify input validation across features, f.e. update and add
   - add: check if already exists, present option to update
   - update: check if not existing, present option to add
-  - delete: implement search_movie()
+  - delete: implement search
+  - fix fail on empty db
 
 """
 
