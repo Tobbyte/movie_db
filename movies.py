@@ -59,7 +59,20 @@ def search_item():
 
 def present_menu():
   """ Prints the menu to the user, asks for input, validates input"""
-  output("Menu:")
+  output(
+    "Menu: \n" \
+    "1. List movies \n" \
+    "2. Add movie \n" \
+    "3. Delete movie \n" \
+    "4. Update movie \n" \
+    "5. Stats \n" \
+    "6. Random movie \n" \
+    "7. Search movie \n" \
+    "8. Movies sorted by rating \n" \
+    "9. Quit \n",
+    space_before= True,
+  )
+
 
   """ Options: 
   1. List movies, no input. Print. Return to menu.
