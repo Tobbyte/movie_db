@@ -58,7 +58,7 @@ def search_item():
 
 def idle_after_input():
   """ idles with prompt to continue """
-  input("press any key to continue")
+  input("press Enter to continue")
   return
 
 
