@@ -155,6 +155,8 @@ def get_median(nums: list[float]):
     centeri = len(sorted_nums) // 2
     return get_average(sorted_nums[centeri-1:centeri+1])
 
+
+def get_statistics(db: dict[str, float]):
   """
   Gets statistic about provided data.
   Returns
@@ -162,6 +164,17 @@ def get_median(nums: list[float]):
   - top-ranked items
   - bottom-ranged items
   """
+
+  val_list = list(db.values())
+  avg = get_average(val_list)
+  median = get_median(sorted(val_list))
+  best_name, best_rat = sort_by_value(db)[-1]
+  worst_name, worst_rat = sort_by_value(db)[0]
+
+  output(f"Average rating: {avg}", space_before=True)
+  output(f"Median rating: {median}")
+  output(f'Best movie: "{best_name}", {best_rat}')
+  output(f'Worst movie: "{worst_name}", {worst_rat}', space_after=True)
 
 
 def get_random():
@@ -252,6 +265,9 @@ def run(db: dict[str, float]):
     elif selection == 4:
       """ delete """
       db = update_movie(db)
+    elif selection == 5:
+      """ delete """
+      get_statistics(db)
     elif selection == 8:
       """ list by rating """
       list_movies(db, descending=True, by_value=True)
