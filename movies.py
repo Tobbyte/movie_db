@@ -263,10 +263,10 @@ def run(db: dict[str, float]):
       """ delete """
       db = del_movie(db)
     elif selection == 4:
-      """ delete """
+      """ update """
       db = update_movie(db)
     elif selection == 5:
-      """ delete """
+      """ stats """
       get_statistics(db)
     elif selection == 8:
       """ list by rating """
