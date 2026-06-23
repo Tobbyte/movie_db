@@ -59,7 +59,7 @@ def add_movie(db):
   rating = None
 
   while name is None or name == "":
-    name = input("Enter new movie name: ")
+    name = input("\nEnter new movie name: ")
     if name == "":
       output("Name required")
 
