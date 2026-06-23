@@ -18,6 +18,7 @@ TODO (but out of scope of this exercise):
   - delete: implement search
   - fix fail on empty db
   - add real clear terminal
+  - implement fname from matplotlib instead naive str as filename
 
   
 Version 1.0.0
