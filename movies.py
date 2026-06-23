@@ -30,6 +30,16 @@ def list_db(db: dict[str, float], descending = False, by_value = False):
   output("~~~", space_after=True)
 
 
+def is_num(inp: str):
+  """ validates if a sting input is a valid number"""
+  if inp == "":
+      return False
+  try:
+    float(inp)
+  except ValueError:
+    return False
+  return True
+
 
 def add_item(new_item):
   """ Adds an item to db. No validation. """
