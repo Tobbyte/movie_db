@@ -187,12 +187,8 @@ def get_random(db):
 
 def search_movie(db: dict[str, float]):
   """ Searches for items. Not case sensitive """
-  inp = None
-  while inp is None or inp == "":
-    inp = input("\nEnter part of movie name: ").lower()
-    if inp == "":
-      output("Name required")
-  
+
+  inp = input("\nEnter part of movie name: ").lower()
   res = [(k, v) for k, v in db.items() if k.lower().find(inp) != -1]
 
   if not res:
