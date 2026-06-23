@@ -106,10 +106,10 @@ def present_menu():
 
 
 
-def output(strg, space_after = False, space_before = False):
+def output(any, space_after = False, space_before = False):
   """ Outputs para """
   if space_before: print("\n \n")
-  print(strg)
+  print(any)
   if space_after: print("\n \n")
 
 
