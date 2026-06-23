@@ -1,4 +1,5 @@
 from random import randint
+import matplotlib.pyplot as plt
 
 """ A simple interface to interact with an dummy movie "db" (local dict) """
 
@@ -211,6 +212,25 @@ def search_movie(db: dict[str, float]):
             output(f"{r[0]}, {r[1]}")
 
 
+def ratings_histogram(db:list[float]):
+    filename = None
+    plt.hist(db)
+    while filename is None or filename == "":
+        filename = input("Enter filename (saved as png unless otherwise specified): ")
+        if filename == "":
+            output("Filename required")
+        elif not filename.isalpha():
+            output("Filename must be alphanumeric")
+            filename = None
+        else:
+            try:
+                plt.savefig(filename)
+                output(f'File "{filename}" successfully saved to disk.', space_before=True)
+            except ValueError:
+                # from mathplotlob:
+                output("Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)")
+
+
 def idle_after_input():
     """Idles with prompt to continue"""
     input("\npress Enter to continue")
@@ -232,7 +252,8 @@ def present_menu(menu_items: list[str]):
   7. Search movie, single input:
     - str. Print error or results. Return to menu.
   8. List movies sorted descending, no input. Print. Return to menu.
-  9. Exit.
+  9. Create ratings histogram
+  0. Exit.
   """
 
     output("", space_before=True)
@@ -283,7 +304,8 @@ def run(db: dict[str, float]):
         "6. Random movie",
         "7. Search movie",
         "8. Movies sorted by rating",
-        "9. Quit",
+        "9. Create ratings histogram",
+        "0. Quit",
     ]
 
     while True:
@@ -316,8 +338,10 @@ def run(db: dict[str, float]):
         elif selection == 8:
             """ list by rating """
             list_movies(db, "Movies by rating:\n", descending=True, by_value=True)
-
         elif selection == 9:
+            """ histogram """
+            ratings_histogram(list(db.values()))
+        elif selection == 0:
             output("Goodbye")
             return False
 
