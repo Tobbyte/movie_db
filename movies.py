@@ -23,7 +23,7 @@ def main():
 
 
 
-def list_db(db: dict[str, float], descending = False, by_value = False):
+def list_movies(db: dict[str, float], descending = False, by_value = False):
   """ Returns a (optionally sorted descending by value) list of all db items """
   output(f"~~~ {len(db)} items total: ~~~", space_before=True)
   if not by_value:
@@ -47,6 +47,7 @@ def is_num(inp: str):
   return True
 
 
+def add_movie(db):
   """
   Adds an item to db. No validation.
   TODO:
@@ -79,12 +80,12 @@ def is_num(inp: str):
 
 
 
-def del_item(del_item):
+def del_movie(del_movie):
   """ Removes an item from db """
   pass
 
 
-def update_item():
+def update_movie():
   """ Updates db item. No validation """
   pass
 
@@ -104,7 +105,7 @@ def get_random():
   pass
 
 
-def search_item():
+def search_movie():
   """ Searches for items. Not case sensitive """
   pass
 
@@ -177,13 +178,13 @@ def run(db: dict[str, float]):
 
     if selection == 1:
       """ list """
-      list_db(db)
+      list_movies(db)
     elif selection == 2:
       """ add """
-      db = add_item(db)
+      db = add_movie(db)
     elif selection == 8:
       """ list by rating """
-      list_db(db, descending=True, by_value=True)
+      list_movies(db, descending=True, by_value=True)
 
     elif selection == 9:
       output("Goodbye")
