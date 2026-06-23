@@ -82,9 +82,31 @@ def add_movie(db):
 
 
 
-def del_movie(del_movie):
-  """ Removes an item from db """
-  pass
+def del_movie(db: dict[str, float]):
+  """
+  Removes an item from db 
+  TODO:
+    - implement search_movie()
+  """
+
+  tbdeleted = None
+
+  while tbdeleted is None or tbdeleted == "":
+    tbdeleted = input("\nEnter movie name to delete: ")
+    if tbdeleted == "":
+      output("Name required")
+    try: 
+      del db[tbdeleted]
+      output(f'Successfully removed: "{tbdeleted}"', space_before=True, space_after=True)
+
+      return db
+
+    except KeyError:
+      output(f"Movie {tbdeleted} doesn't exist!", space_before=True, space_after=True)
+      break
+  return db
+
+
 
 
 def update_movie():
@@ -184,6 +206,9 @@ def run(db: dict[str, float]):
     elif selection == 2:
       """ add """
       db = add_movie(db)
+    elif selection == 3:
+      """ delete """
+      db = del_movie(db)
     elif selection == 8:
       """ list by rating """
       list_movies(db, descending=True, by_value=True)
