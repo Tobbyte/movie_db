@@ -143,7 +143,18 @@ def update_movie(db: dict[str, float]):
   return db
 
 
-def get_statistics():
+def get_average(nums: list[float]):
+  return sum(nums) / len(nums)
+
+
+def get_median(nums: list[float]):
+  sorted_nums = sorted(nums)
+  if len(sorted_nums) %2 != 0:
+    return sorted_nums[len(sorted_nums)//2]
+  else:
+    centeri = len(sorted_nums) // 2
+    return get_average(sorted_nums[centeri-1:centeri+1])
+
   """
   Gets statistic about provided data.
   Returns
