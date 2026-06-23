@@ -26,6 +26,8 @@ def main():
 
   run(movies)
 
+def sort_by_value(dic: dict[str, float], reverse = False ):
+  return sorted(dic.items(),key=lambda item: item[1], reverse=reverse)
 
 
 def list_movies(db: dict[str, float], descending = False, by_value = False):
@@ -35,7 +37,7 @@ def list_movies(db: dict[str, float], descending = False, by_value = False):
     for k,v in sorted(db.items(), reverse=descending):
       output(f"{k}: {v}")
   else:
-    for k,v in sorted(db.items(),key=lambda item: item[1], reverse=descending):
+    for k,v in sort_by_value(db, reverse= descending):
       output(f"{k}: {v}")
 
   output("~~~", space_after=True)
