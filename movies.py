@@ -154,8 +154,8 @@ def present_menu():
   selection = input("Enter choice (1-9): ")
 
   if len(selection) > 1 or not selection.isdecimal():
-    output("Invalid input (Enter 0 - 9. Try again)")
-    return True
+    output("Invalid input (Enter 0 - 9. Try again)", space_before=True, space_after=True)
+    return False
   
   ## TODO
   
