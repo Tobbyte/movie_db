@@ -51,8 +51,6 @@ def list_movies(db: dict[str, float],message,  descending = False, by_value = Fa
     for k,v in sort_by_value(db, reverse= descending):
       output(f"{k}: {v}")
 
-  output("~~~")
-
 
 def is_num(inp: str):
   """ Validates if a sting input is a valid number"""
@@ -91,7 +89,7 @@ def add_movie(db):
   
   db[name] = float(rating)
 
-  output(f'Successfully added: "{name}": {rating}', space_before=True)
+  output(f'Movie "{name}" with rating {rating} successfully added', space_before=True)
   return db
 
 
@@ -106,7 +104,7 @@ def del_movie(db: dict[str, float]):
       output("Name required")
     try: 
       del db[tbdeleted]
-      output(f'Successfully removed: "{tbdeleted}"', space_before=True)
+      output(f'Movie "{tbdeleted}" successfully deleted', space_before=True)
 
       return db
 
@@ -142,7 +140,7 @@ def update_movie(db: dict[str, float]):
       new_rating = None
       output("Rating must be between 0 - 10")
   
-  output(f'Successfully updated: "{tbupdated}": {new_rating}', space_before=True)
+  output(f'Movie "{tbupdated}" successfully updated to rating: {new_rating}', space_before=True)
   return db
 
 
@@ -233,7 +231,7 @@ def present_menu(menu_items: list[str]):
   for item in menu_items:
     output(item)
 
-  selection = input("Enter choice (1-9): ")
+  selection = input("\nEnter choice (1-9): ")
 
   if len(selection) > 1 or not selection.isdecimal():
     output("Invalid input (Enter 0 - 9. Try again)", space_before=True, space_after=True)
@@ -244,7 +242,7 @@ def present_menu(menu_items: list[str]):
 
 def clear_screen():
   """ Clear console hack """
-  print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+  print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 
 def output(any, space_after = False, space_before = False):
