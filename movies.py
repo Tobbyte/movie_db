@@ -4,6 +4,9 @@ Disclaimer:
 No ai was used
 limitation:
 passing around db is not fine and reassigning it in run not strictly necessary, but done for clarity
+
+TODO:
+  - unify input validation across features, f.e. update and add (out of scope of exercise)
 """
 
 def main():
