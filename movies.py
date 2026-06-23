@@ -185,9 +185,24 @@ def get_random(db):
   output(f"Your movie for tonight: {name}, it's rated {rating}", space_after=True)
 
 
-def search_movie():
+def search_movie(db: dict[str, float]):
   """ Searches for items. Not case sensitive """
-  pass
+  inp = None
+  while inp is None or inp == "":
+    inp = input("\nEnter part of movie name: ").lower()
+    if inp == "":
+      output("Name required")
+  
+  res = [(k, v) for k, v in db.items() if k.lower().find(inp) != -1]
+
+  if not res:
+    output(f'No Movie name contains "{inp}":\n', space_before=True)
+  else :
+    output(f'Movie titles containing "{inp}":\n', space_before=True)
+    for r in res:
+      output(f"{r[0]}, {r[1]}")
+
+  
 
 def idle_after_input():
   """ idles with prompt to continue """
@@ -274,6 +289,9 @@ def run(db: dict[str, float]):
     elif selection == 6:
       """ random """
       get_random(db)
+    elif selection == 7:
+      """ search """
+      search_movie(db)
     elif selection == 8:
       """ list by rating """
       list_movies(db, descending=True, by_value=True)
