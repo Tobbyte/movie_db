@@ -210,21 +210,12 @@ def idle_after_input():
   return
 
 
-def present_menu():
+def present_menu(menu_items: list[str]):
   """ Prints the menu to the user, asks for input, validates input"""
-  output(
-    "Menu: \n" \
-    "1. List movies \n" \
-    "2. Add movie \n" \
-    "3. Delete movie \n" \
-    "4. Update movie \n" \
-    "5. Stats \n" \
-    "6. Random movie \n" \
-    "7. Search movie \n" \
-    "8. Movies sorted by rating \n" \
-    "9. Quit \n",
-    space_before= True,
-  )
+  output("", space_before=True)
+
+  for item in menu_items:
+    output(item)
 
 
   """ Options: 
@@ -266,9 +257,21 @@ def output(any, space_after = False, space_before = False):
 def run(db: dict[str, float]):
   """ Prints welcome and loops menu """
   output("********** My Movies Database **********",space_before=True)
+  menu_items= [
+    "Menu:",
+    "1. List movies",
+    "2. Add movie",
+    "3. Delete movie",
+    "4. Update movie",
+    "5. Stats",
+    "6. Random movie",
+    "7. Search movie",
+    "8. Movies sorted by rating",
+    "9. Quit",
+  ]
   while True:
     clear_screen()
-    selection = present_menu()
+    selection = present_menu(menu_items)
     clear_screen()
     output(f"~~~~~~~~~~\nSelected menu item: {selection}\n~~~~~~~~~~")
 
