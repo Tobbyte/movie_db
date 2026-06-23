@@ -308,9 +308,13 @@ def run(db: dict[str, float]):
     while True:
         clear_screen()
         selection = present_menu(menu_items)
+
+        if selection == 0:
+            output("Goodbye")
+            return False
+
         clear_screen()
         output(f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~")
-
         if selection == 1:
             """ list """
             list_movies(db, f"{len(db)} movies in total:\n")
@@ -338,9 +342,6 @@ def run(db: dict[str, float]):
         elif selection == 9:
             """ histogram """
             ratings_histogram(list(db.values()))
-        elif selection == 0:
-            output("Goodbye")
-            return False
 
         idle_after_input()
 
