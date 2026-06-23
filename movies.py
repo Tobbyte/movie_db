@@ -16,6 +16,8 @@ TODO (but out of scope of this exercise):
   - delete: implement search
   - fix fail on empty db
 
+  
+Version 1.0.0
 """
 
 def main():
