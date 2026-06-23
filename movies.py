@@ -41,9 +41,33 @@ def is_num(inp: str):
   return True
 
 
-def add_item(new_item):
+def add_item(db):
   """ Adds an item to db. No validation. """
-  pass
+  name = None
+  rating = None
+
+  while name is None or name == "":
+    name = input("Enter new movie name: ")
+    if name == "":
+      output("Name required")
+
+  while rating is None or rating == "":
+    rating = input("Enter new movies rating (0-10): ")
+    if rating == "":
+      output("Rating required")
+    elif not is_num(rating):
+      rating = None
+      output("Rating must be a number")
+    elif float(rating) > 10:
+      rating = None
+      output("Rating must be between 0 - 10")
+
+  
+  db[name] = float(rating)
+
+  output(f"""Successfully added: "{name}": {rating}""", space_before=True, space_after=True)
+  return db
+
 
 
 def del_item(del_item):
@@ -145,7 +169,9 @@ def run(db: dict[str, float]):
     if selection == 1:
       """ list """
       list_db(db)
-
+    elif selection == 2:
+      """ add """
+      db = add_item(db)
     elif selection == 8:
       """ list by rating """
       list_db(db, descending=True, by_value=True)
