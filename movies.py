@@ -47,8 +47,11 @@ def is_num(inp: str):
   return True
 
 
-def add_item(db):
-  """ Adds an item to db. No validation. """
+  """
+  Adds an item to db. No validation.
+  TODO:
+    - check if already exists, present option to update
+  """
   name = None
   rating = None
 
