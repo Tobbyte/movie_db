@@ -1,3 +1,4 @@
+from random import randint
 
 """
 Disclaimer:
@@ -177,9 +178,11 @@ def get_statistics(db: dict[str, float]):
   output(f'Worst movie: "{worst_name}", {worst_rat}', space_after=True)
 
 
-def get_random():
-  """ Returns random item """
-  pass
+def get_random(db):
+  """ Returns random movie """
+
+  name, rating = list(db.items())[randint(0, len(db)-1)]
+  output(f"Your movie for tonight: {name}, it's rated {rating}", space_after=True)
 
 
 def search_movie():
@@ -268,6 +271,9 @@ def run(db: dict[str, float]):
     elif selection == 5:
       """ stats """
       get_statistics(db)
+    elif selection == 6:
+      """ random """
+      get_random(db)
     elif selection == 8:
       """ list by rating """
       list_movies(db, descending=True, by_value=True)
