@@ -256,7 +256,9 @@ def present_menu():
   
   return int(selection)
 
-
+def clear_screen():
+  """ rudimentary clear console """
+  print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 def output(any, space_after = False, space_before = False):
   """ Outputs para """
@@ -269,7 +271,9 @@ def run(db: dict[str, float]):
   """ Prints welcome and loops menu """
   output("********** My Movies Database **********",space_before=True)
   while True:
+    clear_screen()
     selection = present_menu()
+    clear_screen()
 
     if selection == 1:
       """ list """
