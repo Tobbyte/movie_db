@@ -24,6 +24,7 @@ TODO (but out of scope of this exercise):
 Version 1.0.0
 """
 
+## TODO validate input f.e. on aditional ""
 
 def main():
     # Dictionary to store the movies and the rating
@@ -44,7 +45,11 @@ def main():
 
 
 def sort_by_value(dic: dict[str, float], reverse=False):
-    """Sorts a dict by its values"""
+    """
+    Sorts a dict by its values
+    TODO:
+        - save sorted dict, update on add/remove
+    """
 
     return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
 
@@ -161,7 +166,11 @@ def get_average(nums: list[float]):
 
 
 def get_median(nums: list[float]):
-    """returns median"""
+    """
+    returns median
+    TODO:
+        - use import statistics
+    """
 
     sorted_nums = sorted(nums)
     if len(sorted_nums) % 2 != 0:
