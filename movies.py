@@ -264,12 +264,16 @@ def present_menu(menu_items: list[str]):
     for item in menu_items:
         output(item)
     selection = None
+    insist_to_quite = False
     while selection is None:
         selection = input("\nEnter choice (1-9): ")
 
-        if len(selection) > 1 or not selection.isdecimal() or selection == "":
-            output("Invalid input (Enter 0 - 9. Try again)")
-            selection = None
+        if len(selection) > 1 or not selection.isdecimal():
+            if not insist_to_quite:
+                output("Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit")
+                selection = None
+                insist_to_quite = True
+            else: quit()
 
     return int(selection)
 
