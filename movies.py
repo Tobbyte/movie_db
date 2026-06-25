@@ -273,6 +273,8 @@ def present_menu(menu_items: list[str]):
 
     return int(selection)
 
+def quit():
+    exit()
 
 def clear_screen():
     """Clear console hack"""
@@ -314,7 +316,7 @@ def run(db: dict[str, float]):
 
         if selection == 0:
             output("Goodbye")
-            return False
+            quit()
 
         clear_screen()
         output(f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~")
