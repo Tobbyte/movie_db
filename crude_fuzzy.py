@@ -56,31 +56,25 @@ def draw_table(table:list[list[int | str]]):
 
 
 def init_table(str1:str, str2:str):
-    str1 = "_" + str1
-    str2 = "_" + str2
 
-    table: list = [["_"]]
-    
-    for i in range(1, len(str1)+1):
-        table[0].append(str1[1:i+1])
+    data_matrix: list = []
 
-    table.append(["_"])
+    for i in range(0, len(str2)+2): # len word + extra 0 + range end not incl.
+        row = []
+        for j in range(0,len(str1)+1):  # len word + extra 0 
+            if i == 0:
+                # top row
+                row.append(j)
+            else: 
+                if j == 0:
+                    # left column
+                    row.append(i-1)
+                else:
+                    row.append("?")
+        data_matrix.append(row)
 
-    for i in range(1,len(str2)+1):
-        if i != 0:
-            table.append([str2[1:i+1]])
-        for j in range(1,len(str1)+2):
 
-            if j == 0:
-                table[i].append("?")
-            elif i==1:
-                table[i].append(j-1)
-            elif j==1:
-                table[i].append(i-1)
-            else:
-                table[i].append("?")
-
-    draw_table(table)
+    draw_table(data_matrix)
 
 
 init_table(str1, str2)
