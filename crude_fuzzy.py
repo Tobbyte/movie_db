@@ -33,53 +33,54 @@ def edit_distance():
     pass
 
 def draw_table(table:list[list[int | str]]):
-    draw_table = [table]
-    print(rjust("x", len(str2)), end="") # top left filler
 
+    header = str1
+    column = str2
+    header_row: list[str | int] = ["_"]
+    draw_table = list(table)
+    first_column_width = len(column)
+    column_width = len(header)
 
-    for i in range(len(table)):
+    """add header and first row to data"""
+    # create header row with ascending length of str1
+    for i in range(len(header)):
+        header_row.append(str(header[:i+1]))
 
-        if i == 1:
-            print(rjust("_", len(str2)))
+    draw_table.insert(0, header_row)
 
-        for j in range(len(table[i])):
-            # top row
-            if i == 0:
+    # loop table, insert str2 in ascending as row 1
+    for i in range(0,len(table)):
+        if i == 0:
+            draw_table[1].insert(0, "_")
+        else:
+            draw_table[i+1].insert(0, str(column[:i]))
+
+    print("") # break line
+
+    """print table"""
+    for i in range(len(draw_table)):
+        row = draw_table[i]
+        if i == 0:
+            # header row, needs special padding to account for rjust of 1 column
+            # add icon in corner for fun
+            for j in range(len(row)):
                 if j == 0:
-                    print(rjust("_", 6), end="")
+                    # pad for first column
+                    print(" "*(first_column_width-1), end="")
+                    print("▦",end="")
+                    print(" "*(column_width), end="")
+                
+                # pad first row: dist between words gets smaller
+                print(str(row[j]).ljust(column_width + 1), end="")
+
+        else: 
+            for j in range(len(row)):
+                if j == 0:
+                    print(str(row[j]).rjust(first_column_width), end=" ")
                 else:
-                    print(rjust(str1[:j], 6), end="")
-
-            # left column
-            elif j == 0 and i <= len(str2):
-                print(rjust(str2[:i], len(str2)), end="")
-
-            # elif i > 0 and j > 0:
-            #     print(rjust(str(table[i][j]), len(str1)), end=" ")
-
-        print("")   # space rows 
-
-# def draw_table(table:list[list[int | str]]):
-#     print(rjust("x", len(str2)), end="")
-#     for i in range(len(table)-1):
-#         for j in range(len(table[i])-1):
-#             if i == 0:
-#                 # top row
-#                 if j == 0:
-#                     print(" "*(len(str1)-1) + str(table[i][j]), end=" "*len(str1))
-#                 else:
-#                     print(str(table[i][j]), end=(" ")*(len(str1)-j+1))
-
-#             elif j == 0:
-#                 # left column
-#                 print(rjust(str(table[i][j]), len(str2)), end="")
-
-#             else:
-#                 print(rjust(str(table[i][j]), len(str1)), end=" ")
-#         print("")   # space rows 
-#         print("")
-
-#     # print(table)
+                    print(str(row[j]).rjust(column_width), end=" ")
+        print("")
+        print("")
 
 
 def init_table(str1:str, str2:str):
