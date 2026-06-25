@@ -33,26 +33,53 @@ def edit_distance():
     pass
 
 def draw_table(table:list[list[int | str]]):
-    print(rjust("x", len(str2)), end="")
-    for i in range(len(table)-1):
-        for j in range(len(table[i])-1):
+    draw_table = [table]
+    print(rjust("x", len(str2)), end="") # top left filler
+
+
+    for i in range(len(table)):
+
+        if i == 1:
+            print(rjust("_", len(str2)))
+
+        for j in range(len(table[i])):
+            # top row
             if i == 0:
-                # top row
                 if j == 0:
-                    print(" "*(len(str1)-1) + str(table[i][j]), end=" "*len(str1))
+                    print(rjust("_", 6), end="")
                 else:
-                    print(str(table[i][j]), end=(" ")*(len(str1)-j+1))
+                    print(rjust(str1[:j], 6), end="")
 
-            elif j == 0:
-                # left column
-                print(rjust(str(table[i][j]), len(str2)), end="")
+            # left column
+            elif j == 0 and i <= len(str2):
+                print(rjust(str2[:i], len(str2)), end="")
 
-            else:
-                print(rjust(str(table[i][j]), len(str1)), end=" ")
+            # elif i > 0 and j > 0:
+            #     print(rjust(str(table[i][j]), len(str1)), end=" ")
+
         print("")   # space rows 
-        print("")
 
-    # print(table)
+# def draw_table(table:list[list[int | str]]):
+#     print(rjust("x", len(str2)), end="")
+#     for i in range(len(table)-1):
+#         for j in range(len(table[i])-1):
+#             if i == 0:
+#                 # top row
+#                 if j == 0:
+#                     print(" "*(len(str1)-1) + str(table[i][j]), end=" "*len(str1))
+#                 else:
+#                     print(str(table[i][j]), end=(" ")*(len(str1)-j+1))
+
+#             elif j == 0:
+#                 # left column
+#                 print(rjust(str(table[i][j]), len(str2)), end="")
+
+#             else:
+#                 print(rjust(str(table[i][j]), len(str1)), end=" ")
+#         print("")   # space rows 
+#         print("")
+
+#     # print(table)
 
 
 def init_table(str1:str, str2:str):
