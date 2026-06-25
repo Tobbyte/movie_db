@@ -26,6 +26,7 @@ Version 1.0.0
 
 ## TODO validate input f.e. on aditional ""
 
+
 def main():
     # Dictionary to store the movies and the rating
     movies = {
@@ -224,7 +225,7 @@ def search_movie(db: dict[str, float]):
             output(f"{r[0]}, {r[1]}")
 
 
-def ratings_histogram(db:list[float]):
+def ratings_histogram(db: list[float]):
     filename = None
     plt.hist(db)
     while filename is None or filename == "":
@@ -237,10 +238,14 @@ def ratings_histogram(db:list[float]):
         else:
             try:
                 plt.savefig(filename)
-                output(f'File "{filename}" successfully saved to disk.', space_before=True)
+                output(
+                    f'File "{filename}" successfully saved to disk.', space_before=True
+                )
             except ValueError:
                 # from mathplotlob:
-                output("Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)")
+                output(
+                    "Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)"
+                )
 
 
 def idle_after_input():
@@ -279,15 +284,20 @@ def present_menu(menu_items: list[str]):
 
         if len(selection) > 1 or not selection.isdecimal():
             if not insist_to_quite:
-                output("Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit")
+                output(
+                    "Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit"
+                )
                 selection = None
                 insist_to_quite = True
-            else: quit()
+            else:
+                quit()
 
     return int(selection)
 
+
 def quit():
     exit()
+
 
 def clear_screen():
     """Clear console hack"""
