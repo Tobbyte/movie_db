@@ -181,10 +181,12 @@ def get_statistics(db: dict[str, float]):
     """
 
     val_list = list(db.values())
+    vals_sorted = sort_by_value(db)
+
     avg = get_average(val_list)
     median = get_median(sorted(val_list))
-    best_name, best_rat = sort_by_value(db)[-1]
-    worst_name, worst_rat = sort_by_value(db)[0]
+    best_name, best_rat = vals_sorted[-1]
+    worst_name, worst_rat = vals_sorted[0]
 
     output(f"Average rating: {avg}", space_before=True)
     output(f"Median rating: {median}")
