@@ -86,7 +86,7 @@ def init_table(str1:str, str2:str):
 
     data_matrix: list = []
 
-    for i in range(0, len(str2)+2): # len word + extra 0 + range end not incl.
+    for i in range(0, len(str2)+1):
         row = []
         for j in range(0,len(str1)+1):  # len word + extra 0 
             if i == 0:
@@ -95,11 +95,10 @@ def init_table(str1:str, str2:str):
             else: 
                 if j == 0:
                     # left column
-                    row.append(i-1)
+                    row.append(i)
                 else:
                     row.append("?")
         data_matrix.append(row)
-
 
     draw_table(data_matrix)
 
