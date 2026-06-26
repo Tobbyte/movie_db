@@ -124,12 +124,19 @@ def any_first_char_matching(term1:str, term2:str):
 
 def get_similar(db: list[str], search_term, threshold, print_table=False):
 
-    similar_results:list[str] = []
-    for item in db:
-        dist = calc_distance(search_term, item, print_table=print_table)
-        if dist <= threshold:
-            similar_results.append(item)
+    search_term_wo_excluded = strip_excluded_terms(search_term).lower()
 
+    similar_results:list[tuple] = []
+    for item in db:
+        item_wo_excluded = strip_excluded_terms(item.lower()).lower()
+        print(search_term_wo_excluded, item_wo_excluded)
+        dist = calc_distance(search_term_wo_excluded, item_wo_excluded, print_table=print_table)
+        
+        # naively demand first char matching
+        if dist <= threshold and any_first_char_matching(search_term_wo_excluded,item_wo_excluded):
+            similar_results.append((item, dist))
+
+    similar_results = sorted(similar_results, key=lambda dist: dist[1])
     return similar_results
 
 
