@@ -1,36 +1,10 @@
 
 
 
-from wcwidth import rjust
+"""
+ ~~ Made with  and without ai or code completion (except intelliSense) ~~
+"""
 
-#        ""  m  a  r  e
-#    ""  0   1  2  3  4
-#    c   1   1  ?  ?  ?
-#    a   2   ?  ?  ?  ?
-#    r   3   ?  ?  ?  ?
-#    s   4   ?  ?  ?  ?
-
-# table = [
-#     [0, 1, 2, 3, 4],      # Zeile 0 (das Gerüst oben)
-#     [1, 1, ?, ?, ?],      # Zeile 1 (für 'c')
-#     [2, ?, ?, ?, ?],      # Zeile 2 (für 'a')
-#     [3, ?, ?, ?, ?],      # Zeile 3 (für 'r')
-#     [4, ?, ?, ?, ?]       # Zeile 4 (für 's')
-# ]
-
-# x    _ M Ma Mar 
-#    _ ? ? ? ? 
-#    C ? ? ? ? 
-#   Ca ? ? ? ? 
-#  Car ? ? ? ? 
-# Cars ? ? ? ?
-
-str1 = "Mares"
-str2 = "Cars"
-
-def edit_distance():
-    # schaut links: 
-    pass
 
 def print_fuzzy_table(table: list, str1: str, str2: str):
     """pretty print the table"""
