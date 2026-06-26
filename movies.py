@@ -8,8 +8,6 @@ Constraints imposed by the given task:
 - Passing around the "db" is not fine and reassigning it in run() not strictly
   necessary, but done for clarity
 
-Disclaimer:
-** No ai was used **
 
 TODO (but out of scope of this exercise):
   - unify input validation across features, f.e. update and add
@@ -22,6 +20,10 @@ TODO (but out of scope of this exercise):
 
   
 Version 1.0.0
+"""
+
+"""
+ ~~ Made with ❤️ and without ai or code completion (except intelliSense) ~~
 """
 
 ## TODO validate input f.e. on aditional ""

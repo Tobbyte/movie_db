@@ -32,55 +32,49 @@ def edit_distance():
     # schaut links: 
     pass
 
-def draw_table(table:list[list[int | str]]):
-
+def print_fuzzy_table(table: list, str1: str, str2: str):
+    """pretty print the table"""
     header = str1
     column = str2
-    header_row: list[str | int] = ["_"]
-    draw_table = list(table)
-    first_column_width = len(column)
-    column_width = len(header)
 
-    """add header and first row to data"""
-    # create header row with ascending length of str1
+    first_col_w = len(column)
+    cell_w = len(header)
+
+    # header Row
+    header_row: list[str] = ["_"]
     for i in range(len(header)):
-        header_row.append(str(header[:i+1]))
+        header_row.append(header[: i + 1])
 
-    draw_table.insert(0, header_row)
+    # body rows
+    display_rows: list[list[str | int]] = []
+    original_row: list[int | str] = []
 
-    # loop table, insert str2 in ascending as row 1
-    for i in range(0,len(table)):
-        if i == 0:
-            draw_table[1].insert(0, "_")
-        else:
-            draw_table[i+1].insert(0, str(column[:i]))
+    for i, original_row in enumerate(table):
+        row_copy = list(original_row)
+        row_prefix = "_" if i == 0 else column[:i]
+        row_copy.insert(0, row_prefix)
+        display_rows.append(row_copy)
 
-    print("") # break line
+    print("")
 
-    """print table"""
-    for i in range(len(draw_table)):
-        row = draw_table[i]
-        if i == 0:
-            # header row, needs special padding to account for rjust of 1 column
-            # add icon in corner for fun
-            for j in range(len(row)):
-                if j == 0:
-                    # pad for first column
-                    print(" "*(first_column_width-1), end="")
-                    print("▦",end="")
-                    print(" "*(column_width), end="")
-                
-                # pad first row: dist between words gets smaller
-                print(str(row[j]).ljust(column_width + 1), end="")
+    # Print header Row
+    print("▦".rjust(first_col_w), end="")
+    # Align to first data column
+    print(" " * (first_col_w + 1), end="")
 
-        else: 
-            for j in range(len(row)):
-                if j == 0:
-                    print(str(row[j]).rjust(first_column_width), end=" ")
-                else:
-                    print(str(row[j]).rjust(column_width), end=" ")
-        print("")
-        print("")
+    for cell in header_row:
+        print(str(cell).ljust(cell_w + 1), end="")
+
+    print("\n")
+
+    # print data rows
+    for row in display_rows:
+        # first cell (row labels)
+        print(str(row[0]).rjust(first_col_w), end=" ")
+
+        for cell in row[1:]:
+            print(str(cell).rjust(cell_w), end=" ")
+        print("\n")
 
 
 def init_table(str1:str, str2:str):
@@ -101,7 +95,7 @@ def init_table(str1:str, str2:str):
                     row.append("?")
         data_matrix.append(row)
 
-    draw_table(data_matrix)
+    print_fuzzy_table(data_matrix, str1, str2)
 
 
 init_table(str1, str2)
