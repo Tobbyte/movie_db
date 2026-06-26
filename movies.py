@@ -217,16 +217,16 @@ def get_random(db):
 def search_movie(db: dict[str, float]):
     """Searches for items. Not case sensitive"""
 
-    inp = input("\nEnter part of movie name: ").lower()
+    orig_inp = input("\nEnter part of movie name: ")
+    inp = orig_inp.lower()
+    search_results = fuzzy_search(db, inp)
 
-    search_results:list[str] = fuzzy_search(db, inp)
-
-    found_titles = [(found, db.get(found)) for found in search_results]
+    found_titles = [(found, db.get(found)) for (found, _) in search_results]
 
     if not found_titles:
-        output(f'No Movie name similar to "{inp}":\n')
+        output(f'No Movie name similar to "{orig_inp}":\n')
     else:
-        output(f'Movie titles similar to "{inp}":\n', space_before=True)
+        output(f'Movie titles similar to "{orig_inp}":\n', space_before=True)
         for name, rate in found_titles:
             output(f"{name}, {rate}")
 
