@@ -126,9 +126,10 @@ def _init_table(str1: str, str2: str):
     return data_matrix
 
 
-def _term_is_excluded(term:str):
+def _term_is_excluded(term: str):
     """checks if the term is in excluded list"""
     return term.strip() in excluded_terms
+
 
 def _strip_excluded_terms(term: str):
     """Strips any items from input that are in exclude list"""
@@ -138,7 +139,9 @@ def _strip_excluded_terms(term: str):
     # prevent excluding self
     if not _term_is_excluded(stripped):
         for exc in excluded_terms:
-            stripped = stripped.replace(exc+" ", "") # add " " to find only at beginning
+            stripped = stripped.replace(
+                exc + " ", ""
+            )  # add " " to find only at beginning
 
     return stripped
 
@@ -154,7 +157,8 @@ def _any_first_char_matching(term1: str, term2: str):
                 return True
     return False
 
-def get_similar(db: list[str], search_term: str, threshold:int, print_table=False):
+
+def get_similar(db: list[str], search_term: str, threshold: int, print_table=False):
     """
     Uses a basic Fussy Search over list:[str] of items and returns
     similar items to comparison term[str]. Takes a threshold for the distance calculation and optionally prints (every) table
