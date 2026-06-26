@@ -103,6 +103,25 @@ def init_table(str1: str, str2: str):
     return data_matrix
 
 
+excluded_terms = ["the "]
+
+
+def strip_excluded_terms(term: str):
+    stripped = term
+    for exc in excluded_terms:
+        stripped = stripped.replace(exc, "")
+    return stripped
+
+
+def any_first_char_matching(term1:str, term2:str):
+    lterm1 = term1.split()
+    lterm2 = term2.split()
+    for w1 in lterm1:
+        for w2 in lterm2:
+            if w1[0] == w2[0]:
+                return True 
+
+
 def get_similar(db: list[str], search_term, threshold, print_table=False):
 
     similar_results:list[str] = []
