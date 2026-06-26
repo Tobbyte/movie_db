@@ -16,10 +16,7 @@ TODO:
   - extend excluded_terms list (now only "the")
   - make checking for first letter matching optional
   - retry without checking for first letter matching if no results
-"""
-
-def print_fuzzy_table(table: list, str1: str, str2: str):
-    """pretty print the table"""
+__all__ = ["get_similar"] # public method
     header = str1
     column = str2
 
@@ -63,10 +60,9 @@ def print_fuzzy_table(table: list, str1: str, str2: str):
         print("\n")
 
 
-def calc_distance(search_term: str, compar_term: str, print_table=False):
+def _calc_distance(search_term: str, compar_term: str, print_table=False):
 
-    data_matrix = init_table(search_term, compar_term)
-
+    data_matrix = _init_table(search_term, compar_term)
     data_copy = copy.deepcopy(data_matrix)
 
     for row in range(1, len(data_copy)):
@@ -88,13 +84,13 @@ def calc_distance(search_term: str, compar_term: str, print_table=False):
 
     if print_table:
         print("\n\n\n\n\n\n")
-        print_fuzzy_table(data_copy, search_term, compar_term)
+        _print_fuzzy_table(data_copy, search_term, compar_term)
         print(f"distance: {data_copy[-1][-1]}")
 
     return data_copy[-1][-1]
 
 
-def init_table(str1: str, str2: str):
+def _init_table(str1: str, str2: str):
 
     data_matrix: list = []
 
@@ -117,6 +113,7 @@ def init_table(str1: str, str2: str):
 
 excluded_terms = ["the "]
 
+def _strip_excluded_terms(term: str):
 
 def strip_excluded_terms(term: str):
     stripped = term
@@ -125,7 +122,7 @@ def strip_excluded_terms(term: str):
     return stripped
 
 
-def any_first_char_matching(term1:str, term2:str):
+def _any_first_char_matching(term1: str, term2: str):
     lterm1 = term1.split()
     lterm2 = term2.split()
     for w1 in lterm1:
@@ -136,16 +133,15 @@ def any_first_char_matching(term1:str, term2:str):
 
 def get_similar(db: list[str], search_term, threshold, print_table=False):
 
-    search_term_wo_excluded = strip_excluded_terms(search_term).lower()
+    search_term_wo_excluded = _strip_excluded_terms(search_term).lower()
 
     similar_results:list[tuple] = []
     for item in db:
-        item_wo_excluded = strip_excluded_terms(item.lower()).lower()
+        item_wo_excluded = _strip_excluded_terms(item.lower()).lower()
         print(search_term_wo_excluded, item_wo_excluded)
-        dist = calc_distance(search_term_wo_excluded, item_wo_excluded, print_table=print_table)
-        
+        dist = _calc_distance(
         # naively demand first char matching
-        if dist <= threshold and any_first_char_matching(search_term_wo_excluded,item_wo_excluded):
+        if dist <= threshold and _any_first_char_matching(
             similar_results.append((item, dist))
 
     similar_results = sorted(similar_results, key=lambda dist: dist[1])
