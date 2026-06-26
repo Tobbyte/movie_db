@@ -125,7 +125,7 @@ def add_movie(db):
     return db
 
 
-def del_movie(db: dict[str, float]):
+def remove_movie(db: dict[str, float]):
     """Removes an item from db"""
 
     tbdeleted = None
@@ -414,7 +414,7 @@ def run(db: dict[str, float]):
             db = add_movie(db)
         elif selection == 3:
             """ delete """
-            db = del_movie(db)
+            db = remove_movie(db)
         elif selection == 4:
             """ update """
             db = update_movie(db)
