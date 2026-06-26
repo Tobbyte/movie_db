@@ -46,13 +46,15 @@ def main():
 
     run(movies)
 
+
 """dict used to shorthand color codes"""
 colors = {
     "red": "\033[91m",
     "blue": "\033[94m",
     "yellow": "\033[93m",
-    "end": "\033[00m"
+    "end": "\033[00m",
 }
+
 
 def sort_by_value(dic: dict[str, float], reverse=False):
     """
@@ -88,10 +90,11 @@ def is_num(inp: str):
     return True
 
 
-def user_input(promt:str):
+def user_input(promt: str):
     inp = input(colors["yellow"] + promt)
-    print("" + colors["end"], end="") # reset input coloring
+    print("" + colors["end"], end="")  # reset input coloring
     return inp
+
 
 def add_movie(db):
     """Adds an item to db."""
@@ -242,7 +245,10 @@ def search_movie(db: dict[str, float]):
     found_titles = [(found, db.get(found)) for (found, _) in search_results]
 
     if not found_titles:
-        output(f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n', color="red")
+        output(
+            f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n',
+            color="red",
+        )
     else:
         output(f'Movie titles similar to "{orig_inp}":\n', space_before=True)
         for name, rate in found_titles:
@@ -266,7 +272,9 @@ def ratings_histogram(db: list[float]):
     filename = None
     plt.hist(db)
     while filename is None or filename == "":
-        filename = user_input("Enter filename (saved as png unless otherwise specified): ")
+        filename = user_input(
+            "Enter filename (saved as png unless otherwise specified): "
+        )
         if filename == "":
             output("Filename required", color="red")
         elif not filename.isalpha():
@@ -282,7 +290,9 @@ def ratings_histogram(db: list[float]):
                 # TODO: - check on other exceptions (f.e. no write permission)
                 # from mathplotlob:
                 output(
-                    "Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)", color="red")
+                    "Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)",
+                    color="red",
+                )
 
 
 def idle_after_input():
@@ -322,7 +332,8 @@ def present_menu(menu_items: list[str]):
         if len(selection) > 1 or not selection.isdecimal():
             if not insist_to_quite:
                 output(
-                    "Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit", color="red"
+                    "Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit",
+                    color="red",
                 )
                 selection = None
                 insist_to_quite = True
@@ -341,7 +352,7 @@ def clear_screen():
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 
-def output(any, color = None, space_after=False, space_before=False):
+def output(any, color=None, space_after=False, space_before=False):
     """Prints what's given. Optionally adds gap or color"""
 
     if space_before:
@@ -390,7 +401,10 @@ def run(db: dict[str, float]):
             quit_program()
 
         clear_screen()
-        output(f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~", color="yellow")
+        output(
+            f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~",
+            color="yellow",
+        )
         if selection == 1:
             """ list """
             list_movies(db, f"{len(db)} movies in total:\n")
