@@ -231,7 +231,9 @@ def search_movie(db: dict[str, float]):
             output(f"{name}, {rate}")
 
 
-def fuzzy_search(db: dict[str, float], search_term:str):
+def fuzzy_search(db: dict[str, float], search_term: str):
+    """Fuzzy searches on term. Results sorted by distance"""
+
     similarity_threshold = 15
     titles = list(db.keys())
 
@@ -241,6 +243,8 @@ def fuzzy_search(db: dict[str, float], search_term:str):
 
 
 def ratings_histogram(db: list[float]):
+    """Saves a mathplotlob histogram to disk"""
+
     filename = None
     plt.hist(db)
     while filename is None or filename == "":
