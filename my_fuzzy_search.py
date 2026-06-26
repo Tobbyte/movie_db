@@ -141,9 +141,9 @@ def _any_first_char_matching(term1: str, term2: str):
     lterm2 = term2.split()
     for w1 in lterm1:
         for w2 in lterm2:
-            if w1[0] == w2[0]:
+            if w1 and w2 and w1[0] == w2[0]:
                 return True
-
+    return False
 
 def get_similar(db: list[str], search_term: str, threshold:int, print_table=False):
     """
