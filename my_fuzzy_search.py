@@ -156,7 +156,6 @@ def get_similar(db: list[str], search_term: str, threshold:int, print_table=Fals
     similar_results: list[tuple] = []
     for item in db:
         item_wo_excluded = _strip_excluded_terms(item.lower()).lower()
-        print(search_term_wo_excluded, item_wo_excluded)
         dist = _calc_distance(
             search_term_wo_excluded, item_wo_excluded, print_table=print_table
         )
