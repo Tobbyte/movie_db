@@ -103,12 +103,12 @@ def init_table(str1: str, str2: str):
     return data_matrix
 
 
-def get_similar(db: dict, search_term, threshold, print_table=False):
+def get_similar(db: list[str], search_term, threshold, print_table=False):
 
-    similar_results = []
-    for k, v in db.items():
-        dist = calc_distance(search_term, k, print_table=print_table)
+    similar_results:list[str] = []
+    for item in db:
+        dist = calc_distance(search_term, item, print_table=print_table)
         if dist <= threshold:
-            similar_results.append((k, v))
+            similar_results.append(item)
 
     return similar_results
