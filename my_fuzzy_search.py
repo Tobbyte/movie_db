@@ -1,7 +1,5 @@
 """Custom Fuzzy Search implementation using naive Levenshtein algorithm"""
 
-import copy
-
 """
 Limitations:
     - expects at least any first char of search term matching comp items
@@ -77,27 +75,26 @@ def _calc_distance(search_term: str, compar_term: str, print_table=False):
     """Calculates the distance between inputs"""
 
     data_matrix = _init_table(search_term, compar_term)
-    data_copy = copy.deepcopy(data_matrix)
 
-    for row in range(1, len(data_copy)):
-        for column in range(1, len(data_copy[row])):
-            left_cell = data_copy[row][column - 1] + 1
-            top_cell = data_copy[row - 1][column] + 1
+    for row in range(1, len(data_matrix)):
+        for column in range(1, len(data_matrix[row])):
+            left_cell = data_matrix[row][column - 1] + 1
+            top_cell = data_matrix[row - 1][column] + 1
             diag_top_char = search_term[column - 1]
             diag_left_char = compar_term[row - 1]
             diag_is_diff = 0
 
             if diag_top_char != diag_left_char:
                 diag_is_diff = 1
-            diag = data_copy[row - 1][column - 1] + diag_is_diff
-            data_copy[row][column] = min(left_cell, top_cell, diag)
+            diag = data_matrix[row - 1][column - 1] + diag_is_diff
+            data_matrix[row][column] = min(left_cell, top_cell, diag)
 
     if print_table:
         print("\n\n\n\n\n\n")
-        _print_fuzzy_table(data_copy, search_term, compar_term)
-        print(f"distance: {data_copy[-1][-1]}")
+        _print_fuzzy_table(data_matrix, search_term, compar_term)
+        print(f"distance: {data_matrix[-1][-1]}")
 
-    return data_copy[-1][-1]
+    return data_matrix[-1][-1]
 
 
 def _init_table(str1: str, str2: str):
