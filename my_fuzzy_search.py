@@ -112,3 +112,8 @@ def get_similar(db: list[str], search_term, threshold, print_table=False):
             similar_results.append(item)
 
     return similar_results
+
+
+
+if __name__ == "__main__":
+    pass
