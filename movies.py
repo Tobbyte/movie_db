@@ -216,8 +216,12 @@ def get_random(db):
 
 def search_movie(db: dict[str, float]):
     """Searches for items. Not case sensitive"""
+    orig_inp = None
+    while orig_inp == None or orig_inp == "":
+        orig_inp = input("\nEnter part of movie name: ")
+        if orig_inp == "":
+            output("Name required")
 
-    orig_inp = input("\nEnter part of movie name: ")
     inp = orig_inp.lower()
     search_results = fuzzy_search(db, inp)
 
