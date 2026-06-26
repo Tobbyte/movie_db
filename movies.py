@@ -21,7 +21,7 @@ TODO (but out of scope of this exercise):
   - don't relay on exit()
 
   
-Version 1.0.0
+Version 1.1.0
 """
 
 """
