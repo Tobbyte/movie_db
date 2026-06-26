@@ -1,4 +1,4 @@
-"""Custom Fuzzy Search implementation using naive Levenshstein algorithm"""
+"""Custom Fuzzy Search implementation using naive Levenshtein algorithm"""
 
 import copy
 
@@ -145,8 +145,11 @@ def _any_first_char_matching(term1: str, term2: str):
                 return True
 
 
-def get_similar(db: list[str], search_term, threshold, print_table=False):
-    """"""
+def get_similar(db: list[str], search_term: str, threshold:int, print_table=False):
+    """
+    Uses a basic Fussy Search over list:[str] of items and returns
+    similar items to comparison term[str]. Takes a threshold for the distance calculation and optionally prints (every) table
+    """
 
     search_term_wo_excluded = _strip_excluded_terms(search_term).lower()
 
