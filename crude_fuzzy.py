@@ -81,21 +81,27 @@ def calc_distance(search_term: str, compar_term: str, print_table=False):
 
     return data_copy[-1][-1]
 
+
+def init_table(str1: str, str2: str):
+
     data_matrix: list = []
 
-    for i in range(0, len(str2)+1):
+    for i in range(0, len(str2) + 1):
         row = []
-        for j in range(0,len(str1)+1):  # len word + extra 0 
+        for j in range(0, len(str1) + 1):  # len word + extra 0
             if i == 0:
                 # top row
                 row.append(j)
-            else: 
+            else:
                 if j == 0:
                     # left column
                     row.append(i)
                 else:
-                    row.append("?")
+                    row.append(-1)
         data_matrix.append(row)
+
+    return data_matrix
+
 
 def get_similar(db: dict, search_term, threshold, print_table=False):
 
