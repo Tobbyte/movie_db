@@ -46,6 +46,13 @@ def main():
 
     run(movies)
 
+"""dict used to shorthand color codes"""
+colors = {
+    "red": "\033[91m",
+    "blue": "\033[94m",
+    "yellow": "\033[93m",
+    "end": "\033[00m"
+}
 
 def sort_by_value(dic: dict[str, float], reverse=False):
     """
@@ -81,6 +88,11 @@ def is_num(inp: str):
     return True
 
 
+def user_input(promt:str):
+    inp = input(colors["yellow"] + promt)
+    print("" + colors["end"], end="") # reset input coloring
+    return inp
+
 def add_movie(db):
     """Adds an item to db."""
 
@@ -88,20 +100,20 @@ def add_movie(db):
     rating = None
 
     while name is None or name == "":
-        name = input("\nEnter new movie name: ")
+        name = user_input("\nEnter new movie name: ")
         if name == "":
-            output("Name required")
+            output("Name required", color="red")
 
     while rating is None or rating == "":
-        rating = input("Enter new movies rating (0-10): ")
+        rating = user_input("Enter new movies rating (0-10): ")
         if rating == "":
-            output("Rating required")
+            output("Rating required", color="red")
         elif not is_num(rating):
             rating = None
-            output("Rating must be a number")
+            output("Rating must be a number", color="red")
         elif float(rating) > 10:
             rating = None
-            output("Rating must be between 0 - 10")
+            output("Rating must be between 0 - 10", color="red")
 
     db[name] = float(rating)
 
@@ -115,9 +127,9 @@ def del_movie(db: dict[str, float]):
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
-        tbdeleted = input("\nEnter movie name to delete: ")
+        tbdeleted = user_input("\nEnter movie name to delete: ")
         if tbdeleted == "":
-            output("Name required")
+            output("Name required", color="red")
         try:
             del db[tbdeleted]
             output(f'Movie "{tbdeleted}" successfully deleted', space_before=True)
@@ -125,7 +137,7 @@ def del_movie(db: dict[str, float]):
             return db
 
         except KeyError:
-            output(f"Movie {tbdeleted} doesn't exist!", space_before=True)
+            output(f"Movie {tbdeleted} doesn't exist!", space_before=True, color="red")
             break
     return db
 
@@ -136,25 +148,25 @@ def update_movie(db: dict[str, float]):
     new_rating = None
 
     while tbupdated is None or tbupdated == "":
-        tbupdated = input("\nEnter movie name to update: ")
+        tbupdated = user_input("\nEnter movie name to update: ")
         if tbupdated == "":
-            output("Name required")
+            output("Name required", color="red")
         try:
             db[tbupdated]
         except KeyError:
-            output(f"Movie {tbupdated} doesn't exist!", space_before=True)
+            output(f"Movie {tbupdated} doesn't exist!", space_before=True, color="red")
             return db
 
     while new_rating is None or new_rating == "":
-        new_rating = input("Enter new movies rating (0-10): ")
+        new_rating = user_input("Enter new movies rating (0-10): ")
         if new_rating == "":
-            output("Rating required")
+            output("Rating required", color="red")
         elif not is_num(new_rating):
             new_rating = None
-            output("Rating must be a number")
+            output("Rating must be a number", color="red")
         elif float(new_rating) > 10:
             new_rating = None
-            output("Rating must be between 0 - 10")
+            output("Rating must be between 0 - 10", color="red")
 
     output(
         f'Movie "{tbupdated}" successfully updated to rating: {new_rating}',
@@ -217,9 +229,9 @@ def search_movie(db: dict[str, float]):
     """Searches for items. Not case sensitive"""
     orig_inp = None
     while orig_inp == None or orig_inp == "":
-        orig_inp = input("\nEnter part of movie name: ")
+        orig_inp = user_input("\nEnter part of movie name: ")
         if orig_inp == "":
-            output("Name required")
+            output("Name required", color="red")
 
     inp = orig_inp.lower()
     search_results = fuzzy_search(db, inp)
@@ -227,7 +239,7 @@ def search_movie(db: dict[str, float]):
     found_titles = [(found, db.get(found)) for (found, _) in search_results]
 
     if not found_titles:
-        output(f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n')
+        output(f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n', color="red")
     else:
         output(f'Movie titles similar to "{orig_inp}":\n', space_before=True)
         for name, rate in found_titles:
@@ -251,11 +263,11 @@ def ratings_histogram(db: list[float]):
     filename = None
     plt.hist(db)
     while filename is None or filename == "":
-        filename = input("Enter filename (saved as png unless otherwise specified): ")
+        filename = user_input("Enter filename (saved as png unless otherwise specified): ")
         if filename == "":
-            output("Filename required")
+            output("Filename required", color="red")
         elif not filename.isalpha():
-            output("Filename must be alphanumeric")
+            output("Filename must be alphanumeric", color="red")
             filename = None
         else:
             try:
@@ -267,13 +279,12 @@ def ratings_histogram(db: list[float]):
                 # TODO: - check on other exceptions (f.e. no write permission)
                 # from mathplotlob:
                 output(
-                    "Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)"
-                )
+                    "Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)", color="red")
 
 
 def idle_after_input():
     """Idles with prompt to continue"""
-    input("\npress Enter to continue")
+    user_input("\npress Enter to continue ")
 
 
 def present_menu(menu_items: list[str]):
@@ -299,16 +310,16 @@ def present_menu(menu_items: list[str]):
     output("", space_before=True)
 
     for item in menu_items:
-        output(item)
+        output(item, color="blue")
     selection = None
     insist_to_quite = False
     while selection is None:
-        selection = input("\nEnter choice (1-9): ")
+        selection = user_input("\nEnter choice (1-9): ")
 
         if len(selection) > 1 or not selection.isdecimal():
             if not insist_to_quite:
                 output(
-                    "Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit"
+                    "Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit", color="red"
                 )
                 selection = None
                 insist_to_quite = True
@@ -327,12 +338,23 @@ def clear_screen():
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 
-def output(any, space_after=False, space_before=False):
-    """Prints what's given. Optionally adds gap"""
+def output(any, color = None, space_after=False, space_before=False):
+    """Prints what's given. Optionally adds gap or color"""
 
     if space_before:
         print("\n \n")
-    print(any)
+    if color:
+        if color == "red":
+            print(colors["red"] + any + colors["end"])
+        if color == "blue":
+            print(colors["blue"] + any + colors["end"])
+        if color == "yellow":
+            print(colors["yellow"] + any + colors["end"])
+        else:
+            color = None
+    else:
+        print(any)
+
     if space_after:
         print("\n \n")
 
@@ -340,7 +362,7 @@ def output(any, space_after=False, space_before=False):
 def run(db: dict[str, float]):
     """Prints welcome and loops menu"""
 
-    output("********** My Movies Database **********", space_before=True)
+    output("********** My Movies Database **********", space_before=True, color="blue")
 
     menu_items = [
         "Menu:",
@@ -365,7 +387,7 @@ def run(db: dict[str, float]):
             quit_program()
 
         clear_screen()
-        output(f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~")
+        output(f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~", color="yellow")
         if selection == 1:
             """ list """
             list_movies(db, f"{len(db)} movies in total:\n")
