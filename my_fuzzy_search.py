@@ -83,12 +83,8 @@ def _calc_distance(search_term: str, compar_term: str, print_table=False):
         for column in range(1, len(data_copy[row])):
             left_cell = data_copy[row][column - 1] + 1
             top_cell = data_copy[row - 1][column] + 1
-            diag_top_char = (
-                "" if column - 1 > len(search_term) - 1 else search_term[column - 1]
-            )
-            diag_left_char = (
-                "" if column - 1 > len(compar_term) - 1 else compar_term[column - 1]
-            )
+            diag_top_char = search_term[column - 1]
+            diag_left_char = compar_term[row - 1]
             diag_is_diff = 0
 
             if diag_top_char != diag_left_char:
