@@ -18,6 +18,7 @@ TODO (but out of scope of this exercise):
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
+  - don't relay on exit()
 
   
 Version 1.0.0
@@ -314,12 +315,12 @@ def present_menu(menu_items: list[str]):
                 selection = None
                 insist_to_quite = True
             else:
-                quit()
+                quit_program()
 
     return int(selection)
 
 
-def quit():
+def quit_program():
     exit()
 
 
@@ -363,7 +364,7 @@ def run(db: dict[str, float]):
 
         if selection == 0:
             output("Goodbye")
-            quit()
+            quit_program()
 
         clear_screen()
         output(f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~")
