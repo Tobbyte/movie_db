@@ -232,9 +232,10 @@ def search_movie(db: dict[str, float]):
 
 
 def fuzzy_search(db: dict[str, float], search_term:str):
+    similarity_threshold = 15
     titles = list(db.keys())
 
-    similar_titles = get_similar(titles, search_term, 5)
+    similar_titles = get_similar(titles, search_term, similarity_threshold)
 
     return similar_titles
 
