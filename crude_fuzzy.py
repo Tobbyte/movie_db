@@ -1,4 +1,4 @@
-
+import copy
 
 
 """
@@ -51,7 +51,35 @@ def print_fuzzy_table(table: list, str1: str, str2: str):
         print("\n")
 
 
-def init_table(str1:str, str2:str):
+def calc_distance(search_term: str, compar_term: str, print_table=False):
+
+    data_matrix = init_table(search_term, compar_term)
+
+    data_copy = copy.deepcopy(data_matrix)
+
+    for row in range(1, len(data_copy)):
+        for column in range(1, len(data_copy[row])):
+            left_cell = data_copy[row][column - 1] + 1
+            top_cell = data_copy[row - 1][column] + 1
+            diag_top_char = (
+                "" if column - 1 > len(search_term) - 1 else search_term[column - 1]
+            )
+            diag_left_char = (
+                "" if column - 1 > len(compar_term) - 1 else compar_term[column - 1]
+            )
+            diag_is_diff = 0
+
+            if diag_top_char != diag_left_char:
+                diag_is_diff = 1
+            diag = data_copy[row - 1][column - 1] + diag_is_diff
+            data_copy[row][column] = min(left_cell, top_cell, diag)
+
+    if print_table:
+        print("\n\n\n\n\n\n")
+        print_fuzzy_table(data_copy, search_term, compar_term)
+        print(f"distance: {data_copy[-1][-1]}")
+
+    return data_copy[-1][-1]
 
     data_matrix: list = []
 
