@@ -1,5 +1,6 @@
 from random import randint
 import matplotlib.pyplot as plt
+from my_fuzzy_search import get_similar
 
 """ A simple interface to interact with an dummy movie "db" (local dict) """
 
@@ -217,14 +218,25 @@ def search_movie(db: dict[str, float]):
     """Searches for items. Not case sensitive"""
 
     inp = input("\nEnter part of movie name: ").lower()
-    res = [(k, v) for k, v in db.items() if k.lower().find(inp) != -1]
 
-    if not res:
-        output(f'No Movie name contains "{inp}":\n')
+    search_results:list[str] = fuzzy_search(db, inp)
+
+    found_titles = [(found, db.get(found)) for found in search_results]
+
+    if not found_titles:
+        output(f'No Movie name similar to "{inp}":\n')
     else:
-        output(f'Movie titles containing "{inp}":\n', space_before=True)
-        for r in res:
-            output(f"{r[0]}, {r[1]}")
+        output(f'Movie titles similar to "{inp}":\n', space_before=True)
+        for name, rate in found_titles:
+            output(f"{name}, {rate}")
+
+
+def fuzzy_search(db: dict[str, float], search_term:str):
+    titles = list(db.keys())
+
+    similar_titles = get_similar(titles, search_term, 5)
+
+    return similar_titles
 
 
 def ratings_histogram(db: list[float]):
