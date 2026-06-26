@@ -228,7 +228,7 @@ def search_movie(db: dict[str, float]):
     found_titles = [(found, db.get(found)) for (found, _) in search_results]
 
     if not found_titles:
-        output(f'No Movie name similar to "{orig_inp}":\n')
+        output(f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n')
     else:
         output(f'Movie titles similar to "{orig_inp}":\n', space_before=True)
         for name, rate in found_titles:
@@ -265,6 +265,7 @@ def ratings_histogram(db: list[float]):
                     f'File "{filename}" successfully saved to disk.', space_before=True
                 )
             except ValueError:
+                # TODO: - check on other exceptions (f.e. no write permission)
                 # from mathplotlob:
                 output(
                     "Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)"
