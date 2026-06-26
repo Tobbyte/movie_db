@@ -28,8 +28,6 @@ Version 1.1.0
  ~~ Made with ❤️ and without ai or code completion (except intelliSense) ~~
 """
 
-## TODO validate input f.e. on aditional ""
-
 
 def main():
     # Dictionary to store the movies and the rating
