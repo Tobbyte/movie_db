@@ -19,6 +19,7 @@ TODO (but out of scope of this exercise):
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
   - don't relay on exit()
+  - add fuzzy search for update / delete
 
   
 Version 1.1.0
@@ -130,7 +131,7 @@ def del_movie(db: dict[str, float]):
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
-        tbdeleted = user_input("\nEnter movie name to delete: ")
+        tbdeleted = user_input("\nEnter (exact) movie name to delete: ")
         if tbdeleted == "":
             output("Name required", color="red")
         try:
@@ -151,7 +152,7 @@ def update_movie(db: dict[str, float]):
     new_rating = None
 
     while tbupdated is None or tbupdated == "":
-        tbupdated = user_input("\nEnter movie name to update: ")
+        tbupdated = user_input("\nEnter (exact) movie name to update: ")
         if tbupdated == "":
             output("Name required", color="red")
         try:
