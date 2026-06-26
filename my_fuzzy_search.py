@@ -2,9 +2,21 @@ import copy
 
 
 """
+Limitations:
+    - expects at least any first char of search term matching comp items
+
+"""
+
+"""
  ~~ Made with  and without ai or code completion (except intelliSense) ~~
 """
 
+"""
+TODO:
+  - extend excluded_terms list (now only "the")
+  - make checking for first letter matching optional
+  - retry without checking for first letter matching if no results
+"""
 
 def print_fuzzy_table(table: list, str1: str, str2: str):
     """pretty print the table"""
