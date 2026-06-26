@@ -97,7 +97,12 @@ def calc_distance(search_term: str, compar_term: str, print_table=False):
                     row.append("?")
         data_matrix.append(row)
 
-    print_fuzzy_table(data_matrix, str1, str2)
+def get_similar(db: dict, search_term, threshold, print_table=False):
 
+    similar_results = []
+    for k, v in db.items():
+        dist = calc_distance(search_term, k, print_table=print_table)
+        if dist <= threshold:
+            similar_results.append((k, v))
 
-init_table(str1, str2)
+    return similar_results
