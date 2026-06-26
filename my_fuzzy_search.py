@@ -6,6 +6,7 @@ import copy
 Limitations:
     - expects at least any first char of search term matching comp items
     - doest not optimize search in any meaningful way
+    - when searching f.e. for "the" not all results containing "the" are returned, results are still restricted by distance.
 """
 
 """
@@ -23,7 +24,7 @@ TODO:
 __all__ = ["get_similar"]  # public method
 
 # terms to be excluded from search term or comparison items
-excluded_terms = ["the "]
+excluded_terms = ["the"]
 
 
 def _print_fuzzy_table(table: list, str1: str, str2: str):
@@ -125,12 +126,20 @@ def _init_table(str1: str, str2: str):
     return data_matrix
 
 
+def _term_is_excluded(term:str):
+    """checks if the term is in excluded list"""
+    return term.strip() in excluded_terms
+
 def _strip_excluded_terms(term: str):
     """Strips any items from input that are in exclude list"""
 
     stripped = term
-    for exc in excluded_terms:
-        stripped = stripped.replace(exc, "")
+
+    # prevent excluding self
+    if not _term_is_excluded(stripped):
+        for exc in excluded_terms:
+            stripped = stripped.replace(exc+" ", "") # add " " to find only at beginning
+
     return stripped
 
 
@@ -155,7 +164,11 @@ def get_similar(db: list[str], search_term: str, threshold:int, print_table=Fals
 
     similar_results: list[tuple] = []
     for item in db:
-        item_wo_excluded = _strip_excluded_terms(item.lower()).lower()
+        item_wo_excluded = item.lower()
+        # prevent no results when search term is in excluded list
+        if not _term_is_excluded(search_term):
+            item_wo_excluded = _strip_excluded_terms(item.lower())
+
         dist = _calc_distance(
             search_term_wo_excluded, item_wo_excluded, print_table=print_table
         )
