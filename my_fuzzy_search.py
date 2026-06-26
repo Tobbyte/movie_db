@@ -1,14 +1,15 @@
-import copy
+"""Custom Fuzzy Search implementation using naive Levenshstein algorithm"""
 
+import copy
 
 """
 Limitations:
     - expects at least any first char of search term matching comp items
-
+    - doest not optimize search in any meaningful way
 """
 
 """
- ~~ Made with  and without ai or code completion (except intelliSense) ~~
+ ~~ Made with ❤️ and without ai or code completion (except intelliSense) ~~
 """
 
 """
@@ -16,7 +17,18 @@ TODO:
   - extend excluded_terms list (now only "the")
   - make checking for first letter matching optional
   - retry without checking for first letter matching if no results
-__all__ = ["get_similar"] # public method
+  - extend docstrings by what fn is used for
+"""
+
+__all__ = ["get_similar"]  # public method
+
+# terms to be excluded from search term or comparison items
+excluded_terms = ["the "]
+
+
+def _print_fuzzy_table(table: list, str1: str, str2: str):
+    """Pretty print the table"""
+
     header = str1
     column = str2
 
@@ -61,6 +73,7 @@ __all__ = ["get_similar"] # public method
 
 
 def _calc_distance(search_term: str, compar_term: str, print_table=False):
+    """Calculates the distance between inputs"""
 
     data_matrix = _init_table(search_term, compar_term)
     data_copy = copy.deepcopy(data_matrix)
@@ -91,6 +104,7 @@ def _calc_distance(search_term: str, compar_term: str, print_table=False):
 
 
 def _init_table(str1: str, str2: str):
+    """Initializes the table for distance calculation"""
 
     data_matrix: list = []
 
@@ -111,11 +125,9 @@ def _init_table(str1: str, str2: str):
     return data_matrix
 
 
-excluded_terms = ["the "]
-
 def _strip_excluded_terms(term: str):
+    """Strips any items from input that are in exclude list"""
 
-def strip_excluded_terms(term: str):
     stripped = term
     for exc in excluded_terms:
         stripped = stripped.replace(exc, "")
@@ -123,30 +135,37 @@ def strip_excluded_terms(term: str):
 
 
 def _any_first_char_matching(term1: str, term2: str):
+    """Checks if any word of the given strings begins with the first letter"""
+
     lterm1 = term1.split()
     lterm2 = term2.split()
     for w1 in lterm1:
         for w2 in lterm2:
             if w1[0] == w2[0]:
-                return True 
+                return True
 
 
 def get_similar(db: list[str], search_term, threshold, print_table=False):
+    """"""
 
     search_term_wo_excluded = _strip_excluded_terms(search_term).lower()
 
-    similar_results:list[tuple] = []
+    similar_results: list[tuple] = []
     for item in db:
         item_wo_excluded = _strip_excluded_terms(item.lower()).lower()
         print(search_term_wo_excluded, item_wo_excluded)
         dist = _calc_distance(
+            search_term_wo_excluded, item_wo_excluded, print_table=print_table
+        )
+
         # naively demand first char matching
         if dist <= threshold and _any_first_char_matching(
+            search_term_wo_excluded, item_wo_excluded
+        ):
             similar_results.append((item, dist))
 
     similar_results = sorted(similar_results, key=lambda dist: dist[1])
     return similar_results
-
 
 
 if __name__ == "__main__":
