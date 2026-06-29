@@ -104,12 +104,12 @@ def add_movie(db):
     rating = None
 
     while name is None or name == "":
-        name = user_input("\nEnter new movie name: ")
+        name = user_input("\nEnter new movie name: ").strip()
         if name == "":
             output("Name required", color="red")
 
     while rating is None or rating == "":
-        rating = user_input("Enter new movies rating (0-10): ")
+        rating = user_input("Enter new movies rating (0-10): ").strip()
         if rating == "":
             output("Rating required", color="red")
         elif not is_num(rating):
@@ -131,7 +131,7 @@ def remove_movie(db: dict[str, float]):
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
-        tbdeleted = user_input("\nEnter (exact) movie name to delete: ")
+        tbdeleted = user_input("\nEnter (exact) movie name to delete: ").strip()
         if tbdeleted == "":
             output("Name required", color="red")
         try:
@@ -152,7 +152,7 @@ def update_movie(db: dict[str, float]):
     new_rating = None
 
     while tbupdated is None or tbupdated == "":
-        tbupdated = user_input("\nEnter (exact) movie name to update: ")
+        tbupdated = user_input("\nEnter (exact) movie name to update: ").strip()
         if tbupdated == "":
             output("Name required", color="red")
         try:
@@ -162,7 +162,7 @@ def update_movie(db: dict[str, float]):
             return db
 
     while new_rating is None or new_rating == "":
-        new_rating = user_input("Enter new movies rating (0-10): ")
+        new_rating = user_input("Enter new movies rating (0-10): ").strip()
         if new_rating == "":
             output("Rating required", color="red")
         elif not is_num(new_rating):
@@ -236,7 +236,7 @@ def search_movie(db: dict[str, float]):
     """Searches for items. Not case sensitive"""
     orig_inp = None
     while orig_inp == None or orig_inp == "":
-        orig_inp = user_input("\nEnter part of movie name: ")
+        orig_inp = user_input("\nEnter part of movie name: ").strip()
         if orig_inp == "":
             output("Name required", color="red")
 
@@ -328,7 +328,7 @@ def present_menu(menu_items: list[str]):
     selection = None
     insist_to_quite = False
     while selection is None:
-        selection = user_input("\nEnter choice (1-9): ")
+        selection = user_input("\nEnter choice (1-9): ").strip()
 
         if len(selection) > 1 or not selection.isdecimal():
             if not insist_to_quite:
