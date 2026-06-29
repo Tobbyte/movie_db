@@ -254,25 +254,45 @@ def search_movie(db: dict[str, float]):
             output("Name required", color="red")
 
     inp = orig_inp.lower()
-    search_results = fuzzy_search(db, inp)
 
-    found_titles = [(found, db.get(found)) for (found, _) in search_results]
+    # create a dict of lowered_name:original_name for search comparison
+    db_lowered = {}
+    for m in db:
+        m_lo = m.lower()
+        db_lowered[m_lo] = m
 
-    if not found_titles:
-        output(
-            f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n',
-            color="red",
-        )
+    if orig_inp in db:
+        # Name is in db as put in
+        output(f"{orig_inp}, {db[orig_inp]}", space_before=True)
+    elif inp in db_lowered:
+        # Name is lowercase of db entry
+        output(f"{db_lowered[inp]}, {db[db_lowered[inp]]}", space_before=True)
+
     else:
-        output(f'Movie titles similar to "{orig_inp}":\n', space_before=True)
-        for name, rate in found_titles:
-            output(f"{name}, {rate}")
+        # No direct finding, fuzzy
+        search_results = fuzzy_search(db, inp)
+
+        found_titles = [(found, db.get(found)) for (found, _) in search_results]
+
+        if not found_titles:
+            output(
+                f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n',
+                color="red",
+            )
+        else:
+            output(
+                f'No movie titled "{orig_inp}" found. Did you mean:\n',
+                space_before=True,
+            )
+
+            for name, rate in found_titles:
+                output(f"{name}, {rate}")
 
 
 def fuzzy_search(db: dict[str, float], search_term: str):
     """Fuzzy searches on term. Results sorted by distance"""
 
-    similarity_threshold = 25 # pretty high. Workaround until not optimized
+    similarity_threshold = 25  # pretty high. Workaround until optimized
     titles = list(db.keys())
 
     similar_titles = get_similar(titles, search_term, similarity_threshold)
