@@ -172,6 +172,8 @@ def update_movie(db: dict[str, float]):
             new_rating = None
             output("Rating must be between 0 - 10", color="red")
 
+    db[tbupdated] = float(new_rating)
+
     output(
         f'Movie "{tbupdated}" successfully updated to rating: {new_rating}',
         space_before=True,
