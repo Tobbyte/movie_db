@@ -93,6 +93,7 @@ def is_num(inp: str):
 
 
 def user_input(promt: str):
+    """Color user input"""
     inp = input(colors["yellow"] + promt)
     print("" + colors["end"], end="")  # reset input coloring
     return inp
