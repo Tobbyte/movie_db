@@ -134,7 +134,8 @@ def add_movie(db):
             rating = None
             output("Rating must be between 0 - 10", color="red")
 
-    db[name] = float(rating)
+    rating = strip_leading_zero(float(rating))
+    db[name] = rating
 
     output(f'Movie "{name}" with rating {rating} successfully added', space_before=True)
     return db
@@ -187,6 +188,7 @@ def update_movie(db: dict[str, float]):
             new_rating = None
             output("Rating must be between 0 - 10", color="red")
 
+    new_rating = strip_leading_zero(float(new_rating))
     db[tbupdated] = float(new_rating)
 
     output(
