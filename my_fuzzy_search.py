@@ -4,7 +4,7 @@
 Limitations:
     - expects at least any first char of search term matching comp items
     - doest not optimize search in any meaningful way
-    - when searching f.e. for "the" not all results containing "the" are returned, results are still restricted by distance.
+    - when searching f.e. for "the" not all results containing "the" are returned, bc results are still restricted by distance.
 """
 
 """
