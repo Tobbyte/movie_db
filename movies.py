@@ -119,7 +119,7 @@ def add_movie(db):
         elif not is_num(rating):
             rating = None
             output("Rating must be a number", color="red")
-        elif float(rating) > 10:
+        elif float(rating) > 10 or float(rating) < 0:
             rating = None
             output("Rating must be between 0 - 10", color="red")
 
@@ -172,7 +172,7 @@ def update_movie(db: dict[str, float]):
         elif not is_num(new_rating):
             new_rating = None
             output("Rating must be a number", color="red")
-        elif float(new_rating) > 10:
+        elif float(new_rating) > 10 or float(new_rating) < 0:
             new_rating = None
             output("Rating must be between 0 - 10", color="red")
 
