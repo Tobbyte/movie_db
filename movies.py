@@ -99,7 +99,10 @@ def user_input(promt: str):
 
 
 def add_movie(db):
-    """Adds an item to db."""
+    """
+    Adds an item to db.
+    Warning: Does not check if already exists.
+    """
 
     name = None
     rating = None
