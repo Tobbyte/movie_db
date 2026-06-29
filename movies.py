@@ -11,15 +11,15 @@ Constraints imposed by the given task:
 
 
 TODO (but out of scope of this exercise):
-  - unify input validation across features, f.e. update and add
-  - add: check if already exists, present option to update
-  - update: check if not existing, present option to add
-  - delete: implement search
+  - unify user input and validation across all features
+  - add movie: check if already exists, present option to update
+  - update movie: check if not existing, present option to add
+  - update / delete movie: fuzzy search 
+  - delete movie: present list and let choose by inputting number
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
   - don't relay on exit()
-  - add fuzzy search for update / delete
 
   
 Version 1.1.0
