@@ -99,6 +99,7 @@ def user_input(promt: str):
 
 
 def strip_leading_zero(num: str | int | float):
+    """Strips leading "0" if input, returns same format"""
     res = str(num)
     while res[0] == "0" and len(res) > 1:
         res = res[1:]
