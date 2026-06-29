@@ -20,6 +20,7 @@ TODO (but out of scope of this exercise):
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
   - don't relay on exit()
+  - cache sorted db
 
   
 Version 1.1.0
