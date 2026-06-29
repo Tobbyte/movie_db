@@ -202,13 +202,13 @@ def update_movie(db: dict[str, float]):
 
 
 def get_average(nums: list[float]):
-    """returns average"""
+    """Returns average"""
     return sum(nums) / len(nums)
 
 
 def get_median(nums: list[float]):
     """
-    returns median
+    Returns median
     TODO:
         - use import statistics
     """
