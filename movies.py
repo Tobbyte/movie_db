@@ -280,7 +280,7 @@ def ratings_histogram(db: list[float]):
         )
         if filename == "":
             output("Filename required", color="red")
-        elif not filename.isalpha():
+        elif not filename.replace(".", "").isalnum():
             output("Filename must be alphanumeric", color="red")
             filename = None
         else:
