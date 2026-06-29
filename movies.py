@@ -272,7 +272,7 @@ def search_movie(db: dict[str, float]):
 def fuzzy_search(db: dict[str, float], search_term: str):
     """Fuzzy searches on term. Results sorted by distance"""
 
-    similarity_threshold = 15
+    similarity_threshold = 25 # pretty high. Workaround until not optimized
     titles = list(db.keys())
 
     similar_titles = get_similar(titles, search_term, similarity_threshold)
