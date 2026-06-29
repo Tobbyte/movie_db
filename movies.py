@@ -306,22 +306,22 @@ def idle_after_input():
 def present_menu(menu_items: list[str]):
     """Prints the menu to the user, asks for input."""
     """ Options: 
-  1. List movies, no input. Print. Return to menu.
-  2. Add movie, single input:
-    - str, int:[1-10] (not validated). Print new Entry. Return to menu.
-  3. Delete movie, single input:
-    - str. Print error or confirmation. Return to menu.
-  4. Update movie, multi input:
-      1.: str. Print error if not found. Return to menu.
-      2.: int:[1-10] (not validated). Print new Entry. Return to menu.
-  5. Stats, no input. Print. Return to menu.
-  6. Random movie, no input. Print. Return to menu.
-  7. Search movie, single input:
-    - str. Print error or results. Return to menu.
-  8. List movies sorted descending, no input. Print. Return to menu.
-  9. Create ratings histogram
-  0. Exit.
-  """
+        1. List movies, no input. Print. Return to menu.
+        2. Add movie, single input:
+            - str, int:[1-10] (not validated). Print new Entry. Return to menu.
+        3. Delete movie, single input:
+            - str. Print error or confirmation. Return to menu.
+        4. Update movie, multi input:
+            1.: str. Print error if not found. Return to menu.
+            2.: int:[1-10] (not validated). Print new Entry. Return to menu.
+        5. Stats, no input. Print. Return to menu.
+        6. Random movie, no input. Print. Return to menu.
+        7. Search movie, single input:
+            - str. Print error or results. Return to menu.
+        8. List movies sorted descending, no input. Print. Return to menu.
+        9. Create ratings histogram
+        0. Exit.
+    """
 
     output("", space_before=True)
 

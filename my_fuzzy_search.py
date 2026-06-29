@@ -21,7 +21,10 @@ TODO:
 
 __all__ = ["get_similar"]  # public method
 
-# terms to be excluded from search term or comparison items
+"""
+Terms to be excluded from search term or comparison items.
+Used to not pollute the search threshold with fillwords.
+"""
 excluded_terms = ["the"]
 
 
@@ -154,7 +157,7 @@ def _any_first_char_matching(term1: str, term2: str):
 def get_similar(db: list[str], search_term: str, threshold: int, print_table=False):
     """
     Uses a basic Fussy Search over list:[str] of items and returns
-    similar items to comparison term[str]. Takes a threshold for the distance calculation and optionally prints (every) table
+    similar items and their distance to comparison term[str]. Takes a threshold for the distance calculation and optionally prints (every) table
     """
 
     search_term_wo_excluded = _strip_excluded_terms(search_term).lower()
