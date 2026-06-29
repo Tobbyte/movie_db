@@ -276,7 +276,7 @@ def ratings_histogram(db: list[float]):
     plt.hist(db)
     while filename is None or filename == "":
         filename = user_input(
-            "Enter filename (saved as png unless otherwise specified): "
+            "Enter filename (saved as png unless otherwise specified in your current working directory): "
         )
         if filename == "":
             output("Filename required", color="red")
