@@ -97,7 +97,8 @@ def user_input(promt: str):
     print("" + colors["end"], end="")  # reset input coloring
     return inp
 
-def strip_leading_zero(num: str|int|float):
+
+def strip_leading_zero(num: str | int | float):
     res = str(num)
     while res[0] == "0" and len(res) > 1:
         res = res[1:]
@@ -105,7 +106,7 @@ def strip_leading_zero(num: str|int|float):
     if isinstance(num, int):
         return int(res)
     elif isinstance(num, float):
-        return  float(res)
+        return float(res)
     return res
 
 
