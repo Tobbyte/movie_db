@@ -237,7 +237,7 @@ def get_random(db):
 def search_movie(db: dict[str, float]):
     """Searches for items. Not case sensitive"""
     orig_inp = None
-    while orig_inp == None or orig_inp == "":
+    while orig_inp is None or orig_inp == "":
         orig_inp = user_input("\nEnter part of movie name: ").strip()
         if orig_inp == "":
             output("Name required", color="red")
