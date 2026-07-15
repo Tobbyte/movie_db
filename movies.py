@@ -442,6 +442,7 @@ def present_menu(menu_items: list[str]) -> int:
 
 def quit_program() -> None:
     """Quit."""
+    output("Goodbye")
     sys.exit()
 
 
@@ -505,7 +506,6 @@ def run(db: dict[str, float]) -> None:
         selection = present_menu(menu_items)
 
         if selection == 0:
-            output("Goodbye")
             quit_program()
 
         clear_screen()
