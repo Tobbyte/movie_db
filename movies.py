@@ -55,7 +55,7 @@ def main() -> None:
 
 
 # dict used to shorthand color codes
-colors = {
+OUTPUT_COLORS = {
     "red": "\033[91m",
     "blue": "\033[94m",
     "yellow": "\033[93m",
@@ -64,6 +64,19 @@ colors = {
 
 MOVIE_MIN_RATING = 0
 MOVIE_MAX_RATING = 10
+MENU_ITEMS = [
+    "Menu:",
+    "1. List movies",
+    "2. Add movie",
+    "3. Delete movie",
+    "4. Update movie",
+    "5. Stats",
+    "6. Random movie",
+    "7. Search movie",
+    "8. Movies sorted by rating",
+    "9. Create ratings histogram",
+    "0. Quit",
+]
 
 
 def sort_by_value(
@@ -486,20 +499,6 @@ def run(db: dict[str, float]) -> None:
         color="blue",
     )
 
-    menu_items = [
-        "Menu:",
-        "1. List movies",
-        "2. Add movie",
-        "3. Delete movie",
-        "4. Update movie",
-        "5. Stats",
-        "6. Random movie",
-        "7. Search movie",
-        "8. Movies sorted by rating",
-        "9. Create ratings histogram",
-        "0. Quit",
-    ]
-
     menu_dispatch = {
         1: list_movies,
         2: add_movie,
@@ -517,14 +516,14 @@ def run(db: dict[str, float]) -> None:
             clear_screen()
         first_run = False
 
-        selection = present_menu(menu_items)
+        selection = present_menu(MENU_ITEMS)
 
         if selection == 0:
             quit_program()
 
         clear_screen()
         output(
-            f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n"
+            f"~~~~~~~~~~\nSelected menu item: {MENU_ITEMS[selection]}\n"
             "~~~~~~~~~~",
             color="yellow",
         )
