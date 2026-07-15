@@ -1,21 +1,24 @@
+# ruff: noqa: FIX002, TD002, TD003, S311
+
+"""A simple interface to interact with an dummy movie "db"."""
+
+import sys
 from random import randint
 
 import matplotlib.pyplot as plt
 from my_fuzzy_search import get_similar
 
-""" A simple interface to interact with an dummy movie "db" (local dict) """
-
 """
 Constraints imposed by the given task:
-- Passing around the "db" is not fine and reassigning it in run() not strictly
-  necessary, but done for clarity
+- Passing around the "db" is not fine and reassigning it in run()
+  not strictly necessary, but done for clarity
 
 
 TODO (but out of scope of this exercise):
   - unify user input and validation across all features
   - add movie: check if already exists, present option to update
   - update movie: check if not existing, present option to add
-  - update / delete movie: fuzzy search 
+  - update / delete movie: fuzzy search
   - delete movie: present list and let choose by inputting number
   - fix fail on empty db
   - add real clear terminal
@@ -27,11 +30,12 @@ Version 1.1.0 <- submitted
 """
 
 """
- ~~ Made with ❤️ and without ai or code completion (except intelliSense) ~~
+ ~ Made with ❤️ and without ai or code completion (except intelliSense) ~
 """
 
 
-def main():
+def main() -> None:
+    """Start."""
     # Dictionary to store the movies and the rating
     movies = {
         "The Shawshank Redemption": 9.5,
@@ -49,7 +53,7 @@ def main():
     run(movies)
 
 
-"""dict used to shorthand color codes"""
+# dict used to shorthand color codes
 colors = {
     "red": "\033[91m",
     "blue": "\033[94m",
@@ -57,17 +61,32 @@ colors = {
     "end": "\033[00m",
 }
 
+MOVIE_MIN_RATING = 0
+MOVIE_MAX_RATING = 10
 
-def sort_by_value(dic: dict[str, float], reverse=False):
-    """Sorts a dict by its values
-    TODO:
+
+def sort_by_value(
+    dic: dict[str, float],
+    *,
+    reverse: bool = False,
+) -> list[tuple[str, float]]:
+    """Sorts a dict by its values.
+
+    Todo:
         - save sorted dict, update on add/remove
+
     """
     return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
 
 
-def list_movies(db: dict[str, float], message, descending=False, by_value=False):
-    """Returns a list of all db items"""
+def list_movies(
+    db: dict[str, float],
+    message: str,
+    *,
+    descending: bool = False,
+    by_value: bool = False,
+) -> None:
+    """Return a list of all db items."""
     output(message, space_before=True)
     if not by_value:
         for k, v in db.items():
@@ -77,8 +96,8 @@ def list_movies(db: dict[str, float], message, descending=False, by_value=False)
             output(f"{k}: {v}")
 
 
-def is_num(inp: str):
-    """Validates if a sting input is a valid number"""
+def is_num(inp: str) -> bool:
+    """Validate if a sting input is a valid number."""
     if inp == "":
         return False
     try:
@@ -88,15 +107,15 @@ def is_num(inp: str):
     return True
 
 
-def user_input(promt: str):
-    """Color user input"""
+def user_input(promt: str) -> str:
+    """Color user input."""
     inp = input(colors["yellow"] + promt)
     print("" + colors["end"], end="")  # reset input coloring
     return inp
 
 
-def strip_leading_zero(num: str | float):
-    """Strips leading "0" if input, returns same format"""
+def strip_leading_zero(num: str | float) -> str | int | float:
+    """Strip leading "0" if input, returns same format."""
     res = str(num)
     while res[0] == "0" and len(res) > 1:
         res = res[1:]
@@ -108,8 +127,9 @@ def strip_leading_zero(num: str | float):
     return res
 
 
-def add_movie(db):
-    """Adds an item to db.
+def add_movie(db: dict[str, float]) -> dict[str, float]:
+    """Add an item to db.
+
     Warning: Does not check if already exists.
     """
     name = None
@@ -127,50 +147,72 @@ def add_movie(db):
         elif not is_num(rating):
             rating = None
             output("Rating must be a number", color="red")
-        elif float(rating) > 10 or float(rating) < 0:
+        elif (
+            float(rating) > MOVIE_MAX_RATING
+            or float(rating) < MOVIE_MIN_RATING
+        ):
             rating = None
             output("Rating must be between 0 - 10", color="red")
 
-    rating = strip_leading_zero(float(rating))
+    rating = float(strip_leading_zero(float(rating)))
     db[name] = rating
 
-    output(f'Movie "{name}" with rating {rating} successfully added', space_before=True)
+    output(
+        f'Movie "{name}" with rating {rating} successfully added',
+        space_before=True,
+    )
     return db
 
 
-def remove_movie(db: dict[str, float]):
-    """Removes an item from db"""
+def remove_movie(db: dict[str, float]) -> dict[str, float]:
+    """Remove an item from db."""
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
-        tbdeleted = user_input("\nEnter (exact) movie name to delete: ").strip()
+        tbdeleted = user_input(
+            "\nEnter (exact) movie name to delete: ",
+        ).strip()
         if tbdeleted == "":
             output("Name required", color="red")
         try:
             del db[tbdeleted]
-            output(f'Movie "{tbdeleted}" successfully deleted', space_before=True)
-
-            return db
+            output(
+                f'Movie "{tbdeleted}" successfully deleted',
+                space_before=True,
+            )
 
         except KeyError:
-            output(f"Movie {tbdeleted} doesn't exist!", space_before=True, color="red")
+            output(
+                f"Movie {tbdeleted} doesn't exist!",
+                space_before=True,
+                color="red",
+            )
             break
+        else:
+            return db
+
     return db
 
 
-def update_movie(db: dict[str, float]):
-    """Updates db item."""
+def update_movie(db: dict[str, float]) -> dict[str, float]:
+    """Update db item."""
     tbupdated = None
     new_rating = None
 
     while tbupdated is None or tbupdated == "":
-        tbupdated = user_input("\nEnter (exact) movie name to update: ").strip()
+        tbupdated = user_input(
+            "\nEnter (exact) movie name to update: ",
+        ).strip()
         if tbupdated == "":
             output("Name required", color="red")
         try:
             db[tbupdated]
         except KeyError:
-            output(f"Movie {tbupdated} doesn't exist!", space_before=True, color="red")
+            output(
+                f"Movie {tbupdated} doesn't exist!",
+                space_before=True,
+                color="red",
+            )
             return db
 
     while new_rating is None or new_rating == "":
@@ -180,7 +222,10 @@ def update_movie(db: dict[str, float]):
         elif not is_num(new_rating):
             new_rating = None
             output("Rating must be a number", color="red")
-        elif float(new_rating) > 10 or float(new_rating) < 0:
+        elif (
+            float(new_rating) > MOVIE_MAX_RATING
+            or float(new_rating) < MOVIE_MIN_RATING
+        ):
             new_rating = None
             output("Rating must be between 0 - 10", color="red")
 
@@ -194,15 +239,17 @@ def update_movie(db: dict[str, float]):
     return db
 
 
-def get_average(nums: list[float]):
-    """Returns average"""
+def get_average(nums: list[float]) -> float:
+    """Return average."""
     return sum(nums) / len(nums)
 
 
-def get_median(nums: list[float]):
-    """Returns median
-    TODO:
+def get_median(nums: list[float]) -> float:
+    """Return median.
+
+    Todo:
         - use import statistics
+
     """
     sorted_nums = sorted(nums)
     if len(sorted_nums) % 2 != 0:
@@ -211,18 +258,22 @@ def get_median(nums: list[float]):
     return get_average(sorted_nums[centeri - 1 : centeri + 1])
 
 
-def get_extremes(db: dict[str, float], descending=True):
-    """Gets the extreme values:[num] of dict"""
+def get_extremes(
+    db: dict[str, float],
+    *,
+    descending: bool = True,
+) -> list[tuple[str, float]]:
+    """Get the extreme values:[num] of dict."""
     vals_sorted = sort_by_value(db, reverse=descending)
 
     _, extr_rating = vals_sorted[0]
 
-    extremes = [(n, r) for (n, r) in vals_sorted if r == extr_rating]
-    return extremes
+    return [(n, r) for (n, r) in vals_sorted if r == extr_rating]
 
 
-def get_statistics(db: dict[str, float]):
-    """Gets statistic:
+def get_statistics(db: dict[str, float]) -> None:
+    """Get statistics.
+
     - average
     - median
     - top-ranked items
@@ -245,14 +296,20 @@ def get_statistics(db: dict[str, float]):
         output(f'   "{worst_name}", {worst_rat}')
 
 
-def get_random(db):
-    """Returns random movie"""
+def get_random(db: dict[str, float]) -> None:
+    """Return random movie."""
     name, rating = list(db.items())[randint(0, len(db) - 1)]
-    output(f"Your movie for tonight: {name}, it's rated {rating}", space_before=True)
+    output(
+        f"Your movie for tonight: {name}, it's rated {rating}",
+        space_before=True,
+    )
 
 
-def search_movie(db: dict[str, float]):
-    """Searches for items. Not case sensitive"""
+def search_movie(db: dict[str, float]) -> None:
+    """Search for items.
+
+    Not case sensitive.
+    """
     orig_inp = None
     while orig_inp is None or orig_inp == "":
         orig_inp = user_input("\nEnter part of movie name: ").strip()
@@ -278,11 +335,14 @@ def search_movie(db: dict[str, float]):
         # No direct finding, fuzzy
         search_results = fuzzy_search(db, inp)
 
-        found_titles = [(found, db.get(found)) for (found, _) in search_results]
+        found_titles = [
+            (found, db.get(found)) for (found, _) in search_results
+        ]
 
         if not found_titles:
             output(
-                f'No Movie name similar to "{orig_inp}" (remember that at least the first letter has to match):\n',
+                f'No Movie name similar to "{orig_inp}"'
+                "(remember that at least the first letter has to match):\n",
                 color="red",
             )
         else:
@@ -295,23 +355,22 @@ def search_movie(db: dict[str, float]):
                 output(f"{name}, {rate}")
 
 
-def fuzzy_search(db: dict[str, float], search_term: str):
-    """Fuzzy searches on term. Results sorted by distance"""
+def fuzzy_search(db: dict[str, float], search_term: str) -> list[tuple]:
+    """Fuzzy search on term, results sorted by distance."""
     similarity_threshold = 25  # pretty high. Workaround until optimized
     titles = list(db.keys())
 
-    similar_titles = get_similar(titles, search_term, similarity_threshold)
-
-    return similar_titles
+    return get_similar(titles, search_term, similarity_threshold)
 
 
-def ratings_histogram(db: list[float]):
-    """Saves a mathplotlob histogram to disk"""
+def ratings_histogram(db: list[float]) -> None:
+    """Save a mathplotlob histogram to disk."""
     filename = None
     plt.hist(db)
     while filename is None or filename == "":
         filename = user_input(
-            "Enter filename (saved as png unless otherwise specified in your current working directory): ",
+            "Enter filename (saved as png unless otherwise specified"
+            "in your current working directory): ",
         ).strip()
         if filename == "":
             output("Filename required", color="red")
@@ -326,35 +385,40 @@ def ratings_histogram(db: list[float]):
                     space_before=True,
                 )
             except ValueError:
-                # TODO: - check on other exceptions (f.e. no write permission)
+                # TODO: - check on other exceptions (f.e. no write perm)
                 # from mathplotlob:
                 output(
-                    "Format 'asd' is not supported (supported formats: avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)",
+                    "Format 'asd' is not supported (supported formats: "
+                    "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
+                    "svg, svgz, tif, tiff, webp)",
                     color="red",
                 )
 
 
-def idle_after_input():
-    """Idles with prompt to continue"""
+def idle_after_input() -> None:
+    """Idle with prompt to continue."""
     user_input("\npress Enter to continue ")
 
 
-def present_menu(menu_items: list[str]):
-    """Prints the menu to the user, asks for input."""
-    """ Options: 
+def present_menu(menu_items: list[str]) -> int:
+    """Print the menu to the user, asks for input."""
+    """ Options:
         1. List movies, no input. Print. Return to menu.
         2. Add movie, single input:
-            - str, int:[1-10] (not validated). Print new Entry. Return to menu.
+            - str, int:[1-10] (not validated). Print new Entry.
+            Return to menu.
         3. Delete movie, single input:
             - str. Print error or confirmation. Return to menu.
         4. Update movie, multi input:
             1.: str. Print error if not found. Return to menu.
-            2.: int:[1-10] (not validated). Print new Entry. Return to menu.
+            2.: int:[1-10] (not validated). Print new Entry.
+            Return to menu.
         5. Stats, no input. Print. Return to menu.
         6. Random movie, no input. Print. Return to menu.
         7. Search movie, single input:
             - str. Print error or results. Return to menu.
-        8. List movies sorted descending, no input. Print. Return to menu.
+        8. List movies sorted descending, no input. Print.
+        Return to menu.
         9. Create ratings histogram
         0. Exit.
     """
@@ -371,7 +435,8 @@ def present_menu(menu_items: list[str]):
         if len(selection) > 1 or not selection.isdecimal():
             if not insist_to_quite:
                 output(
-                    "Invalid input (Enter 0 - 9. Try again).\nOr press ENTER again to quit",
+                    "Invalid input (Enter 0 - 9. Try again).\n"
+                    "Or press ENTER again to quit",
                     color="red",
                 )
                 selection = None
@@ -382,28 +447,33 @@ def present_menu(menu_items: list[str]):
     return int(selection)
 
 
-def quit_program():
-    exit()
+def quit_program() -> None:
+    """Quit."""
+    sys.exit()
 
 
-def clear_screen():
-    """Clear console hack"""
+def clear_screen() -> None:
+    """Clear console hack."""
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
 
-def output(any, color=None, space_after=False, space_before=False):
-    """Prints what's given. Optionally adds gap or color"""
+def output(
+    inp: str,
+    color: str = "",
+    *,
+    space_after: bool = False,
+    space_before: bool = False,
+) -> None:
+    """Print what's given. Optionally adds gap or color."""
     if space_before:
         print("\n \n")
     if color:
         if color == "red":
-            print(colors["red"] + any + colors["end"])
+            print(colors["red"] + inp + colors["end"])
         if color == "blue":
-            print(colors["blue"] + any + colors["end"])
+            print(colors["blue"] + inp + colors["end"])
         if color == "yellow":
-            print(colors["yellow"] + any + colors["end"])
-        else:
-            color = None
+            print(colors["yellow"] + inp + colors["end"])
     else:
         print(any)
 
@@ -411,9 +481,13 @@ def output(any, color=None, space_after=False, space_before=False):
         print("\n \n")
 
 
-def run(db: dict[str, float]):
-    """Prints welcome and loops menu"""
-    output("********** My Movies Database **********", space_before=True, color="blue")
+def run(db: dict[str, float]) -> None:
+    """Print welcome and loops menu."""
+    output(
+        "********** My Movies Database **********",
+        space_before=True,
+        color="blue",
+    )
 
     menu_items = [
         "Menu:",
@@ -439,7 +513,8 @@ def run(db: dict[str, float]):
 
         clear_screen()
         output(
-            f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n~~~~~~~~~~",
+            f"~~~~~~~~~~\nSelected menu item: {menu_items[selection]}\n"
+            "~~~~~~~~~~",
             color="yellow",
         )
         if selection == 1:
