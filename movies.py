@@ -183,19 +183,22 @@ def add_movie() -> None:
             release = None
             output("Year must be valid int", color="red")
 
-        if release and int(release) < FIRST_MOVIE_RELEASE:
-            release = None
-            output(
-                "Nice try. The first movie was released in "
-                f"{FIRST_MOVIE_RELEASE}.",
-                color="red",
-            )
-        elif release and int(release) > CURRENT_YEAR:
-            release = None
-            output(
-                "Real futuristic movie - a rating from the future!",
-                color="red",
-            )
+        if release:
+            # None check here to prev. int of None in db_add_movie below
+            release = int(release)
+            if release < FIRST_MOVIE_RELEASE:
+                release = None
+                output(
+                    "Nice try. The first movie was released in "
+                    f"{FIRST_MOVIE_RELEASE}.",
+                    color="red",
+                )
+            elif release > CURRENT_YEAR:
+                release = None
+                output(
+                    "Real futuristic movie - a rating from the future!",
+                    color="red",
+                )
 
     while rating is None or rating == "":
         rating = get_user_input_colored(
