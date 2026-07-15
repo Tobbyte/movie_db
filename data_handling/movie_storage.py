@@ -1,4 +1,9 @@
 """Module for handling all CRUD operations."""
+import json
+from pathlib import Path
+
+DATA_DIR = Path("data_dir")
+FILE_PATH = DATA_DIR / "data.json"
 
 
 def get_movies() -> dict[str, dict]:
@@ -20,11 +25,14 @@ def get_movies() -> dict[str, dict]:
       },
     }
     """
-    return {"empty": {"a": 1}}
+    with Path(FILE_PATH).open("r") as file:
+        return json.load(file)
 
 
 def save_movies(movies: dict[str, dict]) -> bool | Exception:
     """Get all your movies as an argument and saves them to JSON."""
+    with Path(FILE_PATH).open("w") as file:
+        json.dump(movies, file)
     return True
 
 
