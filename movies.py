@@ -8,7 +8,19 @@ from random import randint
 
 import matplotlib.pyplot as plt
 from data_handling import (
+    add_movie as db_add_movie,
+)
+from data_handling import (
+    delete_movie as db_delete_movie,
+)
+from data_handling import (
     get_movies as db_get_movies,
+)
+from data_handling import (
+    save_movies as db_save_movies,
+)
+from data_handling import (
+    update_movie as db_update_movie,
 )
 from my_fuzzy_search import get_similar
 
@@ -92,7 +104,6 @@ def list_movies() -> None:
         rating = info["rating"]
         release = info["release"]
         output(f"{name} ({release}): {rating}")
-
 
 def list_movies_by_rating() -> None:
     """Return a list of all db items by rating."""
