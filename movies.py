@@ -367,7 +367,7 @@ def get_random(db: dict[str, dict]) -> None:
     )
 
 
-def search_movie(db: dict[str, float]) -> None:
+def search_movie(db: dict[str, dict]) -> None:
     """Search for items.
 
     Not case sensitive.
@@ -389,15 +389,19 @@ def search_movie(db: dict[str, float]) -> None:
     for m in db:
         m_lo = m.lower()
         db_lowered[m_lo] = m
-
     if user_input in db:
         # Name is in db as put in
-        output(f"{user_input}, {db[user_input]}", space_before=True)
+        output(
+            f"{user_input} ({db[user_input]['release']}), "
+            f"{db[user_input]['rating']}",
+            space_before=True,
+        )
     elif user_input_lowered in db_lowered:
         # Name is lowercase of db entry
         output(
-            f"{db_lowered[user_input_lowered]}, "
-            f"{db[db_lowered[user_input_lowered]]}",
+            f"{db_lowered[user_input_lowered]} "
+            f"({db[db_lowered[user_input_lowered]]['release']}), "
+            f"{db[db_lowered[user_input_lowered]]['rating']}",
             space_before=True,
         )
 
@@ -405,9 +409,7 @@ def search_movie(db: dict[str, float]) -> None:
         # No direct finding, fuzzy
         search_results = fuzzy_search(db, user_input_lowered)
 
-        found_titles = [
-            (found, db.get(found)) for (found, _) in search_results
-        ]
+        found_titles = [(found, db[found]) for (found, _) in search_results]
 
         if not found_titles:
             output(
@@ -421,12 +423,15 @@ def search_movie(db: dict[str, float]) -> None:
                 space_before=True,
             )
 
-            for name, rate in found_titles:
-                output(f"{name}, {rate}")
+            for name, info in found_titles:
+                output(f"{name} ({info['release']}), {info['rating']}")
 
 
-def fuzzy_search(db: dict[str, float], search_term: str) -> list[tuple]:
-    """Fuzzy search on term, results sorted by distance."""
+def fuzzy_search(db: dict[str, dict], search_term: str) -> list[tuple]:
+    """Fuzzy search on term, results sorted by distance.
+
+    Returns list of tuples (similar-to-term, distance)
+    """
     similarity_threshold = 25  # pretty high. Workaround until optimized
     titles = list(db.keys())
 
