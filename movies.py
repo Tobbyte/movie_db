@@ -121,8 +121,8 @@ def is_num(inp: str) -> bool:
 
 def user_input(promt: str) -> str:
     """Color user input."""
-    inp = input(colors["yellow"] + promt)
-    print("" + colors["end"], end="")  # reset input coloring
+    inp = input(OUTPUT_COLORS["yellow"] + promt)
+    print("" + OUTPUT_COLORS["end"], end="")  # reset input coloring
     return inp
 
 
@@ -478,11 +478,11 @@ def output(
         print("\n \n")
     if color:
         if color == "red":
-            print(colors["red"] + inp + colors["end"])
+            print(OUTPUT_COLORS["red"] + inp + OUTPUT_COLORS["end"])
         if color == "blue":
-            print(colors["blue"] + inp + colors["end"])
+            print(OUTPUT_COLORS["blue"] + inp + OUTPUT_COLORS["end"])
         if color == "yellow":
-            print(colors["yellow"] + inp + colors["end"])
+            print(OUTPUT_COLORS["yellow"] + inp + OUTPUT_COLORS["end"])
     else:
         print(inp)
 
