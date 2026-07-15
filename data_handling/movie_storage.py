@@ -37,11 +37,16 @@ def save_movies(movies: dict[str, dict]) -> bool | Exception:
 
 
 def add_movie(title: str, year: int, rating: float) -> bool | Exception:
-    """Add a movie to the movies database.
+    """Add a movie to the movies database."""
+    # TODO:
+    #   - Allow for multiple names with different release years
 
-    Loads the information from JSON, add the movie,
-    and saves it. The function doesn't need to validate the input.
-    """
+    movies = get_movies()
+    if title in movies:
+        error_msg = f'Movie "{title}" already exists'  # TODO: tbd as constant?
+        raise ValueError(error_msg)
+    movies[title] = {"rating": rating, "release": year}
+    save_movies(movies)
     return True
 
 
