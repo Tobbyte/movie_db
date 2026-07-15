@@ -561,7 +561,7 @@ def output(
         print("\n \n")
 
 
-def run(db: dict[str, float]) -> None:
+def run(db: dict[str, dict]) -> None:
     """Print welcome and loop menu."""
     first_run = True
     clear_screen()
