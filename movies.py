@@ -1,4 +1,5 @@
 from random import randint
+
 import matplotlib.pyplot as plt
 from my_fuzzy_search import get_similar
 
@@ -22,7 +23,6 @@ TODO (but out of scope of this exercise):
   - don't relay on exit()
   - cache sorted db
 
-  
 Version 1.1.0 <- submitted
 """
 
@@ -59,18 +59,15 @@ colors = {
 
 
 def sort_by_value(dic: dict[str, float], reverse=False):
-    """
-    Sorts a dict by its values
+    """Sorts a dict by its values
     TODO:
         - save sorted dict, update on add/remove
     """
-
     return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
 
 
 def list_movies(db: dict[str, float], message, descending=False, by_value=False):
     """Returns a list of all db items"""
-
     output(message, space_before=True)
     if not by_value:
         for k, v in db.items():
@@ -82,7 +79,6 @@ def list_movies(db: dict[str, float], message, descending=False, by_value=False)
 
 def is_num(inp: str):
     """Validates if a sting input is a valid number"""
-
     if inp == "":
         return False
     try:
@@ -99,7 +95,7 @@ def user_input(promt: str):
     return inp
 
 
-def strip_leading_zero(num: str | int | float):
+def strip_leading_zero(num: str | float):
     """Strips leading "0" if input, returns same format"""
     res = str(num)
     while res[0] == "0" and len(res) > 1:
@@ -107,17 +103,15 @@ def strip_leading_zero(num: str | int | float):
 
     if isinstance(num, int):
         return int(res)
-    elif isinstance(num, float):
+    if isinstance(num, float):
         return float(res)
     return res
 
 
 def add_movie(db):
-    """
-    Adds an item to db.
+    """Adds an item to db.
     Warning: Does not check if already exists.
     """
-
     name = None
     rating = None
 
@@ -146,7 +140,6 @@ def add_movie(db):
 
 def remove_movie(db: dict[str, float]):
     """Removes an item from db"""
-
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
@@ -207,18 +200,15 @@ def get_average(nums: list[float]):
 
 
 def get_median(nums: list[float]):
-    """
-    Returns median
+    """Returns median
     TODO:
         - use import statistics
     """
-
     sorted_nums = sorted(nums)
     if len(sorted_nums) % 2 != 0:
         return sorted_nums[len(sorted_nums) // 2]
-    else:
-        centeri = len(sorted_nums) // 2
-        return get_average(sorted_nums[centeri - 1 : centeri + 1])
+    centeri = len(sorted_nums) // 2
+    return get_average(sorted_nums[centeri - 1 : centeri + 1])
 
 
 def get_extremes(db: dict[str, float], descending=True):
@@ -232,14 +222,12 @@ def get_extremes(db: dict[str, float], descending=True):
 
 
 def get_statistics(db: dict[str, float]):
-    """
-    Gets statistic:
+    """Gets statistic:
     - average
     - median
     - top-ranked items
     - bottom-ranged items
     """
-
     val_list = list(db.values())
 
     avg = get_average(val_list)
@@ -259,7 +247,6 @@ def get_statistics(db: dict[str, float]):
 
 def get_random(db):
     """Returns random movie"""
-
     name, rating = list(db.items())[randint(0, len(db) - 1)]
     output(f"Your movie for tonight: {name}, it's rated {rating}", space_before=True)
 
@@ -310,7 +297,6 @@ def search_movie(db: dict[str, float]):
 
 def fuzzy_search(db: dict[str, float], search_term: str):
     """Fuzzy searches on term. Results sorted by distance"""
-
     similarity_threshold = 25  # pretty high. Workaround until optimized
     titles = list(db.keys())
 
@@ -321,12 +307,11 @@ def fuzzy_search(db: dict[str, float], search_term: str):
 
 def ratings_histogram(db: list[float]):
     """Saves a mathplotlob histogram to disk"""
-
     filename = None
     plt.hist(db)
     while filename is None or filename == "":
         filename = user_input(
-            "Enter filename (saved as png unless otherwise specified in your current working directory): "
+            "Enter filename (saved as png unless otherwise specified in your current working directory): ",
         ).strip()
         if filename == "":
             output("Filename required", color="red")
@@ -337,7 +322,8 @@ def ratings_histogram(db: list[float]):
             try:
                 plt.savefig(filename)
                 output(
-                    f'File "{filename}" successfully saved to disk.', space_before=True
+                    f'File "{filename}" successfully saved to disk.',
+                    space_before=True,
                 )
             except ValueError:
                 # TODO: - check on other exceptions (f.e. no write permission)
@@ -407,7 +393,6 @@ def clear_screen():
 
 def output(any, color=None, space_after=False, space_before=False):
     """Prints what's given. Optionally adds gap or color"""
-
     if space_before:
         print("\n \n")
     if color:
@@ -428,7 +413,6 @@ def output(any, color=None, space_after=False, space_before=False):
 
 def run(db: dict[str, float]):
     """Prints welcome and loops menu"""
-
     output("********** My Movies Database **********", space_before=True, color="blue")
 
     menu_items = [
