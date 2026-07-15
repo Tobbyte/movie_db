@@ -1,4 +1,4 @@
-# ruff: noqa: FIX002, TD002, TD003, S311
+# ruff: noqa: FIX002, TD002, TD003, S311, TD005
 
 """A simple interface to interact with an dummy movie "db"."""
 
@@ -11,7 +11,7 @@ from my_fuzzy_search import get_similar
 """
 
 
-TODO (but out of scope of this exercise):
+TODO: (but out of scope of this exercise):
   - unify user input and validation across all features
   - add movie: check if already exists, present option to update
   - update movie: check if not existing, present option to add
@@ -79,12 +79,10 @@ def sort_by_value(
     *,
     reverse: bool = False,
 ) -> list[tuple[str, float]]:
-    """Sorts a dict by its values.
+    """Sorts a dict by its values."""
+    # TODO:
+    #    - save sorted dict, update on add/remove
 
-    Todo:
-        - save sorted dict, update on add/remove
-
-    """
     return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
 
 
@@ -249,12 +247,10 @@ def get_average(nums: list[float]) -> float:
 
 
 def get_median(nums: list[float]) -> float:
-    """Return median.
+    """Return median."""
+    # TODO:
+    #    - use import statistics
 
-    Todo:
-        - use import statistics
-
-    """
     sorted_nums = sorted(nums)
     if len(sorted_nums) % 2 != 0:
         return sorted_nums[len(sorted_nums) // 2]
@@ -395,8 +391,9 @@ def ratings_histogram(db: list[float]) -> None:
                     space_before=True,
                 )
             except ValueError:
-                # TODO: - check on other exceptions (f.e. no write perm)
-                # from mathplotlob:
+                # TODO:
+                #   - check on other exceptions (f.e. no write perm)
+                #     from mathplotlob:
                 output(
                     "Format 'asd' is not supported (supported formats: "
                     "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
