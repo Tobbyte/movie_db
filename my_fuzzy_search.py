@@ -1,14 +1,15 @@
-"""Custom Fuzzy Search implementation using naive Levenshtein algorithm"""
+"""Fuzzy Search implementation using naive Levenshtein algorithm."""
 
 """
 Limitations:
     - expects at least any first char of search term matching comp items
     - doest not optimize search in any meaningful way
-    - when searching f.e. for "the" not all results containing "the" are returned, bc results are still restricted by distance.
+    - when searching f.e. for "the" not all results containing "the"
+      are returned, bc results are still restricted by distance.
 """
 
 """
- ~~ Made with ❤️ and without ai or code completion (except intelliSense) ~~
+ ~ Made with ❤️ and without ai or code completion (except intelliSense) ~
 """
 
 """
@@ -16,21 +17,20 @@ TODO:
   - extend excluded_terms list (now only "the")
   - make checking for first letter matching optional
   - retry without checking for first letter matching if no results
-  - extend docstrings by what fn is used for
+  - extend docstring by what fn is used for
 """
 
 __all__ = ["get_similar"]  # public method
 
 """
 Terms to be excluded from search term or comparison items.
-Used to not pollute the search threshold with fillwords.
+Used to not pollute the search threshold with filler words.
 """
 excluded_terms = ["the"]
 
 
-def _print_fuzzy_table(table: list, str1: str, str2: str):
-    """Pretty print the table"""
-
+def _print_fuzzy_table(table: list, str1: str, str2: str) -> None:
+    """Pretty print the table."""
     header = str1
     column = str2
 
@@ -40,7 +40,7 @@ def _print_fuzzy_table(table: list, str1: str, str2: str):
     # header Row
     header_row: list[str] = ["_"]
     for i in range(len(header)):
-        header_row.append(header[: i + 1])
+        header_row.append(header[: i + 1])  # noqa: PERF401
 
     # body rows
     display_rows: list[list[str | int]] = []
@@ -52,7 +52,7 @@ def _print_fuzzy_table(table: list, str1: str, str2: str):
         row_copy.insert(0, row_prefix)
         display_rows.append(row_copy)
 
-    print("")
+    print()
 
     # Print header Row
     print("▦".rjust(first_col_w), end="")
@@ -74,9 +74,13 @@ def _print_fuzzy_table(table: list, str1: str, str2: str):
         print("\n")
 
 
-def _calc_distance(search_term: str, compar_term: str, print_table=False):
-    """Calculates the distance between inputs"""
-
+def _calc_distance(
+    search_term: str,
+    compar_term: str,
+    *,
+    print_table: bool = False,
+) -> int:
+    """Calculate the distance between inputs."""
     data_matrix = _init_table(search_term, compar_term)
 
     for row in range(1, len(data_matrix)):
@@ -100,51 +104,48 @@ def _calc_distance(search_term: str, compar_term: str, print_table=False):
     return data_matrix[-1][-1]
 
 
-def _init_table(str1: str, str2: str):
-    """Initializes the table for distance calculation"""
-
+def _init_table(str1: str, str2: str) -> list:
+    """Initialize the table for distance calculation."""
     data_matrix: list = []
 
-    for i in range(0, len(str2) + 1):
+    for i in range(len(str2) + 1):
         row = []
-        for j in range(0, len(str1) + 1):  # len word + extra 0
+        for j in range(len(str1) + 1):  # len word + extra 0
             if i == 0:
                 # top row
                 row.append(j)
+            elif j == 0:
+                # left column
+                row.append(i)
             else:
-                if j == 0:
-                    # left column
-                    row.append(i)
-                else:
-                    row.append(-1)
+                row.append(-1)
         data_matrix.append(row)
 
     return data_matrix
 
 
-def _term_is_excluded(term: str):
-    """checks if the term is in excluded list"""
+def _term_is_excluded(term: str) -> bool:
+    """Check if the term is in excluded list."""
     return term.strip() in excluded_terms
 
 
-def _strip_excluded_terms(term: str):
-    """Strips any items from input that are in exclude list"""
-
+def _strip_excluded_terms(term: str) -> str:
+    """Strip any items from input that are in exclude list."""
     stripped = term
 
     # prevent excluding self
     if not _term_is_excluded(stripped):
         for exc in excluded_terms:
             stripped = stripped.replace(
-                exc + " ", ""
+                exc + " ",
+                "",
             )  # add " " to find only at beginning
 
     return stripped
 
 
-def _any_first_char_matching(term1: str, term2: str):
-    """Checks if any word of the given strings begins with the first letter"""
-
+def _any_first_char_matching(term1: str, term2: str) -> bool:
+    """Check if any word chare the first letter."""
     lterm1 = term1.split()
     lterm2 = term2.split()
     for w1 in lterm1:
@@ -154,12 +155,20 @@ def _any_first_char_matching(term1: str, term2: str):
     return False
 
 
-def get_similar(db: list[str], search_term: str, threshold: int, print_table=False):
-    """
-    Uses a basic Fussy Search over list:[str] of items and returns
-    similar items and their distance to comparison term[str]. Takes a threshold for the distance calculation and optionally prints (every) table
-    """
+def get_similar(
+    db: list[str],
+    search_term: str,
+    threshold: int,
+    *,
+    print_table: bool = False,
+) -> list:
+    """Return similar words.
 
+    Uses a basic Fussy Search over list:[str] of items and returns
+    similar items and their distance to comparison term[str].
+    Takes a threshold for the distance calculation and optionally
+    prints (every) table
+    """
     search_term_wo_excluded = _strip_excluded_terms(search_term).lower()
 
     similar_results: list[tuple] = []
@@ -170,17 +179,19 @@ def get_similar(db: list[str], search_term: str, threshold: int, print_table=Fal
             item_wo_excluded = _strip_excluded_terms(item.lower())
 
         dist = _calc_distance(
-            search_term_wo_excluded, item_wo_excluded, print_table=print_table
+            search_term_wo_excluded,
+            item_wo_excluded,
+            print_table=print_table,
         )
 
         # naively demand first char matching
         if dist <= threshold and _any_first_char_matching(
-            search_term_wo_excluded, item_wo_excluded
+            search_term_wo_excluded,
+            item_wo_excluded,
         ):
             similar_results.append((item, dist))
 
-    similar_results = sorted(similar_results, key=lambda dist: dist[1])
-    return similar_results
+    return sorted(similar_results, key=lambda dist: dist[1])
 
 
 if __name__ == "__main__":
