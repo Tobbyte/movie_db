@@ -79,21 +79,19 @@ def sort_by_value(
     return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
 
 
-def list_movies(
-    db: dict[str, float],
-    message: str,
-    *,
-    descending: bool = False,
-    by_value: bool = False,
-) -> None:
+def list_movies(db: dict[str, float]) -> None:
     """Return a list of all db items."""
-    output(message, space_before=True)
-    if not by_value:
-        for k, v in db.items():
-            output(f"{k}: {v}")
-    else:
-        for k, v in sort_by_value(db, reverse=descending):
-            output(f"{k}: {v}")
+    output(f"{len(db)} movies in total:\n", space_before=True)
+    for k, v in db.items():
+        output(f"{k}: {v}")
+
+
+def list_movies_by_rating(db: dict[str, float]) -> None:
+    """Return a list of all db items by rating."""
+    output("Movies by rating:\n", space_before=True)
+
+    for k, v in sort_by_value(db, reverse=True):
+        output(f"{k}: {v}")
 
 
 def is_num(inp: str) -> bool:
@@ -516,7 +514,7 @@ def run(db: dict[str, float]) -> None:
         )
         if selection == 1:
             """ list """
-            list_movies(db, f"{len(db)} movies in total:\n")
+            list_movies(db)
         elif selection == 2:
             """ add """
             add_movie(db)
@@ -537,7 +535,7 @@ def run(db: dict[str, float]) -> None:
             search_movie(db)
         elif selection == 8:
             """ list by rating """
-            list_movies(db, "Movies by rating:\n", descending=True, by_value=True)
+            list_movies_by_rating(db)
         elif selection == 9:
             """ histogram """
             ratings_histogram(list(db.values()))
