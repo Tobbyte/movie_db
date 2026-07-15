@@ -133,10 +133,9 @@ def strip_leading_zero(num: str | float) -> str | int | float:
 
 
 def add_movie(db: dict[str, float]) -> None:
-    """Add an item to db.
+    """Add an item to db."""
+    # TODO: Check if already exists.
 
-    Warning: Does not check if already exists.
-    """
     name = None
     rating = None
 
@@ -394,6 +393,7 @@ def ratings_histogram(db: list[float]) -> None:
                 # TODO:
                 #   - check on other exceptions (f.e. no write perm)
                 #     from mathplotlob:
+
                 output(
                     "Format 'asd' is not supported (supported formats: "
                     "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
