@@ -4,7 +4,6 @@
 
 import sys
 from random import randint
-from typing import Any
 
 import matplotlib.pyplot as plt
 from my_fuzzy_search import get_similar
@@ -452,7 +451,7 @@ def present_menu(menu_items: list[str]) -> int:
     return int(selection)
 
 
-def quit_program(_: Any = None) -> None:  # noqa: ANN401
+def quit_program() -> None:
     """Quit.
 
     Takes dummy parameter to play nicely with menu_dispatch
@@ -508,7 +507,7 @@ def run(db: dict[str, float]) -> None:
         6: get_random,
         7: search_movie,
         8: list_movies,
-        0: quit_program,
+        # 0: quit_program handled separately
     }
 
     while True:
@@ -520,17 +519,17 @@ def run(db: dict[str, float]) -> None:
 
         if selection == 0:
             quit_program()
+        else:
+            clear_screen()
+            output(
+                f"~~~~~~~~~~\nSelected menu item: {MENU_ITEMS[selection]}\n"
+                "~~~~~~~~~~",
+                color="yellow",
+            )
 
-        clear_screen()
-        output(
-            f"~~~~~~~~~~\nSelected menu item: {MENU_ITEMS[selection]}\n"
-            "~~~~~~~~~~",
-            color="yellow",
-        )
+            menu_dispatch[selection](db)
 
-        menu_dispatch[selection](db)
-
-        idle_after_input()
+            idle_after_input()
 
 
 if __name__ == "__main__":
