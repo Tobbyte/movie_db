@@ -184,7 +184,8 @@ def add_movie() -> None:
             output("Year must be valid int", color="red")
 
         if release:
-            # None check here to prev. int of None in db_add_movie below
+            # !=None check here to prev. int of None
+            # in db_add_movie below
             release = int(release)
             if release < FIRST_MOVIE_RELEASE:
                 release = None
