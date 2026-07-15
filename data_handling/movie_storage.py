@@ -1,6 +1,14 @@
+# ruff: noqa: FIX002, TD002, TD003, TD005
 """Module for handling all CRUD operations."""
+
 import json
 from pathlib import Path
+
+"""
+TODO:
+- implement custom Exception classes
+
+"""
 
 DATA_DIR = Path("data_dir")
 FILE_PATH = DATA_DIR / "data.json"
