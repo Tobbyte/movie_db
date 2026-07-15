@@ -316,13 +316,13 @@ def search_movie(db: dict[str, float]) -> None:
 
     Not case sensitive.
     """
-    orig_inp = None
-    while orig_inp is None or orig_inp == "":
-        orig_inp = user_input_colored("\nEnter part of movie name: ").strip()
-        if orig_inp == "":
+    user_input = None
+    while user_input is None or user_input == "":
+        user_input = user_input_colored("\nEnter part of movie name: ").strip()
+        if user_input == "":
             output("Name required", color="red")
 
-    inp = orig_inp.lower()
+    user_input_lowered = user_input.lower()
 
     # create a dict of lowered_name:original_name for search comparison
     db_lowered = {}
@@ -330,16 +330,20 @@ def search_movie(db: dict[str, float]) -> None:
         m_lo = m.lower()
         db_lowered[m_lo] = m
 
-    if orig_inp in db:
+    if user_input in db:
         # Name is in db as put in
-        output(f"{orig_inp}, {db[orig_inp]}", space_before=True)
-    elif inp in db_lowered:
+        output(f"{user_input}, {db[user_input]}", space_before=True)
+    elif user_input_lowered in db_lowered:
         # Name is lowercase of db entry
-        output(f"{db_lowered[inp]}, {db[db_lowered[inp]]}", space_before=True)
+        output(
+            f"{db_lowered[user_input_lowered]}, "
+            f"{db[db_lowered[user_input_lowered]]}",
+            space_before=True,
+        )
 
     else:
         # No direct finding, fuzzy
-        search_results = fuzzy_search(db, inp)
+        search_results = fuzzy_search(db, user_input_lowered)
 
         found_titles = [
             (found, db.get(found)) for (found, _) in search_results
@@ -347,13 +351,13 @@ def search_movie(db: dict[str, float]) -> None:
 
         if not found_titles:
             output(
-                f'No Movie name similar to "{orig_inp}"'
+                f'No Movie name similar to "{user_input}"'
                 "(remember that at least the first letter has to match):\n",
                 color="red",
             )
         else:
             output(
-                f'No movie titled "{orig_inp}" found. Did you mean:\n',
+                f'No movie titled "{user_input}" found. Did you mean:\n',
                 space_before=True,
             )
 
