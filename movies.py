@@ -118,7 +118,7 @@ def is_num(inp: str) -> bool:
     return True
 
 
-def user_input_colored(promt: str) -> str:
+def get_user_input_colored(promt: str) -> str:
     """Ask for user input, now in technicolor."""
     inp = input(OUTPUT_COLORS["yellow"] + promt)
     print("" + OUTPUT_COLORS["end"], end="")  # reset input coloring
@@ -147,12 +147,14 @@ def add_movie(db: dict[str, float]) -> None:
     rating = None
 
     while name is None or name == "":
-        name = user_input_colored("\nEnter new movie name: ").strip()
+        name = get_user_input_colored("\nEnter new movie name: ").strip()
         if name == "":
             output("Name required", color="red")
 
     while rating is None or rating == "":
-        rating = user_input_colored("Enter new movies rating (0-10): ").strip()
+        rating = get_user_input_colored(
+            "Enter new movies rating (0-10): "
+        ).strip()
         if rating == "":
             output("Rating required", color="red")
         elif not is_num(rating):
@@ -179,7 +181,7 @@ def remove_movie(db: dict[str, float]) -> None:
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
-        tbdeleted = user_input_colored(
+        tbdeleted = get_user_input_colored(
             "\nEnter (exact) movie name to delete: ",
         ).strip()
         if tbdeleted == "":
@@ -206,7 +208,7 @@ def update_movie(db: dict[str, float]) -> None:
     new_rating = None
 
     while tbupdated is None or tbupdated == "":
-        tbupdated = user_input_colored(
+        tbupdated = get_user_input_colored(
             "\nEnter (exact) movie name to update: ",
         ).strip()
         if tbupdated == "":
@@ -221,7 +223,7 @@ def update_movie(db: dict[str, float]) -> None:
             )
 
     while new_rating is None or new_rating == "":
-        new_rating = user_input_colored(
+        new_rating = get_user_input_colored(
             "Enter new movies rating (0-10): ",
         ).strip()
         if new_rating == "":
@@ -318,7 +320,9 @@ def search_movie(db: dict[str, float]) -> None:
     """
     user_input = None
     while user_input is None or user_input == "":
-        user_input = user_input_colored("\nEnter part of movie name: ").strip()
+        user_input = get_user_input_colored(
+            "\nEnter part of movie name: "
+        ).strip()
         if user_input == "":
             output("Name required", color="red")
 
@@ -378,7 +382,7 @@ def ratings_histogram(db: list[float]) -> None:
     filename = None
     plt.hist(db)
     while filename is None or filename == "":
-        filename = user_input_colored(
+        filename = get_user_input_colored(
             "Enter filename (saved as png unless otherwise specified"
             "in your current working directory): ",
         ).strip()
@@ -407,7 +411,7 @@ def ratings_histogram(db: list[float]) -> None:
 
 def idle_after_input() -> None:
     """Idle with prompt to continue."""
-    user_input_colored("\npress Enter to continue ")
+    get_user_input_colored("\npress Enter to continue ")
 
 
 def present_menu(menu_items: list[str]) -> int:
@@ -440,7 +444,7 @@ def present_menu(menu_items: list[str]) -> int:
     selection = None
     insist_to_quite = False
     while selection is None:
-        selection = user_input_colored(
+        selection = get_user_input_colored(
             "\nEnter choice (1-9): ",
         ).strip()
 
