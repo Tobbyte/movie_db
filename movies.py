@@ -86,6 +86,24 @@ def sort_by_value(
     return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
 
 
+def sort_by_rating(
+    dic: dict[str, dict],
+    *,
+    reverse: bool = False,
+) -> dict[str, dict]:
+    """Return a copy of the movie db sorted by rating."""
+    # TODO:
+    #    - save sorted dict, update on add/remove
+
+    return dict(
+        sorted(
+            dic.items(),
+            key=lambda item: item[1]["rating"],
+            reverse=reverse,
+        ),
+    )
+
+
 def list_movies(db: dict[str, dict]) -> None:
     """Return a list of all db items."""
     output(f"{len(db)} movies in total:\n", space_before=True)
@@ -95,12 +113,14 @@ def list_movies(db: dict[str, dict]) -> None:
         output(f"{name} ({release}): {rating}")
 
 
-def list_movies_by_rating(db: dict[str, float]) -> None:
+def list_movies_by_rating(db: dict[str, dict]) -> None:
     """Return a list of all db items by rating."""
     output("Movies by rating:\n", space_before=True)
 
-    for k, v in sort_by_value(db, reverse=True):
-        output(f"{k}: {v}")
+    for name, info in sort_by_rating(db, reverse=True).items():
+        rating = info["rating"]
+        release = info["release"]
+        output(f"{name} ({release}): {rating}")
 
 
 def is_num(inp: str) -> bool:
@@ -512,7 +532,7 @@ def run(db: dict[str, float]) -> None:
         5: get_statistics,
         6: get_random,
         7: search_movie,
-        8: list_movies,
+        8: list_movies_by_rating,
         # 0: quit_program handled separately
     }
 
