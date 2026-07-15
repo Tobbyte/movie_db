@@ -64,6 +64,13 @@ def delete_movie(title: str) -> bool | Exception:
     Loads the information from the JSON, deletes the movie,
     and saves it. The function doesn't need to validate the input.
     """
+    movies = get_movies()
+    if title not in movies:
+        error_msg = f'Movie "{title}" doesn`t exist!'  # TODO: tbd as constant?
+        raise ValueError(error_msg)
+
+    del movies[title]
+    save_movies(movies)
     return True
 
 
