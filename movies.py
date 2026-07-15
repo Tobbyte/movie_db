@@ -438,10 +438,16 @@ def fuzzy_search(db: dict[str, dict], search_term: str) -> list[tuple]:
     return get_similar(titles, search_term, similarity_threshold)
 
 
-def ratings_histogram(db: list[float]) -> None:
-    """Save a mathplotlob histogram to disk."""
+def ratings_histogram(db: dict[str, dict]) -> None:
+    """Save a mathplotlob histogram to disk.
+
+    Overrides if file already existing.
+    """
+    # TODO: - check if file already exists
+
     filename = None
-    plt.hist(db)
+    ratings_list = [info["rating"] for info in db.values()]
+    plt.hist(ratings_list)
     while filename is None or filename == "":
         filename = get_user_input_colored(
             "Enter filename (saved as png unless otherwise specified"
@@ -579,6 +585,7 @@ def run(db: dict[str, dict]) -> None:
         6: get_random,
         7: search_movie,
         8: list_movies_by_rating,
+        9: ratings_histogram,
         # 0: quit_program handled separately
     }
 
