@@ -7,6 +7,8 @@ def get_movies() -> dict[str, dict]:
     The function loads the information from the JSON
     file and returns the data as a dict of dicts.
 
+    Expects the JSON data file to exist.
+
     For example, the function may return:
     {
       "Titanic": {
