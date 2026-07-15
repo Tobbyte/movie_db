@@ -127,7 +127,7 @@ def strip_leading_zero(num: str | float) -> str | int | float:
     return res
 
 
-def add_movie(db: dict[str, float]) -> dict[str, float]:
+def add_movie(db: dict[str, float]) -> None:
     """Add an item to db.
 
     Warning: Does not check if already exists.
@@ -161,10 +161,9 @@ def add_movie(db: dict[str, float]) -> dict[str, float]:
         f'Movie "{name}" with rating {rating} successfully added',
         space_before=True,
     )
-    return db
 
 
-def remove_movie(db: dict[str, float]) -> dict[str, float]:
+def remove_movie(db: dict[str, float]) -> None:
     """Remove an item from db."""
     tbdeleted = None
 
@@ -188,13 +187,9 @@ def remove_movie(db: dict[str, float]) -> dict[str, float]:
                 color="red",
             )
             break
-        else:
-            return db
-
-    return db
 
 
-def update_movie(db: dict[str, float]) -> dict[str, float]:
+def update_movie(db: dict[str, float]) -> None:
     """Update db item."""
     tbupdated = None
     new_rating = None
@@ -213,7 +208,6 @@ def update_movie(db: dict[str, float]) -> dict[str, float]:
                 space_before=True,
                 color="red",
             )
-            return db
 
     while new_rating is None or new_rating == "":
         new_rating = user_input("Enter new movies rating (0-10): ").strip()
@@ -236,7 +230,6 @@ def update_movie(db: dict[str, float]) -> dict[str, float]:
         f'Movie "{tbupdated}" successfully updated to rating: {new_rating}',
         space_before=True,
     )
-    return db
 
 
 def get_average(nums: list[float]) -> float:
@@ -526,13 +519,13 @@ def run(db: dict[str, float]) -> None:
             list_movies(db, f"{len(db)} movies in total:\n")
         elif selection == 2:
             """ add """
-            db = add_movie(db)
+            add_movie(db)
         elif selection == 3:
             """ delete """
-            db = remove_movie(db)
+            remove_movie(db)
         elif selection == 4:
             """ update """
-            db = update_movie(db)
+            update_movie(db)
         elif selection == 5:
             """ stats """
             get_statistics(db)
