@@ -215,12 +215,21 @@ def add_movie() -> None:
             output("Rating must be between 0 - 10", color="red")
 
     rating = float(strip_leading_zero(float(rating)))
-    db[name] = {"rating": rating, "release": release}  # TODO: build factory
 
-    output(
-        f'Movie "{name}" ({release}) with rating {rating} successfully added',
-        space_before=True,
-    )
+    try:
+        db_add_movie(name, release, rating)
+    except ValueError as movie_exists_error:
+        output(
+            f"{movie_exists_error}",
+            space_before=True,
+            color="red",
+        )
+    else:
+        output(
+            f'Movie "{name}" ({release}) with '
+            f"rating {rating} successfully added",
+            space_before=True,
+        )
 
 
 def remove_movie() -> None:
