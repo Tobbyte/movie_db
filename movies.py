@@ -500,6 +500,18 @@ def run(db: dict[str, float]) -> None:
         "0. Quit",
     ]
 
+    menu_dispatch = {
+        1: list_movies,
+        2: add_movie,
+        3: remove_movie,
+        4: update_movie,
+        5: get_statistics,
+        6: get_random,
+        7: search_movie,
+        8: list_movies,
+        0: quit_program,
+    }
+
     while True:
         if not first_start:
             clear_screen()
@@ -516,33 +528,8 @@ def run(db: dict[str, float]) -> None:
             "~~~~~~~~~~",
             color="yellow",
         )
-        if selection == 1:
-            """ list """
-            list_movies(db)
-        elif selection == 2:
-            """ add """
-            add_movie(db)
-        elif selection == 3:
-            """ delete """
-            remove_movie(db)
-        elif selection == 4:
-            """ update """
-            update_movie(db)
-        elif selection == 5:
-            """ stats """
-            get_statistics(db)
-        elif selection == 6:
-            """ random """
-            get_random(db)
-        elif selection == 7:
-            """ search """
-            search_movie(db)
-        elif selection == 8:
-            """ list by rating """
-            list_movies_by_rating(db)
-        elif selection == 9:
-            """ histogram """
-            ratings_histogram(list(db.values()))
+
+        menu_dispatch[selection](db)
 
         idle_after_input()
 
