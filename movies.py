@@ -120,7 +120,7 @@ def get_user_input_colored(promt: str) -> str:
 
 
 def strip_leading_zero(num: str | float) -> str | int | float:
-    """Strip leading "0" if input, returns same format."""
+    """Strip leading "0" in input, returns same format."""
     res = str(num)
     while res[0] == "0" and len(res) > 1:
         res = res[1:]
