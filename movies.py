@@ -357,11 +357,12 @@ def get_statistics(db: dict[str, dict]) -> None:
         output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
 
 
-def get_random(db: dict[str, float]) -> None:
+def get_random(db: dict[str, dict]) -> None:
     """Return random movie."""
-    name, rating = list(db.items())[randint(0, len(db) - 1)]
+    name, info = list(db.items())[randint(0, len(db) - 1)]
     output(
-        f"Your movie for tonight: {name}, it's rated {rating}",
+        f"Your movie for tonight: {name} ({info['release']}), "
+        f"it's rated {info['rating']}",
         space_before=True,
     )
 
