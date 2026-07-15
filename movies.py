@@ -479,7 +479,7 @@ def output(
 
 def run(db: dict[str, float]) -> None:
     """Print welcome and loops menu."""
-    first_start = True
+    first_run = True
     clear_screen()
     output(
         "********** My Movies Database **********",
@@ -513,9 +513,9 @@ def run(db: dict[str, float]) -> None:
     }
 
     while True:
-        if not first_start:
+        if not first_run:
             clear_screen()
-        first_start = False
+        first_run = False
 
         selection = present_menu(menu_items)
 
