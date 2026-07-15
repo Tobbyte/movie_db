@@ -490,7 +490,7 @@ def output(
 
 
 def run(db: dict[str, float]) -> None:
-    """Print welcome and loops menu."""
+    """Print welcome and loop menu."""
     first_run = True
     clear_screen()
     output(
