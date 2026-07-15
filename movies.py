@@ -157,7 +157,7 @@ def strip_leading_zero(num: str | float) -> str | int | float:
 
 def add_movie(db: dict[str, dict]) -> None:
     """Add an item to db."""
-    # TODO: Check if already exists.
+    # TODO: Check if already exists. Allow for different years.
 
     name = None
     rating = None
