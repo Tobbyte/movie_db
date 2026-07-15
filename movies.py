@@ -423,7 +423,7 @@ def present_menu(menu_items: list[str]) -> int:
         0. Exit.
     """
 
-    output("", space_before=True)
+    output("")
 
     for item in menu_items:
         output(item, color="blue")
@@ -483,9 +483,10 @@ def output(
 
 def run(db: dict[str, float]) -> None:
     """Print welcome and loops menu."""
+    first_start = True
+    clear_screen()
     output(
         "********** My Movies Database **********",
-        space_before=True,
         color="blue",
     )
 
@@ -504,7 +505,10 @@ def run(db: dict[str, float]) -> None:
     ]
 
     while True:
-        clear_screen()
+        if not first_start:
+            clear_screen()
+        first_start = False
+
         selection = present_menu(menu_items)
 
         if selection == 0:
