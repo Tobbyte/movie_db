@@ -77,33 +77,20 @@ FIRST_MOVIE_RELEASE = 1878
 CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
 
 
-def sort_by_value(
-    dic: dict[str, float],
-    *,
-    reverse: bool = False,
-) -> list[tuple[str, float]]:
-    """Sorts a dict by its values."""
-    # TODO:
-    #    - save sorted dict, update on add/remove
-
-    return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
-
-
-def sort_by_rating(
+def get_as_list_sorted_by_rating(
     dic: dict[str, dict],
     *,
-    reverse: bool = False,
-) -> dict[str, dict]:
-    """Return a copy of the movie db sorted by rating."""
-    # TODO:
-    #    - save sorted dict, update on add/remove
+    descending: bool = False,
+) -> list[tuple]:
+    """Sort movies by rating.
 
-    return dict(
-        sorted(
-            dic.items(),
-            key=lambda item: item[1]["rating"],
-            reverse=reverse,
-        ),
+    Return a list of (name, info) tuples for movies in db
+    in ascending order of rating.
+    """
+    return sorted(
+        dic.items(),
+        key=lambda item: item[1]["rating"],
+        reverse=descending,
     )
 
 
@@ -120,9 +107,9 @@ def list_movies_by_rating(db: dict[str, dict]) -> None:
     """Return a list of all db items by rating."""
     output("Movies by rating:\n", space_before=True)
 
-    for name, info in sort_by_rating(db, reverse=True).items():
-        rating = info["rating"]
+    for name, info in get_as_list_sorted_by_rating(db, descending=True):
         release = info["release"]
+        rating = info["rating"]
         output(f"{name} ({release}): {rating}")
 
 
