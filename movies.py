@@ -259,8 +259,8 @@ def remove_movie(db: dict[str, float]) -> None:
             break
 
 
-def update_movie(db: dict[str, float]) -> None:
-    """Update db item."""
+def update_movie(db: dict[str, dict]) -> None:
+    """Update movie rating."""
     tbupdated = None
     new_rating = None
 
@@ -296,7 +296,7 @@ def update_movie(db: dict[str, float]) -> None:
             output("Rating must be between 0 - 10", color="red")
 
     new_rating = strip_leading_zero(float(new_rating))
-    db[tbupdated] = float(new_rating)
+    db[tbupdated]["rating"] = float(new_rating)
 
     output(
         f'Movie "{tbupdated}" successfully updated to rating: {new_rating}',
