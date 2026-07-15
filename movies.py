@@ -2,6 +2,7 @@
 
 """A simple interface to interact with an dummy movie "db"."""
 
+import datetime
 import sys
 from random import randint
 
@@ -72,6 +73,8 @@ MENU_ITEMS = [
     "8. Movies sorted by rating",
     "9. Create ratings histogram",
 ]
+FIRST_MOVIE_RELEASE = 1878
+CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
 
 
 def sort_by_value(
@@ -134,6 +137,17 @@ def is_num(inp: str) -> bool:
     return True
 
 
+def is_int(inp: str) -> bool:
+    """Validate if a sting input is a valid int."""
+    if inp == "" or "." in inp:
+        return False
+    try:
+        int(inp)
+    except ValueError:
+        return False
+    return True
+
+
 def get_user_input_colored(promt: str) -> str:
     """Ask for user input, now in technicolor."""
     inp = input(OUTPUT_COLORS["yellow"] + promt)
@@ -154,17 +168,45 @@ def strip_leading_zero(num: str | float) -> str | int | float:
     return res
 
 
-def add_movie(db: dict[str, float]) -> None:
+def add_movie(db: dict[str, dict]) -> None:
     """Add an item to db."""
     # TODO: Check if already exists.
 
     name = None
     rating = None
+    release = None
 
     while name is None or name == "":
         name = get_user_input_colored("\nEnter new movie name: ").strip()
         if name == "":
             output("Name required", color="red")
+
+    while release is None or release == "":
+        release = get_user_input_colored(
+            "Enter new movies year of release: ",
+        ).strip()
+        if release == "":
+            output("Year required", color="red")
+        elif not is_num(release):
+            release = None
+            output("Year must be a number", color="red")
+        elif not is_int(release):
+            release = None
+            output("Year must be valid int", color="red")
+
+        if release and int(release) < FIRST_MOVIE_RELEASE:
+            release = None
+            output(
+                "Nice try. The first movie was released in "
+                f"{FIRST_MOVIE_RELEASE}.",
+                color="red",
+            )
+        elif release and int(release) > CURRENT_YEAR:
+            release = None
+            output(
+                "Real futuristic movie - a rating from the future!",
+                color="red",
+            )
 
     while rating is None or rating == "":
         rating = get_user_input_colored(
@@ -183,10 +225,10 @@ def add_movie(db: dict[str, float]) -> None:
             output("Rating must be between 0 - 10", color="red")
 
     rating = float(strip_leading_zero(float(rating)))
-    db[name] = rating
+    db[name] = {"rating": rating, "release": release}  # TODO: build factory
 
     output(
-        f'Movie "{name}" with rating {rating} successfully added',
+        f'Movie "{name}" ({release}) with rating {rating} successfully added',
         space_before=True,
     )
 
