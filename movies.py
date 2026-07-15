@@ -220,7 +220,7 @@ def add_movie(db: dict[str, dict]) -> None:
     )
 
 
-def remove_movie(db: dict[str, float]) -> None:
+def remove_movie(db: dict[str, dict]) -> None:
     """Remove an item from db."""
     tbdeleted = None
 
