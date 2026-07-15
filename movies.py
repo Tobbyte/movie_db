@@ -61,6 +61,7 @@ MOVIE_MIN_RATING = 0
 MOVIE_MAX_RATING = 10
 MENU_ITEMS = [
     "Menu:",
+    "0. Exit",
     "1. List movies",
     "2. Add movie",
     "3. Delete movie",
@@ -70,7 +71,6 @@ MENU_ITEMS = [
     "7. Search movie",
     "8. Movies sorted by rating",
     "9. Create ratings histogram",
-    "0. Quit",
 ]
 
 
@@ -440,7 +440,7 @@ def present_menu(menu_items: list[str]) -> int:
     insist_to_quite = False
     while selection is None:
         selection = get_user_input_colored(
-            "\nEnter choice (1-9): ",
+            "\nEnter choice (0-9): ",
         ).strip()
 
         if len(selection) > 1 or not selection.isdecimal():
