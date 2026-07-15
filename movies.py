@@ -327,7 +327,7 @@ def get_extremes(
     ]
 
 
-def get_statistics(db: dict[str, float]) -> None:
+def get_statistics(db: dict[str, dict]) -> None:
     """Get statistics.
 
     - average
@@ -335,8 +335,9 @@ def get_statistics(db: dict[str, float]) -> None:
     - top-ranked items
     - bottom-ranged items
     """
-    val_list = list(db.values())
+    # TODO: - sort best / worst if multiple by name
 
+    val_list = [info["rating"] for info in db.values()]
     avg = get_average(val_list)
     median = get_median(sorted(val_list))
     rated_best = get_extremes(db)
@@ -345,11 +346,15 @@ def get_statistics(db: dict[str, float]) -> None:
     output(f"Average rating: {avg}", space_before=True)
     output(f"Median rating: {median}")
     output("Best rated movie(s):")
-    for best_name, best_rat in rated_best:
-        output(f'   "{best_name}", {best_rat}')
+    for best_name, best_info in rated_best:
+        best_rating = best_info["rating"]
+        best_release = best_info["release"]
+        output(f'   "{best_name}" ({best_release}), {best_rating}')
     output("Worst rated movie(s):")
-    for worst_name, worst_rat in rated_worst:
-        output(f'   "{worst_name}", {worst_rat}')
+    for worst_name, worst_info in rated_worst:
+        worst_rating = worst_info["rating"]
+        worst_release = worst_info["release"]
+        output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
 
 
 def get_random(db: dict[str, float]) -> None:
