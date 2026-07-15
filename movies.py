@@ -460,7 +460,7 @@ def present_menu(menu_items: list[str]) -> int:
 
 def quit_program() -> None:
     """Quit."""
-    output("Goodbye")
+    output("Bye!")
     sys.exit()
 
 
