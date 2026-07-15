@@ -237,7 +237,6 @@ def add_movie() -> None:
 
 def remove_movie() -> None:
     """Remove an item from db."""
-    db: dict[str, dict] = db_get_movies()
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
@@ -246,20 +245,21 @@ def remove_movie() -> None:
         ).strip()
         if tbdeleted == "":
             output("Name required", color="red")
-        try:
-            del db[tbdeleted]
-            output(
-                f'Movie "{tbdeleted}" successfully deleted',
-                space_before=True,
-            )
 
-        except KeyError:
-            output(
-                f"Movie {tbdeleted} doesn't exist!",
-                space_before=True,
-                color="red",
-            )
-            break
+    try:
+        db_delete_movie(tbdeleted)
+
+    except ValueError as movie_doesnt_exist_error:
+        output(
+            f"{movie_doesnt_exist_error}",
+            space_before=True,
+            color="red",
+        )
+    else:
+        output(
+            f'Movie "{tbdeleted}" successfully deleted',
+            space_before=True,
+        )
 
 
 def update_movie() -> None:
