@@ -475,7 +475,7 @@ def output(
         if color == "yellow":
             print(colors["yellow"] + inp + colors["end"])
     else:
-        print(any)
+        print(inp)
 
     if space_after:
         print("\n \n")
