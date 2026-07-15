@@ -153,7 +153,7 @@ def add_movie(db: dict[str, float]) -> None:
 
     while rating is None or rating == "":
         rating = get_user_input_colored(
-            "Enter new movies rating (0-10): "
+            "Enter new movies rating (0-10): ",
         ).strip()
         if rating == "":
             output("Rating required", color="red")
@@ -321,7 +321,7 @@ def search_movie(db: dict[str, float]) -> None:
     user_input = None
     while user_input is None or user_input == "":
         user_input = get_user_input_colored(
-            "\nEnter part of movie name: "
+            "\nEnter part of movie name: ",
         ).strip()
         if user_input == "":
             output("Name required", color="red")
