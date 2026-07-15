@@ -86,11 +86,13 @@ def sort_by_value(
     return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
 
 
-def list_movies(db: dict[str, float]) -> None:
+def list_movies(db: dict[str, dict]) -> None:
     """Return a list of all db items."""
     output(f"{len(db)} movies in total:\n", space_before=True)
-    for k, v in db.items():
-        output(f"{k}: {v}")
+    for name, info in db.items():
+        rating = info["rating"]
+        release = info["release"]
+        output(f"{name} ({release}): {rating}")
 
 
 def list_movies_by_rating(db: dict[str, float]) -> None:
