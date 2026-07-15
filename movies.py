@@ -4,6 +4,7 @@
 
 import sys
 from random import randint
+from typing import Any
 
 import matplotlib.pyplot as plt
 from my_fuzzy_search import get_similar
@@ -438,8 +439,11 @@ def present_menu(menu_items: list[str]) -> int:
     return int(selection)
 
 
-def quit_program() -> None:
-    """Quit."""
+def quit_program(_: Any = None) -> None:  # noqa: ANN401
+    """Quit.
+
+    Takes dummy parameter to play nicely with menu_dispatch
+    """
     output("Goodbye")
     sys.exit()
 
