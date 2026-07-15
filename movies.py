@@ -320,6 +320,8 @@ def search_movie(db: dict[str, float]) -> None:
     user_input_lowered = user_input.lower()
 
     # create a dict of lowered_name:original_name for search comparison
+    # TODO: cache
+
     db_lowered = {}
     for m in db:
         m_lo = m.lower()
@@ -392,9 +394,8 @@ def ratings_histogram(db: list[float]) -> None:
             except ValueError:
                 # TODO:
                 #   - check on other exceptions (f.e. no write perm)
-                #     from mathplotlob:
 
-                output(
+                output(  # From mathplotlob
                     "Format 'asd' is not supported (supported formats: "
                     "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
                     "svg, svgz, tif, tiff, webp)",
@@ -434,6 +435,7 @@ def present_menu(menu_items: list[str]) -> int:
 
     for item in menu_items:
         output(item, color="blue")
+
     selection = None
     insist_to_quite = False
     while selection is None:
