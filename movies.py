@@ -9,9 +9,6 @@ import matplotlib.pyplot as plt
 from my_fuzzy_search import get_similar
 
 """
-Constraints imposed by the given task:
-- Passing around the "db" is not fine and reassigning it in run()
-  not strictly necessary, but done for clarity
 
 
 TODO (but out of scope of this exercise):
@@ -23,7 +20,6 @@ TODO (but out of scope of this exercise):
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
-  - don't relay on exit()
   - cache sorted db
 
 Version 1.1.0 <- submitted
@@ -35,7 +31,7 @@ Version 1.1.0 <- submitted
 
 
 def main() -> None:
-    """Start."""
+    """Run app and load movie db."""
     # Dictionary to store the movies and the rating
     movies = {
         "The Shawshank Redemption": 9.5,
@@ -464,10 +460,7 @@ def present_menu(menu_items: list[str]) -> int:
 
 
 def quit_program() -> None:
-    """Quit.
-
-    Takes dummy parameter to play nicely with menu_dispatch
-    """
+    """Quit."""
     output("Goodbye")
     sys.exit()
 
