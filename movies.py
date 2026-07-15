@@ -34,16 +34,16 @@ def main() -> None:
     """Run app and load movie db."""
     # Dictionary to store the movies and the rating
     movies = {
-        "The Shawshank Redemption": 9.5,
-        "Pulp Fiction": 8.8,
-        "The Room": 3.6,
-        "The Godfather": 9.2,
-        "The Godfather: Part II": 9.0,
-        "The Dark Knight": 9.0,
-        "12 Angry Men": 8.9,
-        "Everything Everywhere All At Once": 8.9,
-        "Forrest Gump": 8.8,
-        "Star Wars: Episode V": 8.7,
+        "The Shawshank Redemption": {"rating": 9.5, "release": 1990},
+        "Pulp Fiction": {"rating": 8.8, "release": 1990},
+        "The Room": {"rating": 3.6, "release": 1990},
+        "The Godfather": {"rating": 9.2, "release": 1990},
+        "The Godfather: Part II": {"rating": 9.0, "release": 1990},
+        "The Dark Knight": {"rating": 9.0, "release": 1990},
+        "12 Angry Men": {"rating": 8.9, "release": 1990},
+        "Everything Everywhere All At Once": {"rating": 8.9, "release": 1990},
+        "Forrest Gump": {"rating": 8.8, "release": 1990},
+        "Star Wars: Episode V": {"rating": 8.7, "release": 1990},
     }
 
     run(movies)
