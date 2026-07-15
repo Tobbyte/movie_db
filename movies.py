@@ -413,7 +413,7 @@ def search_movie(db: dict[str, dict]) -> None:
 
         if not found_titles:
             output(
-                f'No Movie name similar to "{user_input}"'
+                f'No Movie name similar to "{user_input}" '
                 "(remember that at least the first letter has to match):\n",
                 color="red",
             )
