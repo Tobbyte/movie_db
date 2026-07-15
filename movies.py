@@ -2,6 +2,7 @@
 
 """A simple interface to interact with an dummy movie "db"."""
 
+import datetime
 import sys
 from random import randint
 
@@ -34,16 +35,16 @@ def main() -> None:
     """Run app and load movie db."""
     # Dictionary to store the movies and the rating
     movies = {
-        "The Shawshank Redemption": 9.5,
-        "Pulp Fiction": 8.8,
-        "The Room": 3.6,
-        "The Godfather": 9.2,
-        "The Godfather: Part II": 9.0,
-        "The Dark Knight": 9.0,
-        "12 Angry Men": 8.9,
-        "Everything Everywhere All At Once": 8.9,
-        "Forrest Gump": 8.8,
-        "Star Wars: Episode V": 8.7,
+        "The Shawshank Redemption": {"rating": 9.5, "release": 1990},
+        "Pulp Fiction": {"rating": 8.8, "release": 1990},
+        "The Room": {"rating": 3.6, "release": 1990},
+        "The Godfather": {"rating": 9.2, "release": 1990},
+        "The Godfather: Part II": {"rating": 9.0, "release": 1990},
+        "The Dark Knight": {"rating": 9.0, "release": 1990},
+        "12 Angry Men": {"rating": 8.9, "release": 1990},
+        "Everything Everywhere All At Once": {"rating": 8.9, "release": 1990},
+        "Forrest Gump": {"rating": 8.8, "release": 1990},
+        "Star Wars: Episode V": {"rating": 8.7, "release": 1990},
     }
 
     run(movies)
@@ -72,33 +73,44 @@ MENU_ITEMS = [
     "8. Movies sorted by rating",
     "9. Create ratings histogram",
 ]
+FIRST_MOVIE_RELEASE = 1878
+CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
 
 
-def sort_by_value(
-    dic: dict[str, float],
+def get_as_list_sorted_by_rating(
+    dic: dict[str, dict],
     *,
-    reverse: bool = False,
-) -> list[tuple[str, float]]:
-    """Sorts a dict by its values."""
-    # TODO:
-    #    - save sorted dict, update on add/remove
+    descending: bool = False,
+) -> list[tuple]:
+    """Sort movies by rating.
 
-    return sorted(dic.items(), key=lambda item: item[1], reverse=reverse)
+    Return a list of (name, info) tuples for movies in db
+    in ascending order of rating.
+    """
+    return sorted(
+        dic.items(),
+        key=lambda item: item[1]["rating"],
+        reverse=descending,
+    )
 
 
-def list_movies(db: dict[str, float]) -> None:
+def list_movies(db: dict[str, dict]) -> None:
     """Return a list of all db items."""
     output(f"{len(db)} movies in total:\n", space_before=True)
-    for k, v in db.items():
-        output(f"{k}: {v}")
+    for name, info in db.items():
+        rating = info["rating"]
+        release = info["release"]
+        output(f"{name} ({release}): {rating}")
 
 
-def list_movies_by_rating(db: dict[str, float]) -> None:
+def list_movies_by_rating(db: dict[str, dict]) -> None:
     """Return a list of all db items by rating."""
     output("Movies by rating:\n", space_before=True)
 
-    for k, v in sort_by_value(db, reverse=True):
-        output(f"{k}: {v}")
+    for name, info in get_as_list_sorted_by_rating(db, descending=True):
+        release = info["release"]
+        rating = info["rating"]
+        output(f"{name} ({release}): {rating}")
 
 
 def is_num(inp: str) -> bool:
@@ -107,6 +119,17 @@ def is_num(inp: str) -> bool:
         return False
     try:
         float(inp)
+    except ValueError:
+        return False
+    return True
+
+
+def is_int(inp: str) -> bool:
+    """Validate if a sting input is a valid int."""
+    if inp == "" or "." in inp:
+        return False
+    try:
+        int(inp)
     except ValueError:
         return False
     return True
@@ -132,17 +155,45 @@ def strip_leading_zero(num: str | float) -> str | int | float:
     return res
 
 
-def add_movie(db: dict[str, float]) -> None:
+def add_movie(db: dict[str, dict]) -> None:
     """Add an item to db."""
-    # TODO: Check if already exists.
+    # TODO: Check if already exists. Allow for different years.
 
     name = None
     rating = None
+    release = None
 
     while name is None or name == "":
         name = get_user_input_colored("\nEnter new movie name: ").strip()
         if name == "":
             output("Name required", color="red")
+
+    while release is None or release == "":
+        release = get_user_input_colored(
+            "Enter new movies year of release: ",
+        ).strip()
+        if release == "":
+            output("Year required", color="red")
+        elif not is_num(release):
+            release = None
+            output("Year must be a number", color="red")
+        elif not is_int(release):
+            release = None
+            output("Year must be valid int", color="red")
+
+        if release and int(release) < FIRST_MOVIE_RELEASE:
+            release = None
+            output(
+                "Nice try. The first movie was released in "
+                f"{FIRST_MOVIE_RELEASE}.",
+                color="red",
+            )
+        elif release and int(release) > CURRENT_YEAR:
+            release = None
+            output(
+                "Real futuristic movie - a rating from the future!",
+                color="red",
+            )
 
     while rating is None or rating == "":
         rating = get_user_input_colored(
@@ -161,15 +212,15 @@ def add_movie(db: dict[str, float]) -> None:
             output("Rating must be between 0 - 10", color="red")
 
     rating = float(strip_leading_zero(float(rating)))
-    db[name] = rating
+    db[name] = {"rating": rating, "release": release}  # TODO: build factory
 
     output(
-        f'Movie "{name}" with rating {rating} successfully added',
+        f'Movie "{name}" ({release}) with rating {rating} successfully added',
         space_before=True,
     )
 
 
-def remove_movie(db: dict[str, float]) -> None:
+def remove_movie(db: dict[str, dict]) -> None:
     """Remove an item from db."""
     tbdeleted = None
 
@@ -195,8 +246,8 @@ def remove_movie(db: dict[str, float]) -> None:
             break
 
 
-def update_movie(db: dict[str, float]) -> None:
-    """Update db item."""
+def update_movie(db: dict[str, dict]) -> None:
+    """Update movie rating."""
     tbupdated = None
     new_rating = None
 
@@ -232,7 +283,7 @@ def update_movie(db: dict[str, float]) -> None:
             output("Rating must be between 0 - 10", color="red")
 
     new_rating = strip_leading_zero(float(new_rating))
-    db[tbupdated] = float(new_rating)
+    db[tbupdated]["rating"] = float(new_rating)
 
     output(
         f'Movie "{tbupdated}" successfully updated to rating: {new_rating}',
@@ -258,19 +309,25 @@ def get_median(nums: list[float]) -> float:
 
 
 def get_extremes(
-    db: dict[str, float],
+    db: dict[str, dict],
     *,
     descending: bool = True,
-) -> list[tuple[str, float]]:
+) -> list[tuple[str, dict]]:
     """Get the extreme values:[num] of dict."""
-    vals_sorted = sort_by_value(db, reverse=descending)
+    sorted_by_rating = get_as_list_sorted_by_rating(db, descending=descending)
 
-    _, extr_rating = vals_sorted[0]
+    # take rating of first item of sorted movies
+    _, info = sorted_by_rating[0]
+    extr_rating = info["rating"]
 
-    return [(n, r) for (n, r) in vals_sorted if r == extr_rating]
+    return [
+        (name, info)
+        for (name, info) in sorted_by_rating
+        if info["rating"] == extr_rating
+    ]
 
 
-def get_statistics(db: dict[str, float]) -> None:
+def get_statistics(db: dict[str, dict]) -> None:
     """Get statistics.
 
     - average
@@ -278,8 +335,9 @@ def get_statistics(db: dict[str, float]) -> None:
     - top-ranked items
     - bottom-ranged items
     """
-    val_list = list(db.values())
+    # TODO: - sort best / worst if multiple by name
 
+    val_list = [info["rating"] for info in db.values()]
     avg = get_average(val_list)
     median = get_median(sorted(val_list))
     rated_best = get_extremes(db)
@@ -288,23 +346,28 @@ def get_statistics(db: dict[str, float]) -> None:
     output(f"Average rating: {avg}", space_before=True)
     output(f"Median rating: {median}")
     output("Best rated movie(s):")
-    for best_name, best_rat in rated_best:
-        output(f'   "{best_name}", {best_rat}')
+    for best_name, best_info in rated_best:
+        best_rating = best_info["rating"]
+        best_release = best_info["release"]
+        output(f'   "{best_name}" ({best_release}), {best_rating}')
     output("Worst rated movie(s):")
-    for worst_name, worst_rat in rated_worst:
-        output(f'   "{worst_name}", {worst_rat}')
+    for worst_name, worst_info in rated_worst:
+        worst_rating = worst_info["rating"]
+        worst_release = worst_info["release"]
+        output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
 
 
-def get_random(db: dict[str, float]) -> None:
+def get_random(db: dict[str, dict]) -> None:
     """Return random movie."""
-    name, rating = list(db.items())[randint(0, len(db) - 1)]
+    name, info = list(db.items())[randint(0, len(db) - 1)]
     output(
-        f"Your movie for tonight: {name}, it's rated {rating}",
+        f"Your movie for tonight: {name} ({info['release']}), "
+        f"it's rated {info['rating']}",
         space_before=True,
     )
 
 
-def search_movie(db: dict[str, float]) -> None:
+def search_movie(db: dict[str, dict]) -> None:
     """Search for items.
 
     Not case sensitive.
@@ -326,15 +389,19 @@ def search_movie(db: dict[str, float]) -> None:
     for m in db:
         m_lo = m.lower()
         db_lowered[m_lo] = m
-
     if user_input in db:
         # Name is in db as put in
-        output(f"{user_input}, {db[user_input]}", space_before=True)
+        output(
+            f"{user_input} ({db[user_input]['release']}), "
+            f"{db[user_input]['rating']}",
+            space_before=True,
+        )
     elif user_input_lowered in db_lowered:
         # Name is lowercase of db entry
         output(
-            f"{db_lowered[user_input_lowered]}, "
-            f"{db[db_lowered[user_input_lowered]]}",
+            f"{db_lowered[user_input_lowered]} "
+            f"({db[db_lowered[user_input_lowered]]['release']}), "
+            f"{db[db_lowered[user_input_lowered]]['rating']}",
             space_before=True,
         )
 
@@ -342,13 +409,11 @@ def search_movie(db: dict[str, float]) -> None:
         # No direct finding, fuzzy
         search_results = fuzzy_search(db, user_input_lowered)
 
-        found_titles = [
-            (found, db.get(found)) for (found, _) in search_results
-        ]
+        found_titles = [(found, db[found]) for (found, _) in search_results]
 
         if not found_titles:
             output(
-                f'No Movie name similar to "{user_input}"'
+                f'No Movie name similar to "{user_input}" '
                 "(remember that at least the first letter has to match):\n",
                 color="red",
             )
@@ -358,22 +423,31 @@ def search_movie(db: dict[str, float]) -> None:
                 space_before=True,
             )
 
-            for name, rate in found_titles:
-                output(f"{name}, {rate}")
+            for name, info in found_titles:
+                output(f"{name} ({info['release']}), {info['rating']}")
 
 
-def fuzzy_search(db: dict[str, float], search_term: str) -> list[tuple]:
-    """Fuzzy search on term, results sorted by distance."""
+def fuzzy_search(db: dict[str, dict], search_term: str) -> list[tuple]:
+    """Fuzzy search on term, results sorted by distance.
+
+    Returns list of tuples (similar-to-term, distance)
+    """
     similarity_threshold = 25  # pretty high. Workaround until optimized
     titles = list(db.keys())
 
     return get_similar(titles, search_term, similarity_threshold)
 
 
-def ratings_histogram(db: list[float]) -> None:
-    """Save a mathplotlob histogram to disk."""
+def ratings_histogram(db: dict[str, dict]) -> None:
+    """Save a mathplotlob histogram to disk.
+
+    Overrides if file already existing.
+    """
+    # TODO: - check if file already exists
+
     filename = None
-    plt.hist(db)
+    ratings_list = [info["rating"] for info in db.values()]
+    plt.hist(ratings_list)
     while filename is None or filename == "":
         filename = get_user_input_colored(
             "Enter filename (saved as png unless otherwise specified"
@@ -493,7 +567,7 @@ def output(
         print("\n \n")
 
 
-def run(db: dict[str, float]) -> None:
+def run(db: dict[str, dict]) -> None:
     """Print welcome and loop menu."""
     first_run = True
     clear_screen()
@@ -510,7 +584,8 @@ def run(db: dict[str, float]) -> None:
         5: get_statistics,
         6: get_random,
         7: search_movie,
-        8: list_movies,
+        8: list_movies_by_rating,
+        9: ratings_histogram,
         # 0: quit_program handled separately
     }
 
