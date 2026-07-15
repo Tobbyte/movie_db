@@ -309,16 +309,22 @@ def get_median(nums: list[float]) -> float:
 
 
 def get_extremes(
-    db: dict[str, float],
+    db: dict[str, dict],
     *,
     descending: bool = True,
-) -> list[tuple[str, float]]:
+) -> list[tuple[str, dict]]:
     """Get the extreme values:[num] of dict."""
-    vals_sorted = sort_by_value(db, reverse=descending)
+    sorted_by_rating = get_as_list_sorted_by_rating(db, descending=descending)
 
-    _, extr_rating = vals_sorted[0]
+    # take rating of first item of sorted movies
+    _, info = sorted_by_rating[0]
+    extr_rating = info["rating"]
 
-    return [(n, r) for (n, r) in vals_sorted if r == extr_rating]
+    return [
+        (name, info)
+        for (name, info) in sorted_by_rating
+        if info["rating"] == extr_rating
+    ]
 
 
 def get_statistics(db: dict[str, float]) -> None:
