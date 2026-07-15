@@ -526,7 +526,8 @@ def run(db: dict[str, float]) -> None:
         else:
             clear_screen()
             output(
-                f"~~~~~~~~~~\nSelected menu item: {MENU_ITEMS[selection]}\n"
+                f"~~~~~~~~~~\nSelected menu item:"
+                f"{MENU_ITEMS[selection + 1]}\n"
                 "~~~~~~~~~~",
                 color="yellow",
             )
