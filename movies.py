@@ -7,6 +7,9 @@ import sys
 from random import randint
 
 import matplotlib.pyplot as plt
+from data_handling import (
+    get_movies as db_get_movies,
+)
 from my_fuzzy_search import get_similar
 
 """
@@ -32,22 +35,8 @@ Version 1.1.0 <- submitted
 
 
 def main() -> None:
-    """Run app and load movie db."""
-    # Dictionary to store the movies and the rating
-    movies = {
-        "The Shawshank Redemption": {"rating": 9.5, "release": 1990},
-        "Pulp Fiction": {"rating": 8.8, "release": 1990},
-        "The Room": {"rating": 3.6, "release": 1990},
-        "The Godfather": {"rating": 9.2, "release": 1990},
-        "The Godfather: Part II": {"rating": 9.0, "release": 1990},
-        "The Dark Knight": {"rating": 9.0, "release": 1990},
-        "12 Angry Men": {"rating": 8.9, "release": 1990},
-        "Everything Everywhere All At Once": {"rating": 8.9, "release": 1990},
-        "Forrest Gump": {"rating": 8.8, "release": 1990},
-        "Star Wars: Episode V": {"rating": 8.7, "release": 1990},
-    }
-
-    run(movies)
+    """Run app."""
+    run()
 
 
 # dict used to shorthand color codes
@@ -94,17 +83,20 @@ def get_as_list_sorted_by_rating(
     )
 
 
-def list_movies(db: dict[str, dict]) -> None:
+def list_movies() -> None:
     """Return a list of all db items."""
+    db: dict[str, dict] = db_get_movies()
     output(f"{len(db)} movies in total:\n", space_before=True)
+
     for name, info in db.items():
         rating = info["rating"]
         release = info["release"]
         output(f"{name} ({release}): {rating}")
 
 
-def list_movies_by_rating(db: dict[str, dict]) -> None:
+def list_movies_by_rating() -> None:
     """Return a list of all db items by rating."""
+    db: dict[str, dict] = db_get_movies()
     output("Movies by rating:\n", space_before=True)
 
     for name, info in get_as_list_sorted_by_rating(db, descending=True):
@@ -155,10 +147,10 @@ def strip_leading_zero(num: str | float) -> str | int | float:
     return res
 
 
-def add_movie(db: dict[str, dict]) -> None:
+def add_movie() -> None:
     """Add an item to db."""
     # TODO: Check if already exists. Allow for different years.
-
+    db: dict[str, dict] = db_get_movies()
     name = None
     rating = None
     release = None
@@ -220,8 +212,9 @@ def add_movie(db: dict[str, dict]) -> None:
     )
 
 
-def remove_movie(db: dict[str, dict]) -> None:
+def remove_movie() -> None:
     """Remove an item from db."""
+    db: dict[str, dict] = db_get_movies()
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
@@ -246,8 +239,9 @@ def remove_movie(db: dict[str, dict]) -> None:
             break
 
 
-def update_movie(db: dict[str, dict]) -> None:
+def update_movie() -> None:
     """Update movie rating."""
+    db: dict[str, dict] = db_get_movies()
     tbupdated = None
     new_rating = None
 
@@ -327,7 +321,7 @@ def get_extremes(
     ]
 
 
-def get_statistics(db: dict[str, dict]) -> None:
+def get_statistics() -> None:
     """Get statistics.
 
     - average
@@ -336,7 +330,7 @@ def get_statistics(db: dict[str, dict]) -> None:
     - bottom-ranged items
     """
     # TODO: - sort best / worst if multiple by name
-
+    db: dict[str, dict] = db_get_movies()
     val_list = [info["rating"] for info in db.values()]
     avg = get_average(val_list)
     median = get_median(sorted(val_list))
@@ -357,8 +351,9 @@ def get_statistics(db: dict[str, dict]) -> None:
         output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
 
 
-def get_random(db: dict[str, dict]) -> None:
+def get_random() -> None:
     """Return random movie."""
+    db: dict[str, dict] = db_get_movies()
     name, info = list(db.items())[randint(0, len(db) - 1)]
     output(
         f"Your movie for tonight: {name} ({info['release']}), "
@@ -367,11 +362,12 @@ def get_random(db: dict[str, dict]) -> None:
     )
 
 
-def search_movie(db: dict[str, dict]) -> None:
+def search_movie() -> None:
     """Search for items.
 
     Not case sensitive.
     """
+    db: dict[str, dict] = db_get_movies()
     user_input = None
     while user_input is None or user_input == "":
         user_input = get_user_input_colored(
@@ -438,13 +434,13 @@ def fuzzy_search(db: dict[str, dict], search_term: str) -> list[tuple]:
     return get_similar(titles, search_term, similarity_threshold)
 
 
-def ratings_histogram(db: dict[str, dict]) -> None:
+def ratings_histogram() -> None:
     """Save a mathplotlob histogram to disk.
 
     Overrides if file already existing.
     """
     # TODO: - check if file already exists
-
+    db: dict[str, dict] = db_get_movies()
     filename = None
     ratings_list = [info["rating"] for info in db.values()]
     plt.hist(ratings_list)
@@ -567,7 +563,7 @@ def output(
         print("\n \n")
 
 
-def run(db: dict[str, dict]) -> None:
+def run() -> None:
     """Print welcome and loop menu."""
     first_run = True
     clear_screen()
@@ -607,7 +603,7 @@ def run(db: dict[str, dict]) -> None:
                 color="yellow",
             )
 
-            menu_dispatch[selection](db)
+            menu_dispatch[selection]()
 
             idle_after_input()
 
