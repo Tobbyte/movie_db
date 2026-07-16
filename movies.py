@@ -174,6 +174,7 @@ def _strip_leading_zero(num: str | float) -> str | int | float:
 
 def _get_movie_name(prompt: str) -> str:
     """Ask user to input a movies name."""
+    # TODO: tbd: check for unplausible names like *?
     while True:
         name = _get_user_input_colored(prompt).strip()
         if name != "":
