@@ -450,9 +450,11 @@ def ratings_histogram() -> None:
         "Enter filename (saved as png unless otherwise "
         "specified) in your current working directory: ",
     )
-
-    result = create_histogram(data, filename)
-    _output(result, space_before=True)
+    try:
+        result = create_histogram(data, filename)
+        _output(result, space_before=True)
+    except ValueError as e:
+        _output(str(e), color="red", space_before=True)
 
 
 def _idle_after_input() -> None:
