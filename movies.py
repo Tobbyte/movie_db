@@ -534,7 +534,7 @@ def run() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except EOFError:
+    except (EOFError, KeyboardInterrupt):
         # quit gratefully on termination
-        print("\nThat was sudden. Goodbye!")
+        print("\nThat was sudden. Goodbye!\n")
         sys.exit()
