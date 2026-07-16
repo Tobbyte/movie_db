@@ -375,6 +375,7 @@ def search_movie() -> None:
     for m in db:
         m_lo = m.lower()
         db_lowered[m_lo] = m
+
     if user_input in db:
         # Name is in db as put in
         _output(
