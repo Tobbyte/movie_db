@@ -4,7 +4,7 @@
 import json
 from pathlib import Path
 
-from config import DATA_FILE_PATH
+from app_config import DATA_FILE_PATH
 
 """
 TODO:

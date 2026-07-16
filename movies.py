@@ -7,7 +7,7 @@ from random import randint
 from statistics import mean as mean_statistics
 from statistics import median as median_statistics
 
-from config import (
+from app_config import (
     CURRENT_YEAR,
     FIRST_MOVIE_RELEASE,
     MENU_ITEMS,
