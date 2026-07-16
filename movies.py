@@ -19,9 +19,6 @@ from data_handling import (
     get_movies as db_get_movies,
 )
 from data_handling import (
-    save_movies as db_save_movies,
-)
-from data_handling import (
     update_movie as db_update_movie,
 )
 from my_fuzzy_search import get_similar
