@@ -37,14 +37,20 @@ def get_movies() -> dict[str, dict]:
 
 
 def save_movies(movies: dict[str, dict]) -> bool | Exception:
-    """Get all your movies as an argument and saves them to JSON."""
+    """Save whats given as argument and save to JSON."""
+    # TODO: - add save handling of fail cases, f.e. missing permissions
     with Path(FILE_PATH).open("w") as file:
         json.dump(movies, file, indent=4)
     return True
 
 
 def add_movie(title: str, year: int, rating: float) -> bool | Exception:
-    """Add a movie to the movies database."""
+    """Add a movie to the movies database.
+
+    Loads the latest file, adds and saves.
+    Validates for existence in db and raises ValueError with
+    custom Message to be handled by caller.
+    """
     # TODO:
     #   - Allow for multiple names with different release years
 
@@ -59,8 +65,9 @@ def add_movie(title: str, year: int, rating: float) -> bool | Exception:
 def delete_movie(title: str) -> bool | Exception:
     """Delete a movie from the movies database.
 
-    Loads the information from the JSON, deletes the movie,
-    and saves it. The function doesn't need to validate the input.
+    Loads the latest file, deletes and saves.
+    Validates for existence in db and raises ValueError with
+    custom Message to be handled by caller.
     """
     movies = get_movies()
     if title not in movies:
@@ -74,8 +81,9 @@ def delete_movie(title: str) -> bool | Exception:
 def update_movie(title: str, rating: float) -> bool | Exception:
     """Update a movie from the movies database.
 
-    Loads the information from the JSON file, updates the movie,
-    and saves it. The function doesn't need to validate the input.
+    Loads the latest file, updates and saves.
+    Validates for existence in db and raises ValueError with
+    custom Message to be handled by caller.
     """
     movies = get_movies()
     if title not in movies:
