@@ -80,4 +80,11 @@ def update_movie(title: str, rating: float) -> bool | Exception:
     Loads the information from the JSON file, updates the movie,
     and saves it. The function doesn't need to validate the input.
     """
+    movies = get_movies()
+    if title not in movies:
+        error_msg = f'Movie "{title}" doesn`t exist!'  # TODO: tbd as constant?
+        raise ValueError(error_msg)
+
+    movies[title]["rating"] = rating
+    save_movies(movies)
     return True
