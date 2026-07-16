@@ -146,6 +146,10 @@ def is_int(inp: str) -> bool:
     return True
 
 
+def rating_in_range(inp: str) -> bool:
+    return MOVIE_MIN_RATING <= float(inp) <= MOVIE_MAX_RATING
+
+
 def get_user_input_colored(promt: str) -> str:
     """Ask for user input, now in technicolor."""
     try:
@@ -220,10 +224,7 @@ def add_movie() -> None:
         elif not is_num(rating):
             rating = None
             output("Rating must be a number", color="red")
-        elif (
-            float(rating) > MOVIE_MAX_RATING
-            or float(rating) < MOVIE_MIN_RATING
-        ):
+        elif rating_in_range(rating):
             rating = None
             output("Rating must be between 0 - 10", color="red")
 
@@ -295,10 +296,7 @@ def update_movie() -> None:
         elif not is_num(new_rating):
             new_rating = None
             output("Rating must be a number", color="red")
-        elif (
-            float(new_rating) > MOVIE_MAX_RATING
-            or float(new_rating) < MOVIE_MIN_RATING
-        ):
+        elif rating_in_range(new_rating):
             new_rating = None
             output("Rating must be between 0 - 10", color="red")
 
