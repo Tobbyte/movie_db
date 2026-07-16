@@ -22,11 +22,13 @@ def create_histogram(data: dict, filename: str) -> str:
     try:
         plt.savefig(FILE_PATH / filename)
 
-    except ValueError:
-        return (  # From mathplotlob
+    except ValueError as e:
+        # From mathplotlob
+        error_msg = (
             "Format 'asd' is not supported (supported formats: "
-            "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
-            "svg, svgz, tif, tiff, webp)"
+            "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, "
+            "svgz, tif, tiff, webp)"
         )
+        raise ValueError(error_msg) from e
     else:
         return f'File "{filename}" successfully saved to disk.'
