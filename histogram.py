@@ -1,10 +1,7 @@
 """Save a mathplotlob histogram to disk."""
 
-from pathlib import Path
-
 import matplotlib.pyplot as plt
-
-FILE_PATH = Path("data_dir")
+from config import DATA_DIR_PATH
 
 
 def create_histogram(data: dict, filename: str) -> None:
@@ -20,7 +17,7 @@ def create_histogram(data: dict, filename: str) -> None:
     plt.hist(ratings_list)
 
     try:
-        plt.savefig(FILE_PATH / filename)
+        plt.savefig(DATA_DIR_PATH / filename)
 
     except ValueError as e:
         # From mathplotlob

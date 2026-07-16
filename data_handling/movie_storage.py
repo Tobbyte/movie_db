@@ -4,6 +4,8 @@
 import json
 from pathlib import Path
 
+from config import DATA_FILE_PATH
+
 """
 TODO:
 - implement custom Exception classes
@@ -11,8 +13,6 @@ TODO:
   lower:Upper case titles, sorted by rating
 
 """
-
-FILE_PATH = Path("data_dir") / "data.json"
 
 
 def get_movies() -> dict[str, dict]:
@@ -34,14 +34,14 @@ def get_movies() -> dict[str, dict]:
       },
     }
     """
-    with Path(FILE_PATH).open("r") as file:
+    with Path(DATA_FILE_PATH).open("r") as file:
         return json.load(file)
 
 
 def save_movies(movies: dict[str, dict]) -> bool | Exception:
     """Save whats given as argument and save to JSON."""
     # TODO: - add save handling of fail cases, f.e. missing permissions
-    with Path(FILE_PATH).open("w") as file:
+    with Path(DATA_FILE_PATH).open("w") as file:
         json.dump(movies, file, indent=4)
     return True
 

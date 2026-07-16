@@ -2,12 +2,19 @@
 
 """A simple interface to interact with an dummy movie "db"."""
 
-import datetime
 import sys
 from random import randint
 from statistics import mean as mean_statistics
 from statistics import median as median_statistics
 
+from config import (
+    CURRENT_YEAR,
+    FIRST_MOVIE_RELEASE,
+    MENU_ITEMS,
+    MOVIE_MAX_RATING,
+    MOVIE_MIN_RATING,
+    OUTPUT_COLORS,
+)
 from data_handling import (
     add_movie as db_add_movie,
 )
@@ -50,33 +57,6 @@ Version 1.1.0 <- submitted
 def main() -> None:
     """Run app."""
     run()
-
-
-# dict used to shorthand color codes
-OUTPUT_COLORS = {
-    "red": "\033[91m",
-    "blue": "\033[94m",
-    "yellow": "\033[93m",
-    "end": "\033[00m",
-}
-
-MOVIE_MIN_RATING = 0
-MOVIE_MAX_RATING = 10
-MENU_ITEMS = [
-    "Menu:",
-    "0. Exit",
-    "1. List movies",
-    "2. Add movie",
-    "3. Delete movie",
-    "4. Update movie",
-    "5. Stats",
-    "6. Random movie",
-    "7. Search movie",
-    "8. Movies sorted by rating",
-    "9. Create ratings histogram",
-]
-FIRST_MOVIE_RELEASE = 1878
-CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
 
 
 def _get_as_list_sorted_by_rating(
