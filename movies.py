@@ -1,4 +1,4 @@
-# ruff: noqa: FIX002, TD002, TD003, S311, TD005
+# ruff: noqa: FIX002, TD002, TD003, S311
 
 """A simple interface to interact with an dummy movie "db"."""
 
@@ -8,7 +8,6 @@ from random import randint
 from statistics import mean as mean_statistics
 from statistics import median as median_statistics
 
-import matplotlib.pyplot as plt
 from data_handling import (
     add_movie as db_add_movie,
 )
@@ -21,6 +20,7 @@ from data_handling import (
 from data_handling import (
     update_movie as db_update_movie,
 )
+from histogram import create_histogram
 from my_fuzzy_search import get_similar
 
 """
@@ -442,37 +442,17 @@ def _get_file_name(prompt: str) -> str:
 
 
 def ratings_histogram() -> None:
-    """Save a mathplotlob histogram to disk.
+    """Create movie ratings histogram and save to disc."""
+    # TODO: - returns on fail to menu, should retry
 
-    Overrides if file already existing.
-    """
-    # TODO: - check if file already exists
-    db: dict[str, dict] = db_get_movies()
-    filename = None
-    ratings_list = [info["rating"] for info in db.values()]
-    plt.hist(ratings_list)
-
+    data = db_get_movies()
     filename = _get_file_name(
-        "Enter filename (saved as png unless otherwise"
-        "specified in your current working directory): ",
+        "Enter filename (saved as png unless otherwise "
+        "specified) in your current working directory: ",
     )
 
-    try:
-        plt.savefig(filename)
-        _output(
-            f'File "{filename}" successfully saved to disk.',
-            space_before=True,
-        )
-    except ValueError:
-        # TODO:
-        #   - check on other exceptions (f.e. no write perm)
-
-        _output(  # From mathplotlob
-            "Format 'asd' is not supported (supported formats: "
-            "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
-            "svg, svgz, tif, tiff, webp)",
-            color="red",
-        )
+    result = create_histogram(data, filename)
+    _output(result, space_before=True)
 
 
 def _idle_after_input() -> None:
