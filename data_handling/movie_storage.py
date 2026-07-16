@@ -7,6 +7,8 @@ from pathlib import Path
 """
 TODO:
 - implement custom Exception classes
+- provide cached versions of db in different formats:
+  lower:Upper case titles, sorted by rating
 
 """
 
