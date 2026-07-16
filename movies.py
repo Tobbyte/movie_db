@@ -229,8 +229,6 @@ def _get_movie_rating(prompt: str) -> float:
 def add_movie() -> None:
     """Add an item to db."""
     # TODO: - check if already exists early directly after input of name
-    rating = None
-    release = None
 
     name = _get_movie_name("\nEnter new movies name: ")
 
