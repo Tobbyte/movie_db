@@ -451,10 +451,13 @@ def ratings_histogram() -> None:
         "specified) in your current working directory: ",
     )
     try:
-        result = create_histogram(data, filename)
-        _output(result, space_before=True)
-    except ValueError as e:
-        _output(str(e), color="red", space_before=True)
+        create_histogram(data, filename)
+        _output(
+            f'File "{filename}" successfully saved to disk.',
+            space_before=True,
+        )
+    except ValueError as err_msg:
+        _output(str(err_msg), color="red", space_before=True)
 
 
 def _idle_after_input() -> None:
