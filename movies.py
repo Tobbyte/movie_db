@@ -257,20 +257,20 @@ def remove_movie() -> None:
     """Remove an item from db."""
     # TODO: - check if already exists early directly after input of name
 
-    tbdeleted = _get_movie_name("\nEnter (exact) movie name to delete: ")
+    name = _get_movie_name("\nEnter (exact) movie name to delete: ")
 
     try:
-        db_delete_movie(tbdeleted)
+        db_delete_movie(name)
 
     except ValueError as movie_doesnt_exist_error:
         _output(
-            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=tbdeleted)}",
+            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=name)}",
             space_before=True,
             color="red",
         )
     else:
         _output(
-            f'Movie "{tbdeleted}" successfully deleted',
+            f'Movie "{name}" successfully deleted',
             space_before=True,
         )
 
@@ -279,22 +279,21 @@ def update_movie() -> None:
     """Update movie rating."""
     # TODO: - check if already exists early directly after input of name
 
-    tbupdated = _get_movie_name("\nEnter (exact) movie name to update: ")
+    name = _get_movie_name("\nEnter (exact) movie name to update: ")
 
-    new_rating = _get_movie_rating("Enter new movies rating (0-10): ")
+    rating = _get_movie_rating("Enter new movies rating (0-10): ")
 
     try:
-        db_update_movie(tbupdated, new_rating)
+        db_update_movie(name, rating)
     except ValueError as movie_doesnt_exist_error:
         _output(
-            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=tbupdated)}",
+            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=name)}",
             space_before=True,
             color="red",
         )
     else:
         _output(
-            f'Movie "{tbupdated}" successfully '
-            f"updated to rating: {new_rating}",
+            f'Movie "{name}" successfully updated to rating: {rating}',
             space_before=True,
         )
 
