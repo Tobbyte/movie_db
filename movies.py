@@ -170,14 +170,12 @@ def _get_movie_release(prompt: str) -> int:
         elif not _is_int(release):
             _output("Year must be valid int", color="red")
         elif int(release) < FIRST_MOVIE_RELEASE:
-            release = None
             _output(
                 "Nice try. The first movie was released in "
                 f"{FIRST_MOVIE_RELEASE}.",
                 color="red",
             )
         elif int(release) > CURRENT_YEAR:
-            release = None
             _output(
                 "Real futuristic movie - a rating from the future!",
                 color="red",
