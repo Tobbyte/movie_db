@@ -177,9 +177,10 @@ def _get_movie_name(prompt: str) -> str:
     # TODO: tbd: check for unplausible names like *?
     while True:
         name = _get_user_input_colored(prompt).strip()
-        if name != "":
+        if name == "":
+            _output("Name required", color="red")
+        else:
             break
-        _output("Name required", color="red")
     return name
 
 
