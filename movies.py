@@ -21,7 +21,7 @@ from data_handling import (
     update_movie as db_update_movie,
 )
 from histogram import create_histogram
-from my_fuzzy_search import get_similar
+from movie_search import movie_search
 
 """
 
@@ -360,70 +360,35 @@ def get_random() -> None:
 
 
 def search_movie() -> None:
-    """Search for items.
+    """Search for movies by title."""
+    data: dict[str, dict] = db_get_movies()
 
-    Not case sensitive.
-    """
-    db: dict[str, dict] = db_get_movies()
+    query = _get_movie_name("\nEnter part of movie name: ")
+    try:
+        results = movie_search(data, query)
 
-    user_input = _get_movie_name("\nEnter part of movie name: ")
-    user_input_lowered = user_input.lower()
-
-    # create a dict of lowered_name:original_name for search comparison
-    # TODO: cache / better let be provided by movie_storage
-
-    db_lowered = {}
-    for m in db:
-        m_lo = m.lower()
-        db_lowered[m_lo] = m
-
-    if user_input in db:
-        # Name is in db as put in
-        _output(
-            f"{user_input} ({db[user_input]['release']}), "
-            f"{db[user_input]['rating']}",
-            space_before=True,
-        )
-    elif user_input_lowered in db_lowered:
-        # Name is lowercase of db entry
-        _output(
-            f"{db_lowered[user_input_lowered]} "
-            f"({db[db_lowered[user_input_lowered]]['release']}), "
-            f"{db[db_lowered[user_input_lowered]]['rating']}",
-            space_before=True,
-        )
-
-    else:
-        # No direct finding, fuzzy
-        search_results = _fuzzy_search(db, user_input_lowered)
-
-        found_titles = [(found, db[found]) for (found, _) in search_results]
-
-        if not found_titles:
+        if len(results) == 1:
+            name, info = results[0]
             _output(
-                f'No Movie name similar to "{user_input}" '
-                "(remember that at least the first letter has to match):\n",
-                color="red",
+                f"{name} ({info['release']}), {info['rating']}",
+                space_before=True,
             )
         else:
             _output(
-                f'No movie titled "{user_input}" found. Did you mean:\n',
+                f'No movie titled "{query}" found. Did you mean:\n',
                 space_before=True,
             )
+            for res in results:
+                name, info = res
+                _output(f"• {name} ({info['release']}), {info['rating']}")
 
-            for name, info in found_titles:
-                _output(f"{name} ({info['release']}), {info['rating']}")
-
-
-def _fuzzy_search(db: dict[str, dict], search_term: str) -> list[tuple]:
-    """Fuzzy search on term, results sorted by distance.
-
-    Returns list of tuples (similar-to-term, distance)
-    """
-    similarity_threshold = 25  # pretty high. Workaround until optimized
-    titles = list(db.keys())
-
-    return get_similar(titles, search_term, similarity_threshold)
+    except ValueError:
+        _output(
+            f'No Movie name similar to "{query}" '
+            "(remember that at least the first letter has to match)\n",
+            color="red",
+            space_before=True,
+        )
 
 
 def _get_file_name(prompt: str) -> str:
