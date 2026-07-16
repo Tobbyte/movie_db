@@ -306,8 +306,8 @@ def get_statistics() -> None:
     rated_best = _get_extremes(db)
     rated_worst = _get_extremes(db, descending=False)
 
-    _output(f"Average rating: {avg}", space_before=True)
-    _output(f"Median rating: {median}")
+    _output(f"Average rating: {avg:.1f}", space_before=True)
+    _output(f"Median rating: {median:.1f}")
     _output("Best rated movie(s):")
     for best_name, best_info in rated_best:
         best_rating = best_info["rating"]
