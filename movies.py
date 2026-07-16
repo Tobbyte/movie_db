@@ -424,6 +424,21 @@ def _fuzzy_search(db: dict[str, dict], search_term: str) -> list[tuple]:
     return get_similar(titles, search_term, similarity_threshold)
 
 
+def _get_file_name(prompt: str) -> str:
+    """Ask user to input a valid movies rating."""
+    while True:
+        filename = _get_user_input_colored(
+            prompt,
+        ).strip()
+        if filename == "":
+            _output("Filename required", color="red")
+        elif not filename.replace(".", "").isalnum():
+            _output("Filename must be alphanumeric", color="red")
+        else:
+            break
+    return filename
+
+
 def ratings_histogram() -> None:
     """Save a mathplotlob histogram to disk.
 
@@ -434,33 +449,28 @@ def ratings_histogram() -> None:
     filename = None
     ratings_list = [info["rating"] for info in db.values()]
     plt.hist(ratings_list)
-    while filename is None or filename == "":
-        filename = _get_user_input_colored(
-            "Enter filename (saved as png unless otherwise specified"
-            "in your current working directory): ",
-        ).strip()
-        if filename == "":
-            _output("Filename required", color="red")
-        elif not filename.replace(".", "").isalnum():
-            _output("Filename must be alphanumeric", color="red")
-            filename = None
-        else:
-            try:
-                plt.savefig(filename)
-                _output(
-                    f'File "{filename}" successfully saved to disk.',
-                    space_before=True,
-                )
-            except ValueError:
-                # TODO:
-                #   - check on other exceptions (f.e. no write perm)
 
-                _output(  # From mathplotlob
-                    "Format 'asd' is not supported (supported formats: "
-                    "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
-                    "svg, svgz, tif, tiff, webp)",
-                    color="red",
-                )
+    filename = _get_file_name(
+        "Enter filename (saved as png unless otherwise"
+        "specified in your current working directory): ",
+    )
+
+    try:
+        plt.savefig(filename)
+        _output(
+            f'File "{filename}" successfully saved to disk.',
+            space_before=True,
+        )
+    except ValueError:
+        # TODO:
+        #   - check on other exceptions (f.e. no write perm)
+
+        _output(  # From mathplotlob
+            "Format 'asd' is not supported (supported formats: "
+            "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, "
+            "svg, svgz, tif, tiff, webp)",
+            color="red",
+        )
 
 
 def _idle_after_input() -> None:
