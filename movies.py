@@ -37,6 +37,9 @@ TODO: (but out of scope of this exercise):
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
   - cache sorted db
+    - constanten extrahieren?
+    - alle todos checken
+    - movie storage docstrings
 
 Version 1.1.0 <- submitted
 """
@@ -243,6 +246,7 @@ def add_movie() -> None:
 
 def remove_movie() -> None:
     """Remove an item from db."""
+    # TODO: - check if already exists early directly after input of name
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
@@ -270,6 +274,7 @@ def remove_movie() -> None:
 
 def update_movie() -> None:
     """Update movie rating."""
+    # TODO: - check if already exists early directly after input of name
     tbupdated = None
     new_rating = None
 
