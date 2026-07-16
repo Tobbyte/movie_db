@@ -172,6 +172,17 @@ def _strip_leading_zero(num: str | float) -> str | int | float:
     return res
 
 
+def _get_movie_name(prompt: str) -> str:
+    """Ask user to input a movies name."""
+    name = None
+    while True:
+        name = _get_user_input_colored(prompt).strip()
+        if name != "":
+            break
+        _output("Name required", color="red")
+    return name
+
+
 def add_movie() -> None:
     """Add an item to db."""
     # TODO: - check if already exists early directly after input of name
@@ -179,10 +190,7 @@ def add_movie() -> None:
     rating = None
     release = None
 
-    while name is None or name == "":
-        name = _get_user_input_colored("\nEnter new movie name: ").strip()
-        if name == "":
-            _output("Name required", color="red")
+    name = _get_movie_name("\nEnter new movies name: ")
 
     while release is None or release == "":
         release = _get_user_input_colored(
@@ -224,7 +232,7 @@ def add_movie() -> None:
         elif not _is_num(rating):
             rating = None
             _output("Rating must be a number", color="red")
-        elif _rating_in_range(rating):
+        elif not _rating_in_range(rating):
             rating = None
             _output("Rating must be between 0 - 10", color="red")
 
@@ -249,14 +257,8 @@ def add_movie() -> None:
 def remove_movie() -> None:
     """Remove an item from db."""
     # TODO: - check if already exists early directly after input of name
-    tbdeleted = None
 
-    while tbdeleted is None or tbdeleted == "":
-        tbdeleted = _get_user_input_colored(
-            "\nEnter (exact) movie name to delete: ",
-        ).strip()
-        if tbdeleted == "":
-            _output("Name required", color="red")
+    tbdeleted = _get_movie_name("\nEnter (exact) movie name to delete: ")
 
     try:
         db_delete_movie(tbdeleted)
@@ -277,15 +279,9 @@ def remove_movie() -> None:
 def update_movie() -> None:
     """Update movie rating."""
     # TODO: - check if already exists early directly after input of name
-    tbupdated = None
-    new_rating = None
 
-    while tbupdated is None or tbupdated == "":
-        tbupdated = _get_user_input_colored(
-            "\nEnter (exact) movie name to update: ",
-        ).strip()
-        if tbupdated == "":
-            _output("Name required", color="red")
+    tbupdated = _get_movie_name("\nEnter (exact) movie name to update: ")
+    new_rating = None
 
     while new_rating is None or new_rating == "":
         new_rating = _get_user_input_colored(
@@ -296,7 +292,7 @@ def update_movie() -> None:
         elif not _is_num(new_rating):
             new_rating = None
             _output("Rating must be a number", color="red")
-        elif _rating_in_range(new_rating):
+        elif not _rating_in_range(new_rating):
             new_rating = None
             _output("Rating must be between 0 - 10", color="red")
 
@@ -384,14 +380,8 @@ def search_movie() -> None:
     Not case sensitive.
     """
     db: dict[str, dict] = db_get_movies()
-    user_input = None
-    while user_input is None or user_input == "":
-        user_input = _get_user_input_colored(
-            "\nEnter part of movie name: ",
-        ).strip()
-        if user_input == "":
-            _output("Name required", color="red")
 
+    user_input = _get_movie_name("\nEnter part of movie name: ")
     user_input_lowered = user_input.lower()
 
     # create a dict of lowered_name:original_name for search comparison
