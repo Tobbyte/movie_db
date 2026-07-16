@@ -147,6 +147,7 @@ def _is_int(inp: str) -> bool:
 
 
 def _rating_in_range(inp: str) -> bool:
+    """Validate if a rating is in allowed range."""
     return MOVIE_MIN_RATING <= float(inp) <= MOVIE_MAX_RATING
 
 
@@ -545,7 +546,7 @@ def present_menu(menu_items: list[str]) -> int:
 
 
 def _quit_program() -> None:
-    """Quit."""
+    """Quit with farewell."""
     _output("Bye!")
     sys.exit()
 
