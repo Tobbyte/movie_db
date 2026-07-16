@@ -5,6 +5,8 @@
 import datetime
 import sys
 from random import randint
+from statistics import mean as mean_statistics
+from statistics import median as median_statistics
 
 import matplotlib.pyplot as plt
 from data_handling import (
@@ -319,23 +321,6 @@ def update_movie() -> None:
         )
 
 
-def get_average(nums: list[float]) -> float:
-    """Return average."""
-    return sum(nums) / len(nums)
-
-
-def get_median(nums: list[float]) -> float:
-    """Return median."""
-    # TODO:
-    #    - use import statistics
-
-    sorted_nums = sorted(nums)
-    if len(sorted_nums) % 2 != 0:
-        return sorted_nums[len(sorted_nums) // 2]
-    centeri = len(sorted_nums) // 2
-    return get_average(sorted_nums[centeri - 1 : centeri + 1])
-
-
 def get_extremes(
     db: dict[str, dict],
     *,
@@ -366,8 +351,8 @@ def get_statistics() -> None:
     # TODO: - sort best / worst if multiple by name
     db: dict[str, dict] = db_get_movies()
     val_list = [info["rating"] for info in db.values()]
-    avg = get_average(val_list)
-    median = get_median(sorted(val_list))
+    avg = mean_statistics(val_list)
+    median = median_statistics(sorted(val_list))
     rated_best = get_extremes(db)
     rated_worst = get_extremes(db, descending=False)
 
