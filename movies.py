@@ -77,7 +77,7 @@ def _get_as_list_sorted_by_rating(
 
 
 def list_movies() -> None:
-    """Return a list of all db items."""
+    """Return a list of all movies."""
     db: dict[str, dict] = db_get_movies()
     _output(f"{len(db)} movies in total:\n", space_before=True)
 
@@ -88,7 +88,7 @@ def list_movies() -> None:
 
 
 def list_movies_by_rating() -> None:
-    """Return a list of all db items by rating."""
+    """Return a list of all movies by rating."""
     db: dict[str, dict] = db_get_movies()
     _output("Movies by rating:\n", space_before=True)
 
