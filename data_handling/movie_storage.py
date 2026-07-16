@@ -51,8 +51,7 @@ def add_movie(title: str, year: int, rating: float) -> bool | Exception:
 
     movies = get_movies()
     if title in movies:
-        error_msg = f'Movie "{title}" already exists'  # TODO: tbd as constant?
-        raise ValueError(error_msg)
+        raise ValueError("add_already_exists")
     movies[title] = {"rating": rating, "release": year}
     save_movies(movies)
     return True
@@ -66,8 +65,7 @@ def delete_movie(title: str) -> bool | Exception:
     """
     movies = get_movies()
     if title not in movies:
-        error_msg = f'Movie "{title}" doesn`t exist!'  # TODO: tbd as constant?
-        raise ValueError(error_msg)
+        raise ValueError("del_doenst_exist")
 
     del movies[title]
     save_movies(movies)
@@ -82,8 +80,7 @@ def update_movie(title: str, rating: float) -> bool | Exception:
     """
     movies = get_movies()
     if title not in movies:
-        error_msg = f'Movie "{title}" doesn`t exist!'  # TODO: tbd as constant?
-        raise ValueError(error_msg)
+        raise ValueError("upd_doenst_exist")
 
     movies[title]["rating"] = rating
     save_movies(movies)

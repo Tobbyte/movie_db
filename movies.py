@@ -77,6 +77,12 @@ MENU_ITEMS = [
 FIRST_MOVIE_RELEASE = 1878
 CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
 
+DB_ERROR_MSG = {
+    "add_already_exists": 'Movie "{title}" already exists',
+    "upd_doenst_exist": 'Movie "{title}" doesn`t exist!',
+    "del_doenst_exist": 'Movie "{title}" doesn`t exist!',
+}
+
 
 def get_as_list_sorted_by_rating(
     dic: dict[str, dict],
@@ -223,7 +229,7 @@ def add_movie() -> None:
         db_add_movie(name, release, rating)
     except ValueError as movie_exists_error:
         output(
-            f"{movie_exists_error}",
+            f"{DB_ERROR_MSG[f'{movie_exists_error}'].format(title=name)}",
             space_before=True,
             color="red",
         )
@@ -251,7 +257,7 @@ def remove_movie() -> None:
 
     except ValueError as movie_doesnt_exist_error:
         output(
-            f"{movie_doesnt_exist_error}",
+            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=tbdeleted)}",
             space_before=True,
             color="red",
         )
@@ -296,7 +302,7 @@ def update_movie() -> None:
         db_update_movie(tbupdated, new_rating)
     except ValueError as movie_doesnt_exist_error:
         output(
-            f"{movie_doesnt_exist_error}",
+            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=tbupdated)}",
             space_before=True,
             color="red",
         )
