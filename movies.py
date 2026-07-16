@@ -112,6 +112,7 @@ def list_movies() -> None:
         release = info["release"]
         _output(f"{name} ({release}): {rating}")
 
+
 def list_movies_by_rating() -> None:
     """Return a list of all db items by rating."""
     db: dict[str, dict] = db_get_movies()
