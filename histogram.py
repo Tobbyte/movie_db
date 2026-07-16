@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 FILE_PATH = Path("data_dir")
 
 
-def create_histogram(data: dict, filename: str) -> str:
+def create_histogram(data: dict, filename: str) -> None:
     """Save a mathplotlob histogram to disk.
 
     Overrides if file already existing.
@@ -30,5 +30,3 @@ def create_histogram(data: dict, filename: str) -> str:
             "svgz, tif, tiff, webp)"
         )
         raise ValueError(error_msg) from e
-    else:
-        return f'File "{filename}" successfully saved to disk.'
