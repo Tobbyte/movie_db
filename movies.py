@@ -27,7 +27,9 @@ from my_fuzzy_search import get_similar
 
 
 TODO: (but out of scope of this exercise):
-  - unify user input and validation across all features
+  - unify user input and validation across all features:
+    - probably some prompt_validator that takes a list of tests
+      for that specific input to pass. Too early for now.
   - add movie: check if already exists, present option to update
   - update movie: check if not existing, present option to add
   - update / delete movie: fuzzy search
