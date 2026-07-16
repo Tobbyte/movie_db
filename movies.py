@@ -264,7 +264,6 @@ def remove_movie() -> None:
 
 def update_movie() -> None:
     """Update movie rating."""
-    db: dict[str, dict] = db_get_movies()
     tbupdated = None
     new_rating = None
 
@@ -274,14 +273,6 @@ def update_movie() -> None:
         ).strip()
         if tbupdated == "":
             output("Name required", color="red")
-        try:
-            db[tbupdated]
-        except KeyError:
-            output(
-                f"Movie {tbupdated} doesn't exist!",
-                space_before=True,
-                color="red",
-            )
 
     while new_rating is None or new_rating == "":
         new_rating = get_user_input_colored(
@@ -299,13 +290,22 @@ def update_movie() -> None:
             new_rating = None
             output("Rating must be between 0 - 10", color="red")
 
-    new_rating = strip_leading_zero(float(new_rating))
-    db[tbupdated]["rating"] = float(new_rating)
+    new_rating = float(strip_leading_zero(new_rating))
 
-    output(
-        f'Movie "{tbupdated}" successfully updated to rating: {new_rating}',
-        space_before=True,
-    )
+    try:
+        db_update_movie(tbupdated, new_rating)
+    except ValueError as movie_doesnt_exist_error:
+        output(
+            f"{movie_doesnt_exist_error}",
+            space_before=True,
+            color="red",
+        )
+    else:
+        output(
+            f'Movie "{tbupdated}" successfully '
+            f"updated to rating: {new_rating}",
+            space_before=True,
+        )
 
 
 def get_average(nums: list[float]) -> float:
