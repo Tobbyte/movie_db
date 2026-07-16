@@ -38,6 +38,7 @@ TODO: (but out of scope of this exercise):
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
+  - catch EOFs while inputting.
 
 Version 1.1.0 <- submitted
 """
