@@ -432,24 +432,23 @@ def present_menu(menu_items: list[str]) -> int:
     for item in menu_items:
         _output(item, color="blue")
 
-    selection = None
-    insist_to_quite = False
-    while selection is None:
+    insist_to_quit = False
+
+    while True:
         selection = _get_user_input_colored(
             "\nEnter choice (0-9): ",
         ).strip()
-
-        if len(selection) > 1 or not selection.isdecimal():
-            if not insist_to_quite:
-                _output(
-                    "Invalid input (Enter 0 - 9. Try again).\n"
-                    "Or press ENTER again to quit",
-                    color="red",
-                )
-                selection = None
-                insist_to_quite = True
-            else:
-                _quit_program()
+        if selection == "" and insist_to_quit:
+            _quit_program()
+        elif len(selection) > 1 or not selection.isdecimal():
+            _output(
+                "Invalid input (Enter 0 - 9. Try again).\n"
+                "Or press ENTER again to quit",
+                color="red",
+            )
+            insist_to_quit = True
+        else:
+            break
 
     return int(selection)
 
