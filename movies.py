@@ -626,4 +626,9 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except EOFError:
+        # quit gratefully on termination
+        print("\nThat was sudden. Goodbye!")
+        sys.exit()
