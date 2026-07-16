@@ -186,9 +186,7 @@ def _get_movie_name(prompt: str) -> str:
 def _get_movie_release(prompt: str) -> int:
     """Ask user to input a valid movie release year."""
     while True:
-        release = _get_user_input_colored(
-            prompt,
-        ).strip()
+        release = _get_user_input_colored(prompt).strip()
         if release == "":
             _output("Year required", color="red")
         elif not _is_num(release):
