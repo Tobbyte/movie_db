@@ -40,7 +40,7 @@ def get_movies() -> dict[str, dict]:
 def save_movies(movies: dict[str, dict]) -> bool | Exception:
     """Get all your movies as an argument and saves them to JSON."""
     with Path(FILE_PATH).open("w") as file:
-        json.dump(movies, file)
+        json.dump(movies, file, indent=4)
     return True
 
 
