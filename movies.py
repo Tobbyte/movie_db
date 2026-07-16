@@ -224,7 +224,7 @@ def _get_movie_rating(prompt: str) -> float:
             _output("Rating must be between 0 - 10", color="red")
         else:
             break
-    return float(rating)
+    return float(_strip_leading_zero(rating))
 
 
 def add_movie() -> None:
@@ -236,7 +236,6 @@ def add_movie() -> None:
     release = _get_movie_release("Enter new movies year of release: ")
 
     rating = _get_movie_rating("Enter new movies rating (0-10): ")
-    rating = float(_strip_leading_zero(rating))
 
     try:
         db_add_movie(name, release, rating)
@@ -281,22 +280,8 @@ def update_movie() -> None:
     # TODO: - check if already exists early directly after input of name
 
     tbupdated = _get_movie_name("\nEnter (exact) movie name to update: ")
-    new_rating = None
 
-    while new_rating is None or new_rating == "":
-        new_rating = _get_user_input_colored(
-            "Enter new movies rating (0-10): ",
-        ).strip()
-        if new_rating == "":
-            _output("Rating required", color="red")
-        elif not _is_num(new_rating):
-            new_rating = None
-            _output("Rating must be a number", color="red")
-        elif not _rating_in_range(new_rating):
-            new_rating = None
-            _output("Rating must be between 0 - 10", color="red")
-
-    new_rating = float(_strip_leading_zero(new_rating))
+    new_rating = _get_movie_rating("Enter new movies rating (0-10): ")
 
     try:
         db_update_movie(tbupdated, new_rating)
