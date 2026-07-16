@@ -147,9 +147,11 @@ def is_int(inp: str) -> bool:
 
 def get_user_input_colored(promt: str) -> str:
     """Ask for user input, now in technicolor."""
-    inp = input(OUTPUT_COLORS["yellow"] + promt)
-    print("" + OUTPUT_COLORS["end"], end="")  # reset input coloring
-    return inp
+    try:
+        return input(OUTPUT_COLORS["yellow"] + promt)
+    finally:
+        # reset input coloring, also at EOF
+        print("" + OUTPUT_COLORS["end"], end="")
 
 
 def strip_leading_zero(num: str | float) -> str | int | float:
