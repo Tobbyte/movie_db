@@ -183,45 +183,44 @@ def _get_movie_name(prompt: str) -> str:
     return name
 
 
+def _get_movie_release(prompt: str) -> int:
+    while True:
+        release = _get_user_input_colored(
+            prompt,
+        ).strip()
+        if release == "":
+            _output("Year required", color="red")
+        elif not _is_num(release):
+            _output("Year must be a number", color="red")
+        elif not _is_int(release):
+            _output("Year must be valid int", color="red")
+        elif int(release) < FIRST_MOVIE_RELEASE:
+            release = None
+            _output(
+                "Nice try. The first movie was released in "
+                f"{FIRST_MOVIE_RELEASE}.",
+                color="red",
+            )
+        elif int(release) > CURRENT_YEAR:
+            release = None
+            _output(
+                "Real futuristic movie - a rating from the future!",
+                color="red",
+            )
+        else:
+            break
+    return int(release)
+
+
 def add_movie() -> None:
     """Add an item to db."""
     # TODO: - check if already exists early directly after input of name
-    name = None
     rating = None
     release = None
 
     name = _get_movie_name("\nEnter new movies name: ")
 
-    while release is None or release == "":
-        release = _get_user_input_colored(
-            "Enter new movies year of release: ",
-        ).strip()
-        if release == "":
-            _output("Year required", color="red")
-        elif not _is_num(release):
-            release = None
-            _output("Year must be a number", color="red")
-        elif not _is_int(release):
-            release = None
-            _output("Year must be valid int", color="red")
-
-        if release:
-            # !=None check here to prev. int of None
-            # in db_add_movie below
-            release = int(release)
-            if release < FIRST_MOVIE_RELEASE:
-                release = None
-                _output(
-                    "Nice try. The first movie was released in "
-                    f"{FIRST_MOVIE_RELEASE}.",
-                    color="red",
-                )
-            elif release > CURRENT_YEAR:
-                release = None
-                _output(
-                    "Real futuristic movie - a rating from the future!",
-                    color="red",
-                )
+    release = _get_movie_release("Enter new movies year of release: ")
 
     while rating is None or rating == "":
         rating = _get_user_input_colored(
