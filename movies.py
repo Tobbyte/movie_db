@@ -5,8 +5,25 @@
 import datetime
 import sys
 from random import randint
+from statistics import mean as mean_statistics
+from statistics import median as median_statistics
 
 import matplotlib.pyplot as plt
+from data_handling import (
+    add_movie as db_add_movie,
+)
+from data_handling import (
+    delete_movie as db_delete_movie,
+)
+from data_handling import (
+    get_movies as db_get_movies,
+)
+from data_handling import (
+    save_movies as db_save_movies,
+)
+from data_handling import (
+    update_movie as db_update_movie,
+)
 from my_fuzzy_search import get_similar
 
 """
@@ -21,7 +38,6 @@ TODO: (but out of scope of this exercise):
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
-  - cache sorted db
 
 Version 1.1.0 <- submitted
 """
@@ -32,22 +48,8 @@ Version 1.1.0 <- submitted
 
 
 def main() -> None:
-    """Run app and load movie db."""
-    # Dictionary to store the movies and the rating
-    movies = {
-        "The Shawshank Redemption": {"rating": 9.5, "release": 1990},
-        "Pulp Fiction": {"rating": 8.8, "release": 1990},
-        "The Room": {"rating": 3.6, "release": 1990},
-        "The Godfather": {"rating": 9.2, "release": 1990},
-        "The Godfather: Part II": {"rating": 9.0, "release": 1990},
-        "The Dark Knight": {"rating": 9.0, "release": 1990},
-        "12 Angry Men": {"rating": 8.9, "release": 1990},
-        "Everything Everywhere All At Once": {"rating": 8.9, "release": 1990},
-        "Forrest Gump": {"rating": 8.8, "release": 1990},
-        "Star Wars: Episode V": {"rating": 8.7, "release": 1990},
-    }
-
-    run(movies)
+    """Run app."""
+    run()
 
 
 # dict used to shorthand color codes
@@ -76,6 +78,12 @@ MENU_ITEMS = [
 FIRST_MOVIE_RELEASE = 1878
 CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
 
+DB_ERROR_MSG = {
+    "add_already_exists": 'Movie "{title}" already exists',
+    "upd_doenst_exist": 'Movie "{title}" doesn`t exist!',
+    "del_doenst_exist": 'Movie "{title}" doesn`t exist!',
+}
+
 
 def get_as_list_sorted_by_rating(
     dic: dict[str, dict],
@@ -94,17 +102,19 @@ def get_as_list_sorted_by_rating(
     )
 
 
-def list_movies(db: dict[str, dict]) -> None:
+def list_movies() -> None:
     """Return a list of all db items."""
+    db: dict[str, dict] = db_get_movies()
     output(f"{len(db)} movies in total:\n", space_before=True)
+
     for name, info in db.items():
         rating = info["rating"]
         release = info["release"]
         output(f"{name} ({release}): {rating}")
 
-
-def list_movies_by_rating(db: dict[str, dict]) -> None:
+def list_movies_by_rating() -> None:
     """Return a list of all db items by rating."""
+    db: dict[str, dict] = db_get_movies()
     output("Movies by rating:\n", space_before=True)
 
     for name, info in get_as_list_sorted_by_rating(db, descending=True):
@@ -155,10 +165,9 @@ def strip_leading_zero(num: str | float) -> str | int | float:
     return res
 
 
-def add_movie(db: dict[str, dict]) -> None:
+def add_movie() -> None:
     """Add an item to db."""
-    # TODO: Check if already exists. Allow for different years.
-
+    # TODO: - check if already exists early directly after input of name
     name = None
     rating = None
     release = None
@@ -181,19 +190,23 @@ def add_movie(db: dict[str, dict]) -> None:
             release = None
             output("Year must be valid int", color="red")
 
-        if release and int(release) < FIRST_MOVIE_RELEASE:
-            release = None
-            output(
-                "Nice try. The first movie was released in "
-                f"{FIRST_MOVIE_RELEASE}.",
-                color="red",
-            )
-        elif release and int(release) > CURRENT_YEAR:
-            release = None
-            output(
-                "Real futuristic movie - a rating from the future!",
-                color="red",
-            )
+        if release:
+            # !=None check here to prev. int of None
+            # in db_add_movie below
+            release = int(release)
+            if release < FIRST_MOVIE_RELEASE:
+                release = None
+                output(
+                    "Nice try. The first movie was released in "
+                    f"{FIRST_MOVIE_RELEASE}.",
+                    color="red",
+                )
+            elif release > CURRENT_YEAR:
+                release = None
+                output(
+                    "Real futuristic movie - a rating from the future!",
+                    color="red",
+                )
 
     while rating is None or rating == "":
         rating = get_user_input_colored(
@@ -212,16 +225,26 @@ def add_movie(db: dict[str, dict]) -> None:
             output("Rating must be between 0 - 10", color="red")
 
     rating = float(strip_leading_zero(float(rating)))
-    db[name] = {"rating": rating, "release": release}  # TODO: build factory
 
-    output(
-        f'Movie "{name}" ({release}) with rating {rating} successfully added',
-        space_before=True,
-    )
+    try:
+        db_add_movie(name, release, rating)
+    except ValueError as movie_exists_error:
+        output(
+            f"{DB_ERROR_MSG[f'{movie_exists_error}'].format(title=name)}",
+            space_before=True,
+            color="red",
+        )
+    else:
+        output(
+            f'Movie "{name}" ({release}) with '
+            f"rating {rating} successfully added",
+            space_before=True,
+        )
 
 
-def remove_movie(db: dict[str, dict]) -> None:
+def remove_movie() -> None:
     """Remove an item from db."""
+    # TODO: - check if already exists early directly after input of name
     tbdeleted = None
 
     while tbdeleted is None or tbdeleted == "":
@@ -230,24 +253,26 @@ def remove_movie(db: dict[str, dict]) -> None:
         ).strip()
         if tbdeleted == "":
             output("Name required", color="red")
-        try:
-            del db[tbdeleted]
-            output(
-                f'Movie "{tbdeleted}" successfully deleted',
-                space_before=True,
-            )
 
-        except KeyError:
-            output(
-                f"Movie {tbdeleted} doesn't exist!",
-                space_before=True,
-                color="red",
-            )
-            break
+    try:
+        db_delete_movie(tbdeleted)
+
+    except ValueError as movie_doesnt_exist_error:
+        output(
+            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=tbdeleted)}",
+            space_before=True,
+            color="red",
+        )
+    else:
+        output(
+            f'Movie "{tbdeleted}" successfully deleted',
+            space_before=True,
+        )
 
 
-def update_movie(db: dict[str, dict]) -> None:
+def update_movie() -> None:
     """Update movie rating."""
+    # TODO: - check if already exists early directly after input of name
     tbupdated = None
     new_rating = None
 
@@ -257,14 +282,6 @@ def update_movie(db: dict[str, dict]) -> None:
         ).strip()
         if tbupdated == "":
             output("Name required", color="red")
-        try:
-            db[tbupdated]
-        except KeyError:
-            output(
-                f"Movie {tbupdated} doesn't exist!",
-                space_before=True,
-                color="red",
-            )
 
     while new_rating is None or new_rating == "":
         new_rating = get_user_input_colored(
@@ -282,30 +299,22 @@ def update_movie(db: dict[str, dict]) -> None:
             new_rating = None
             output("Rating must be between 0 - 10", color="red")
 
-    new_rating = strip_leading_zero(float(new_rating))
-    db[tbupdated]["rating"] = float(new_rating)
+    new_rating = float(strip_leading_zero(new_rating))
 
-    output(
-        f'Movie "{tbupdated}" successfully updated to rating: {new_rating}',
-        space_before=True,
-    )
-
-
-def get_average(nums: list[float]) -> float:
-    """Return average."""
-    return sum(nums) / len(nums)
-
-
-def get_median(nums: list[float]) -> float:
-    """Return median."""
-    # TODO:
-    #    - use import statistics
-
-    sorted_nums = sorted(nums)
-    if len(sorted_nums) % 2 != 0:
-        return sorted_nums[len(sorted_nums) // 2]
-    centeri = len(sorted_nums) // 2
-    return get_average(sorted_nums[centeri - 1 : centeri + 1])
+    try:
+        db_update_movie(tbupdated, new_rating)
+    except ValueError as movie_doesnt_exist_error:
+        output(
+            f"{DB_ERROR_MSG[f'{movie_doesnt_exist_error}'].format(title=tbupdated)}",
+            space_before=True,
+            color="red",
+        )
+    else:
+        output(
+            f'Movie "{tbupdated}" successfully '
+            f"updated to rating: {new_rating}",
+            space_before=True,
+        )
 
 
 def get_extremes(
@@ -327,7 +336,7 @@ def get_extremes(
     ]
 
 
-def get_statistics(db: dict[str, dict]) -> None:
+def get_statistics() -> None:
     """Get statistics.
 
     - average
@@ -336,10 +345,10 @@ def get_statistics(db: dict[str, dict]) -> None:
     - bottom-ranged items
     """
     # TODO: - sort best / worst if multiple by name
-
+    db: dict[str, dict] = db_get_movies()
     val_list = [info["rating"] for info in db.values()]
-    avg = get_average(val_list)
-    median = get_median(sorted(val_list))
+    avg = mean_statistics(val_list)
+    median = median_statistics(sorted(val_list))
     rated_best = get_extremes(db)
     rated_worst = get_extremes(db, descending=False)
 
@@ -357,8 +366,9 @@ def get_statistics(db: dict[str, dict]) -> None:
         output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
 
 
-def get_random(db: dict[str, dict]) -> None:
+def get_random() -> None:
     """Return random movie."""
+    db: dict[str, dict] = db_get_movies()
     name, info = list(db.items())[randint(0, len(db) - 1)]
     output(
         f"Your movie for tonight: {name} ({info['release']}), "
@@ -367,11 +377,12 @@ def get_random(db: dict[str, dict]) -> None:
     )
 
 
-def search_movie(db: dict[str, dict]) -> None:
+def search_movie() -> None:
     """Search for items.
 
     Not case sensitive.
     """
+    db: dict[str, dict] = db_get_movies()
     user_input = None
     while user_input is None or user_input == "":
         user_input = get_user_input_colored(
@@ -383,7 +394,7 @@ def search_movie(db: dict[str, dict]) -> None:
     user_input_lowered = user_input.lower()
 
     # create a dict of lowered_name:original_name for search comparison
-    # TODO: cache
+    # TODO: cache / better let be provided by movie_storage
 
     db_lowered = {}
     for m in db:
@@ -438,13 +449,13 @@ def fuzzy_search(db: dict[str, dict], search_term: str) -> list[tuple]:
     return get_similar(titles, search_term, similarity_threshold)
 
 
-def ratings_histogram(db: dict[str, dict]) -> None:
+def ratings_histogram() -> None:
     """Save a mathplotlob histogram to disk.
 
     Overrides if file already existing.
     """
     # TODO: - check if file already exists
-
+    db: dict[str, dict] = db_get_movies()
     filename = None
     ratings_list = [info["rating"] for info in db.values()]
     plt.hist(ratings_list)
@@ -567,7 +578,7 @@ def output(
         print("\n \n")
 
 
-def run(db: dict[str, dict]) -> None:
+def run() -> None:
     """Print welcome and loop menu."""
     first_run = True
     clear_screen()
@@ -607,7 +618,7 @@ def run(db: dict[str, dict]) -> None:
                 color="yellow",
             )
 
-            menu_dispatch[selection](db)
+            menu_dispatch[selection]()
 
             idle_after_input()
 
