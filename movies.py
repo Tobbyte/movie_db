@@ -38,10 +38,6 @@ TODO: (but out of scope of this exercise):
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
-  - cache sorted db
-    - constanten extrahieren?
-    - alle todos checken
-    - movie storage docstrings
 
 Version 1.1.0 <- submitted
 """
@@ -398,7 +394,7 @@ def search_movie() -> None:
     user_input_lowered = user_input.lower()
 
     # create a dict of lowered_name:original_name for search comparison
-    # TODO: cache
+    # TODO: cache / better let be provided by movie_storage
 
     db_lowered = {}
     for m in db:
