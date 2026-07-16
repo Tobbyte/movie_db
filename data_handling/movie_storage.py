@@ -10,8 +10,7 @@ TODO:
 
 """
 
-DATA_DIR = Path("data_dir")
-FILE_PATH = DATA_DIR / "data.json"
+FILE_PATH = Path("data_dir") / "data.json"
 
 
 def get_movies() -> dict[str, dict]:
