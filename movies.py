@@ -357,7 +357,7 @@ def present_menu(menu_items: list[str]) -> int:
         7:  Add movie
         8:  Update movie
         9:  Delete movie
-        10:  Stats
+        10: Stats
         11. Create ratings histogram
     """
 
