@@ -44,7 +44,8 @@ TODO: (but out of scope of this exercise):
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
-  - catch EOFs while inputting.
+  -  pretty align movie outputs
+
 
 Version 1.1.0 <- submitted
 """
@@ -75,9 +76,66 @@ def _get_as_list_sorted_by_rating(
         reverse=descending,
     )
 
+def _get_yes_no_choice(prompt: str) -> bool:
+    """Ask user to choose between Yes or No.
+
+    Returns True for Yes,
+    returns False for No.
+    """
+    while True:
+        name = _get_user_input_colored(prompt).strip()
+        if name not in ("Y", "Yes", "y", "N", "No", "n"):
+            _output("Choose (Y)es or (N)o: ", color="yellow")
+        else:
+            break
+
+    return name in {"Y", "y"}
+
+
+def _get_as_list_sorted_by_release(
+    dic: dict[str, dict],
+    *,
+    descending: bool = False,
+) -> list[tuple]:
+    """Sort movies by release year.
+
+    Return a list of (name, info) tuples for movies in db
+    in ascending order of release year.
+    """
+    return sorted(
+        dic.items(),
+        key=lambda item: item[1]["release"],
+        reverse=descending,
+    )
+
+
+def list_movies_by_release() -> None:
+    """Return a list of movies by release year.
+
+    Asks user for preferred sorting order.
+    """
+    db: dict[str, dict] = db_get_movies()
+    prompt = (
+        "\nDo you want to order the movies in descending order?\n"
+        "Choose (Y)es or (N)o: "
+    )
+    sort_descending = _get_yes_no_choice(prompt)
+
+    order = "descending" if sort_descending else "ascending"
+
+    _output(f"Movies by release ({order}):\n", space_before=True)
+
+    for name, info in _get_as_list_sorted_by_release(
+        db,
+        descending=sort_descending,
+    ):
+        release = info["release"]
+        rating = info["rating"]
+        _output(f"{name} ({rating}): {release}")
+
 
 def list_movies() -> None:
-    """Return a list of all db items."""
+    """Return a list of all movies."""
     db: dict[str, dict] = db_get_movies()
     _output(f"{len(db)} movies in total:\n", space_before=True)
 
@@ -88,7 +146,7 @@ def list_movies() -> None:
 
 
 def list_movies_by_rating() -> None:
-    """Return a list of all db items by rating."""
+    """Return a list of all movies by rating."""
     db: dict[str, dict] = db_get_movies()
     _output("Movies by rating:\n", space_before=True)
 
@@ -290,7 +348,7 @@ def _get_extremes(
     ]
 
 
-def get_statistics() -> None:
+def list_statistics() -> None:
     """Get statistics.
 
     - average
@@ -320,7 +378,7 @@ def get_statistics() -> None:
         _output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
 
 
-def get_random() -> None:
+def random_movie() -> None:
     """Return random movie."""
     db: dict[str, dict] = db_get_movies()
     name, info = list(db.items())[randint(0, len(db) - 1)]
@@ -384,7 +442,7 @@ def ratings_histogram() -> None:
 
     data = db_get_movies()
     filename = _get_file_name(
-        "Enter filename (saved as png unless otherwise "
+        "\nEnter filename (saved as png unless otherwise "
         "specified) in your current working directory: ",
     )
     try:
@@ -402,27 +460,33 @@ def _idle_after_input() -> None:
     _get_user_input_colored("\npress Enter to continue ")
 
 
+def _menu_selection_in_range(
+    selection: str,
+    max_range: int,
+    min_range: int = 0,
+) -> bool:
+    try:
+        int(selection)
+    except ValueError:
+        return False
+    else:
+        return min_range <= int(selection) <= max_range + 1
+
+
 def present_menu(menu_items: list[str]) -> int:
     """Print the menu to the user, asks for input."""
     """ Options:
-        1. List movies, no input. Print. Return to menu.
-        2. Add movie, single input:
-            - str, int:[1-10] (not validated). Print new Entry.
-            Return to menu.
-        3. Delete movie, single input:
-            - str. Print error or confirmation. Return to menu.
-        4. Update movie, multi input:
-            1.: str. Print error if not found. Return to menu.
-            2.: int:[1-10] (not validated). Print new Entry.
-            Return to menu.
-        5. Stats, no input. Print. Return to menu.
-        6. Random movie, no input. Print. Return to menu.
-        7. Search movie, single input:
-            - str. Print error or results. Return to menu.
-        8. List movies sorted descending, no input. Print.
-        Return to menu.
-        9. Create ratings histogram
-        0. Exit.
+        0:  Exit
+        1:  List movies
+        2:  List movies rating
+        3:  List movies release
+        4:  Search movie
+        5:  Random movie
+        6:  Add movie
+        7:  Update movie
+        8:  Delete movie
+        9:  Stats
+        10. Create ratings histogram
     """
 
     _output("")
@@ -436,11 +500,15 @@ def present_menu(menu_items: list[str]) -> int:
         selection = _get_user_input_colored(
             "\nEnter choice (0-9): ",
         ).strip()
+
         if selection == "" and insist_to_quit:
             _quit_program()
-        elif len(selection) > 1 or not selection.isdecimal():
+        elif (
+            selection is not selection.isdecimal()
+            and not _menu_selection_in_range(selection, len(MENU_ITEMS))
+        ):
             _output(
-                "Invalid input (Enter 0 - 9. Try again).\n"
+                "Invalid input (Enter 0 - 10. Try again).\n"
                 "Or press ENTER again to quit",
                 color="red",
             )
@@ -497,14 +565,15 @@ def run() -> None:
 
     menu_dispatch = {
         1: list_movies,
-        2: add_movie,
-        3: remove_movie,
-        4: update_movie,
-        5: get_statistics,
-        6: get_random,
-        7: search_movie,
-        8: list_movies_by_rating,
-        9: ratings_histogram,
+        2: list_movies_by_rating,
+        3: list_movies_by_release,
+        4: search_movie,
+        5: random_movie,
+        6: add_movie,
+        7: update_movie,
+        8: remove_movie,
+        9: list_statistics,
+        10: ratings_histogram,
         # 0: quit_program handled separately
     }
 
