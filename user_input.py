@@ -1,3 +1,6 @@
+# ruff: noqa: FIX002, TD002, TD003
+"""Module that handles all user inputs."""
+
 from app_config import (
     CURRENT_YEAR,
     FIRST_MOVIE_RELEASE,
