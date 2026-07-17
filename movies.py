@@ -407,7 +407,19 @@ def list_movies_by_filter() -> None:
                 filter_release_start,
                 filter_release_end,
             ),
-        ):
+            space_before=True,
+        )
+
+        filtered_results = _get_as_list_filtered(
+            db,
+            filter_rating,
+            filter_release_start,
+            filter_release_end,
+        )
+
+        _output("No movies match your filters.")
+
+        for name, info in sorted(filtered_results):
             release = info["release"]
             rating = info["rating"]
             _output(f"{name} ({release}): {rating}")
