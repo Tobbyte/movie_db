@@ -1,4 +1,4 @@
-# ruff: noqa: FIX002, TD002, TD003, S311
+# ruff: noqa: FIX002, TD002, TD003, S311,RUF015
 
 """A simple interface to interact with an dummy movie "db"."""
 
@@ -25,6 +25,7 @@ from data_handling.data_provider import (
     get_as_list_sorted_by_rating,
     get_as_list_sorted_by_release,
     get_extremes,
+    get_movies_count,
 )
 from data_handling.movie_search import movie_search
 from helpers.helpers import clear_screen, construct_filter_output, output
@@ -90,18 +91,33 @@ def run() -> None:
         first_run = False
 
         selection = get_menu_selection()
+
         if not selection:
             _quit_program()
-        else:
-            clear_screen()
-            output(
-                f"~~~~~~~~~~\nSelected menu item: "
-                f"{MENU_ITEMS[selection]}\n"
-                "~~~~~~~~~~",
-                color="yellow",
-            )
 
-            menu_dispatch[selection]()
+        else:
+            i_of_add_movie = [
+                key
+                for key, value in menu_dispatch.items()
+                if value == add_movie
+            ][0]
+
+            if get_movies_count() == 0 and selection != i_of_add_movie:
+                output(
+                    "No movies in db. "
+                    f"You can only add one (press {i_of_add_movie}).",
+                    color="red",
+                )
+            else:
+                clear_screen()
+                output(
+                    f"~~~~~~~~~~\nSelected menu item: "
+                    f"{MENU_ITEMS[selection]}\n"
+                    "~~~~~~~~~~",
+                    color="yellow",
+                )
+
+                menu_dispatch[selection]()
 
             _idle_after_input()
 
