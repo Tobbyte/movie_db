@@ -476,25 +476,17 @@ def _menu_selection_in_range(
 def present_menu(menu_items: list[str]) -> int:
     """Print the menu to the user, asks for input."""
     """ Options:
-        1. List movies, no input. Print. Return to menu.
-        2. Add movie, single input:
-            - str, int:[1-10] (not validated). Print new Entry.
-            Return to menu.
-        3. Delete movie, single input:
-            - str. Print error or confirmation. Return to menu.
-        4. Update movie, multi input:
-            1.: str. Print error if not found. Return to menu.
-            2.: int:[1-10] (not validated). Print new Entry.
-            Return to menu.
-        5. Stats, no input. Print. Return to menu.
-        6. Random movie, no input. Print. Return to menu.
-        7. Search movie, single input:
-            - str. Print error or results. Return to menu.
-        8. List movies sorted descending, no input. Print.
-        Return to menu.
-        9. Create ratings histogram
-        10. List by release
-        0. Exit.
+        0:  Exit
+        1:  List movies
+        2:  List movies rating
+        3:  List movies release
+        4:  Search movie
+        5:  Random movie
+        6:  Add movie
+        7:  Update movie
+        8:  Delete movie
+        9:  Stats
+        10. Create ratings histogram
     """
 
     _output("")
@@ -573,15 +565,15 @@ def run() -> None:
 
     menu_dispatch = {
         1: list_movies,
-        2: add_movie,
-        3: remove_movie,
-        4: update_movie,
-        5: get_statistics,
-        6: get_random,
-        7: search_movie,
-        8: list_movies_by_rating,
-        9: ratings_histogram,
-        10: list_movies_by_release,
+        2: list_movies_by_rating,
+        3: list_movies_by_release,
+        4: search_movie,
+        5: get_random,
+        6: add_movie,
+        7: update_movie,
+        8: remove_movie,
+        9: get_statistics,
+        10: ratings_histogram,
         # 0: quit_program handled separately
     }
 
