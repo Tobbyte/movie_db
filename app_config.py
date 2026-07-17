@@ -24,7 +24,7 @@ MENU_ITEMS = [
     "7.  Add movie",
     "8.  Update movie",
     "9.  Delete movie",
-    "10.  Stats",
+    "10. Stats",
     "11. Create ratings histogram",
 ]
 FIRST_MOVIE_RELEASE = 1878
