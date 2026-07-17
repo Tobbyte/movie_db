@@ -3,6 +3,11 @@
 from data_handling.movie_storage import get_movies as db_get_movies
 
 
+def get_movies_count() -> int:
+    """Return the count of movies in the db."""
+    return len(db_get_movies())
+
+
 def get_as_list_sorted_by_rating(
     *,
     descending: bool = False,
