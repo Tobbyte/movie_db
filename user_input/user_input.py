@@ -58,6 +58,7 @@ def get_movie_release(prompt: str) -> int:
     """Ask user to input a valid movie release year."""
     while True:
         release = get_user_input_colored(prompt).strip()
+        release = strip_leading_zero(release)
         if release == "":
             output("Year required", color="red")
         else:
@@ -97,6 +98,7 @@ def _get_movie_release_optional(prompt: str) -> int | None:
     """Ask user to input a valid movie release, or leave empty."""
     while True:
         release = get_user_input_colored(prompt).strip()
+        release = strip_leading_zero(release)
         if release == "":
             return None
         release = _validate_release(release)
@@ -108,6 +110,7 @@ def get_movie_rating(prompt: str) -> float:
     """Ask user to input a valid movies rating."""
     while True:
         rating = get_user_input_colored(prompt).strip()
+        rating = strip_leading_zero(rating)
         if rating == "":
             output("Rating required", color="red")
         rating = _validate_rating(rating)
@@ -133,6 +136,7 @@ def _get_movie_rating_optional(prompt: str) -> float | None:
     """Ask user to input a valid movie rating, or leave empty."""
     while True:
         rating = get_user_input_colored(prompt).strip()
+        rating = strip_leading_zero(rating)
         if rating == "":
             return None
         rating = _validate_rating(rating)
