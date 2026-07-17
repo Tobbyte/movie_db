@@ -636,14 +636,14 @@ def present_menu(menu_items: list[str]) -> int:
         1:  List movies
         2:  List movies rating
         3:  List movies release
-        4:  Search movie
-        5:  Random movie
-        6:  Add movie
-        7:  Update movie
-        8:  Delete movie
-        9:  Stats
-        10. Create ratings histogram
-        11. List movies by filter
+        4.  List movies by filter
+        5:  Search movie
+        6:  Random movie
+        7:  Add movie
+        8:  Update movie
+        9:  Delete movie
+        10:  Stats
+        11. Create ratings histogram
     """
 
     _output("")
@@ -724,14 +724,14 @@ def run() -> None:
         1: list_movies,
         2: list_movies_by_rating,
         3: list_movies_by_release,
-        4: search_movie,
-        5: random_movie,
-        6: add_movie,
-        7: update_movie,
-        8: remove_movie,
-        9: list_statistics,
-        10: ratings_histogram,
-        11: list_movies_by_filter,
+        4: list_movies_by_filter,
+        5: search_movie,
+        6: random_movie,
+        7: add_movie,
+        8: update_movie,
+        9: remove_movie,
+        10: list_statistics,
+        11: ratings_histogram,
         # 0: quit_program handled separately
     }
 
