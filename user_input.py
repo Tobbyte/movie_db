@@ -136,6 +136,7 @@ def _get_movie_rating_optional(prompt: str) -> float | None:
 
 
 def get_movie_filters() -> tuple[float | None, int | None, int | None]:
+    """Orchestrates getting user input on rating and release years."""
     filter_rating = _get_movie_rating_optional(
         "\nEnter minimum rating (leave blank for no minimum rating): ",
     )
