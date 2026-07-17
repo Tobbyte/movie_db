@@ -76,6 +76,20 @@ def _get_as_list_sorted_by_rating(
         reverse=descending,
     )
 
+def _get_yes_no_choice(prompt: str) -> bool:
+    """Ask user to choose between Yes or No.
+
+    Returns True for Yes,
+    returns False for No.
+    """
+    while True:
+        name = _get_user_input_colored(prompt).strip()
+        if name not in ("Y", "Yes", "y", "N", "No", "n"):
+            _output("Choose (Y)es or (N)o: ", color="yellow")
+        else:
+            break
+
+    return name in {"Y", "y"}
 
 def list_movies() -> None:
     """Return a list of all movies."""
