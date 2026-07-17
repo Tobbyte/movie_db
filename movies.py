@@ -30,6 +30,7 @@ from data_handling.movie_search import movie_search
 from helpers.helpers import clear_screen, construct_filter_output, output
 from helpers.histogram import create_histogram
 from user_input.user_input import (
+    get_ab_choice,
     get_file_name,
     get_menu_selection,
     get_movie_filters,
@@ -37,7 +38,6 @@ from user_input.user_input import (
     get_movie_rating,
     get_movie_release,
     get_user_input_colored,
-    get_yes_no_choice,
 )
 
 """
@@ -132,18 +132,15 @@ def list_movies_by_release() -> None:
 
     Asks user for preferred sorting order.
     """
-    prompt = (
-        "\nDo you want to order the movies in descending order?\n"
-        "Choose (Y)es or (N)o: "
-    )
-    sort_descending = get_yes_no_choice(prompt)
+    prompt = "\nDo you want to order the movies (a)scending or (d)escending? "
+    sort_ascending = get_ab_choice(prompt, "a", "d")
 
-    order = "descending" if sort_descending else "ascending"
+    order = "ascending" if sort_ascending else "descending"
 
     output(f"Movies by release ({order}):\n", space_before=True)
 
     for name, info in get_as_list_sorted_by_release(
-        descending=sort_descending,
+        descending=not sort_ascending,
     ):
         release = info["release"]
         rating = info["rating"]

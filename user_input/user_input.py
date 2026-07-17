@@ -17,20 +17,20 @@ from helpers.helpers import (
 )
 
 
-def get_yes_no_choice(prompt: str) -> bool:
-    """Ask user to choose between Yes or No.
+def get_ab_choice(prompt: str, opt_a: str, opt_b: str) -> bool:
+    """Ask user to choose between opt_a and opt_b.
 
-    Returns True for Yes,
-    returns False for No.
+    Returns True for opt_a,
+    returns False for opt_b.
     """
     while True:
-        name = get_user_input_colored(prompt).strip()
-        if name not in ("Y", "Yes", "y", "N", "No", "n"):
-            output("Choose (Y)es or (N)o: ", color="yellow")
+        choice = get_user_input_colored(prompt).strip()
+        if choice not in (opt_a, opt_b):
+            output(f'Choose "{opt_a}" or "{opt_b}": ', color="yellow")
         else:
             break
 
-    return name in {"Y", "y"}
+    return choice == opt_a
 
 
 def get_user_input_colored(promt: str) -> str:
