@@ -38,7 +38,7 @@ def get_movies() -> dict[str, dict]:
         return json.load(file)
 
 
-def save_movies(movies: dict[str, dict]) -> bool | Exception:
+def _save_movies(movies: dict[str, dict]) -> bool | Exception:
     """Save whats given as argument and save to JSON."""
     # TODO: - add save handling of fail cases, f.e. missing permissions
     with Path(DATA_FILE_PATH).open("w") as file:
@@ -61,7 +61,7 @@ def add_movie(title: str, year: int, rating: float) -> bool | Exception:
         error_msg = f'Movie "{title}" already exists'
         raise ValueError(error_msg)
     movies[title] = {"rating": rating, "release": year}
-    save_movies(movies)
+    _save_movies(movies)
     return True
 
 
@@ -78,7 +78,7 @@ def delete_movie(title: str) -> bool | Exception:
         raise ValueError(error_msg)
 
     del movies[title]
-    save_movies(movies)
+    _save_movies(movies)
     return True
 
 
@@ -95,5 +95,5 @@ def update_movie(title: str, rating: float) -> bool | Exception:
         raise ValueError(error_msg)
 
     movies[title]["rating"] = rating
-    save_movies(movies)
+    _save_movies(movies)
     return True
