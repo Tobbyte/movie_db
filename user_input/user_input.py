@@ -60,11 +60,11 @@ def get_movie_release(prompt: str) -> int:
         release = get_user_input_colored(prompt).strip()
         if release == "":
             output("Year required", color="red")
-        else:
-            release = strip_leading_zero(release)
-            release = _validate_release(release)
-            if release is not None:
-                return int(release)
+            continue
+        release = strip_leading_zero(release)
+        release = _validate_release(release)
+        if release is not None:
+            return int(release)
 
 
 def _validate_release(release: str) -> int | None:
@@ -112,6 +112,7 @@ def get_movie_rating(prompt: str) -> float:
         rating = get_user_input_colored(prompt).strip()
         if rating == "":
             output("Rating required", color="red")
+            continue
         rating = strip_leading_zero(rating)
         rating = _validate_rating(rating)
         if rating is not None:
