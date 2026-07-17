@@ -1,7 +1,7 @@
 # ruff: noqa: FIX002, TD002, TD003
 """Search in data by query."""
 
-from my_fuzzy_search import get_similar
+from data_handling.my_fuzzy_search import get_similar
 
 
 def movie_search(data: dict[str, dict], query: str) -> list[tuple]:
