@@ -442,7 +442,7 @@ def ratings_histogram() -> None:
 
     data = db_get_movies()
     filename = _get_file_name(
-        "Enter filename (saved as png unless otherwise "
+        "\nEnter filename (saved as png unless otherwise "
         "specified) in your current working directory: ",
     )
     try:
