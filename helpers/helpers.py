@@ -1,4 +1,9 @@
-from app_config import MOVIE_MAX_RATING, MOVIE_MIN_RATING, OUTPUT_COLORS
+from app_config import (
+    MENU_ITEMS,
+    MOVIE_MAX_RATING,
+    MOVIE_MIN_RATING,
+    OUTPUT_COLORS,
+)
 
 
 def is_num(inp: str) -> bool:
@@ -88,3 +93,16 @@ def output(
 
     if space_after:
         print("\n \n")
+
+
+def menu_selection_in_range(
+    selection: str,
+) -> bool:
+    max_range = len(MENU_ITEMS)
+    min_range = 0
+    try:
+        int(selection)
+    except ValueError:
+        return False
+    else:
+        return min_range <= int(selection) <= max_range + 1

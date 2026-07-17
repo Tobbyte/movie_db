@@ -1,11 +1,13 @@
 from app_config import (
     CURRENT_YEAR,
     FIRST_MOVIE_RELEASE,
+    MENU_ITEMS,
     OUTPUT_COLORS,
 )
 from helpers.helpers import (
     is_int,
     is_num,
+    menu_selection_in_range,
     output,
     rating_in_range,
     strip_leading_zero,
@@ -174,3 +176,50 @@ def get_file_name(prompt: str) -> str:
         else:
             break
     return filename
+
+
+def get_menu_selection() -> int | None:
+    """Print the menu to the user, asks for input."""
+    """ Options:
+        0:  Exit
+        1:  List movies
+        2:  List movies rating
+        3:  List movies release
+        4.  List movies by filter
+        5:  Search movie
+        6:  Random movie
+        7:  Add movie
+        8:  Update movie
+        9:  Delete movie
+        10: Stats
+        11. Create ratings histogram
+    """
+
+    output("")
+
+    for item in MENU_ITEMS:
+        output(item, color="blue")
+
+    insist_to_quit = False
+
+    while True:
+        selection = get_user_input_colored(
+            "\nEnter choice (0-11): ",
+        ).strip()
+
+        if selection == "" and insist_to_quit:
+            return None
+        if (
+            selection is not selection.isdecimal()
+            and not menu_selection_in_range(selection)
+        ):
+            output(
+                "Invalid input (Enter 0 - 11. Try again).\n"
+                "Or press ENTER again to quit",
+                color="red",
+            )
+            insist_to_quit = True
+        else:
+            break
+
+    return int(selection)

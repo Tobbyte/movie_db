@@ -31,6 +31,7 @@ from histogram import create_histogram
 from movie_search import movie_search
 from user_input import (
     get_file_name,
+    get_menu_selection,
     get_movie_filters,
     get_movie_name,
     get_movie_rating,
@@ -331,64 +332,6 @@ def _idle_after_input() -> None:
     get_user_input_colored("\npress Enter to continue ")
 
 
-def _menu_selection_in_range(
-    selection: str,
-    max_range: int,
-    min_range: int = 0,
-) -> bool:
-    try:
-        int(selection)
-    except ValueError:
-        return False
-    else:
-        return min_range <= int(selection) <= max_range + 1
-
-
-def get_menu_selection(menu_items: list[str]) -> int:
-    """Print the menu to the user, asks for input."""
-    """ Options:
-        0:  Exit
-        1:  List movies
-        2:  List movies rating
-        3:  List movies release
-        4.  List movies by filter
-        5:  Search movie
-        6:  Random movie
-        7:  Add movie
-        8:  Update movie
-        9:  Delete movie
-        10: Stats
-        11. Create ratings histogram
-    """
-
-    output("")
-
-    for item in menu_items:
-        output(item, color="blue")
-
-    insist_to_quit = False
-
-    while True:
-        selection = get_user_input_colored(
-            "\nEnter choice (0-11): ",
-        ).strip()
-
-        if selection == "" and insist_to_quit:
-            _quit_program()
-        elif (
-            selection is not selection.isdecimal()
-            and not _menu_selection_in_range(selection, len(MENU_ITEMS))
-        ):
-            output(
-                "Invalid input (Enter 0 - 11. Try again).\n"
-                "Or press ENTER again to quit",
-                color="red",
-            )
-            insist_to_quit = True
-        else:
-            break
-
-    return int(selection)
 
 
 def _quit_program() -> None:
@@ -432,19 +375,21 @@ def run() -> None:
             _clear_screen()
         first_run = False
 
-        selection = get_menu_selection(MENU_ITEMS)
+        selection = get_menu_selection()
+        if not selection:
+            _quit_program()
+        else:
+            _clear_screen()
+            output(
+                f"~~~~~~~~~~\nSelected menu item: "
+                f"{MENU_ITEMS[selection + 1]}\n"
+                "~~~~~~~~~~",
+                color="yellow",
+            )
 
-        _clear_screen()
-        output(
-            f"~~~~~~~~~~\nSelected menu item: "
-            f"{MENU_ITEMS[selection + 1]}\n"
-            "~~~~~~~~~~",
-            color="yellow",
-        )
+            menu_dispatch[selection]()
 
-        menu_dispatch[selection]()
-
-        _idle_after_input()
+            _idle_after_input()
 
 
 if __name__ == "__main__":
