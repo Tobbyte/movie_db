@@ -46,7 +46,7 @@ def _save_movies(movies: dict[str, dict]) -> bool | Exception:
     return True
 
 
-def add_movie(title: str, year: int, rating: float) -> bool | Exception:
+def add_movie(title: str, year: int, rating: float) -> None:
     """Add a movie to the movies database.
 
     Loads the latest file, adds and saves.
@@ -62,7 +62,6 @@ def add_movie(title: str, year: int, rating: float) -> bool | Exception:
         raise ValueError(error_msg)
     movies[title] = {"rating": rating, "release": year}
     _save_movies(movies)
-    return True
 
 
 def delete_movie(title: str) -> bool | Exception:
