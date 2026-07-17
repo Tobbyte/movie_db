@@ -1,3 +1,4 @@
+"""Module with helper methods."""
 from app_config import (
     MENU_ITEMS,
     MOVIE_MAX_RATING,
@@ -98,6 +99,7 @@ def output(
 def menu_selection_in_range(
     selection: str,
 ) -> bool:
+    """Validate if menu selection is in valid range."""
     max_range = len(MENU_ITEMS)
     min_range = 0
     try:
