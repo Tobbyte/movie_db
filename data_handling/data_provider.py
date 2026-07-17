@@ -1,6 +1,6 @@
 """Module to provide data."""
 
-from movie_storage import get_movies as db_get_movies
+from data_handling.movie_storage import get_movies as db_get_movies
 
 
 def get_as_list_sorted_by_rating(
