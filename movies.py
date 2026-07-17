@@ -352,6 +352,30 @@ def _get_movie_filters() -> tuple[float | None, int | None, int | None]:
             break
     return (filter_rating, filter_release_start, filter_release_end)
 
+def _construct_filter_output(
+    rating: float | None,
+    start: int | None,
+    end: int | None,
+) -> str:
+    """Construct output based on provided filters."""
+    outp_start = "Movies filtered by "
+    outp_if_rating = f"rating ({rating})" if rating else ""
+    connector = " and " if rating and start else ""
+    outp_if_start = f"year start ({start})" if start else ""
+    connector2 = " and " if end else ""
+    outp_if_end = f"year end ({end})" if end else ""
+    outp_end = ":\n"
+
+    return (
+        outp_start
+        + outp_if_rating
+        + connector
+        + outp_if_start
+        + connector2
+        + outp_if_end
+        + outp_end
+    )
+
 
 def list_movies_by_filter() -> None:
     """List filtered movies by user input.
@@ -376,15 +400,9 @@ def list_movies_by_filter() -> None:
         )
         list_movies()
     else:
-        _output(
-            f"Movies filtered by rating ({filter_rating}), "
-            f"year start ({filter_release_start}), "
-            f"year end ({filter_release_end}):\n",
-        )
 
-        for name, info in sorted(
-            _get_as_list_filtered(
-                db,
+        _output(
+            _construct_filter_output(
                 filter_rating,
                 filter_release_start,
                 filter_release_end,
