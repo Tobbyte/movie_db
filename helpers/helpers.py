@@ -52,16 +52,31 @@ def construct_filter_output(
     """Construct output based on provided filters."""
     outp_start = "Movies filtered by "
     outp_if_rating = f"rating ({rating})" if rating else ""
-    connector = " and " if rating and start else ""
+    if rating and start and end:
+        connector1 = " and "
+        connector2 = " and "
+    elif rating and (start or end):
+        connector1 = " and "
+        connector2 = ""
+    elif not rating and (start and end):
+        connector1 = ""
+        connector2 = " and "
+    elif (
+        (rating and not (start or end))
+        or (start and not (rating or end))
+        or (end and not (rating or start))
+    ):
+        connector1 = ""
+        connector2 = ""
+
     outp_if_start = f"year start ({start})" if start else ""
-    connector2 = " and " if end else ""
     outp_if_end = f"year end ({end})" if end else ""
     outp_end = ":\n"
 
     return (
         outp_start
         + outp_if_rating
-        + connector
+        + connector1
         + outp_if_start
         + connector2
         + outp_if_end
