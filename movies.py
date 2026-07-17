@@ -243,6 +243,17 @@ def _get_movie_release(prompt: str) -> int:
     return int(release)
 
 
+def _get_movie_release_optional(prompt: str) -> int | None:
+    """Ask user to input a valid movie release, or leave empty."""
+    while True:
+        release = _get_user_input_colored(prompt).strip()
+        if release == "":
+            return None
+        release = _validate_release(release)
+        if release is not None:
+            return release
+
+
 def _get_movie_rating(prompt: str) -> float:
     """Ask user to input a valid movies rating."""
     while True:
