@@ -1,3 +1,4 @@
+"""Module to provide data."""
 def _get_as_list_sorted_by_rating(
     dic: dict[str, dict],
     *,
