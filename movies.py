@@ -413,6 +413,7 @@ def run() -> None:
     )
 
     menu_dispatch = {
+        0: _quit_program,
         1: list_movies,
         2: list_movies_by_rating,
         3: list_movies_by_release,
@@ -424,7 +425,6 @@ def run() -> None:
         9: remove_movie,
         10: list_statistics,
         11: ratings_histogram,
-        # 0: quit_program handled separately
     }
 
     while True:
@@ -434,20 +434,17 @@ def run() -> None:
 
         selection = present_menu(MENU_ITEMS)
 
-        if selection == 0:
-            _quit_program()
-        else:
-            _clear_screen()
-            output(
-                f"~~~~~~~~~~\nSelected menu item:"
-                f"{MENU_ITEMS[selection + 1]}\n"
-                "~~~~~~~~~~",
-                color="yellow",
-            )
+        _clear_screen()
+        output(
+            f"~~~~~~~~~~\nSelected menu item: "
+            f"{MENU_ITEMS[selection + 1]}\n"
+            "~~~~~~~~~~",
+            color="yellow",
+        )
 
-            menu_dispatch[selection]()
+        menu_dispatch[selection]()
 
-            _idle_after_input()
+        _idle_after_input()
 
 
 if __name__ == "__main__":
