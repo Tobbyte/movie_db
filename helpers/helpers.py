@@ -76,6 +76,7 @@ def output(
     """Print what's given. Optionally adds gap or color."""
     if space_before:
         print("\n \n")
+
     if color:
         if color == "red":
             print(OUTPUT_COLORS["red"] + inp + OUTPUT_COLORS["end"])
