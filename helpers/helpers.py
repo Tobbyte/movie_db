@@ -1,7 +1,7 @@
 from app_config import MOVIE_MAX_RATING, MOVIE_MIN_RATING, OUTPUT_COLORS
 
 
-def _is_num(inp: str) -> bool:
+def is_num(inp: str) -> bool:
     """Validate if a sting input is a valid number."""
     if inp == "":
         return False
@@ -12,7 +12,7 @@ def _is_num(inp: str) -> bool:
     return True
 
 
-def _is_int(inp: str) -> bool:
+def is_int(inp: str) -> bool:
     """Validate if a sting input is a valid int."""
     if inp == "" or "." in inp:
         return False
@@ -23,12 +23,12 @@ def _is_int(inp: str) -> bool:
     return True
 
 
-def _rating_in_range(inp: str) -> bool:
+def rating_in_range(inp: str) -> bool:
     """Validate if a rating is in allowed range."""
     return MOVIE_MIN_RATING <= float(inp) <= MOVIE_MAX_RATING
 
 
-def _strip_leading_zero(num: str | float) -> str | int | float:
+def strip_leading_zero(num: str | float) -> str | int | float:
     """Strip leading "0"s in input, returns same format."""
     res = str(num)
     while res[0] == "0" and len(res) > 1:
@@ -41,7 +41,7 @@ def _strip_leading_zero(num: str | float) -> str | int | float:
     return res
 
 
-def _construct_filter_output(
+def construct_filter_output(
     rating: float | None,
     start: int | None,
     end: int | None,
@@ -66,7 +66,7 @@ def _construct_filter_output(
     )
 
 
-def _output(
+def output(
     inp: str,
     color: str = "",
     *,
