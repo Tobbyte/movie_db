@@ -273,6 +273,24 @@ def _get_movie_rating(prompt: str) -> float:
         rating = _get_user_input_colored(prompt).strip()
         if rating == "":
             _output("Rating required", color="red")
+        rating = _validate_rating(rating)
+        if rating is not None:
+            return rating
+
+
+def _validate_rating(rating: str) -> float | None:
+    """Validate rating input.
+
+    Returns rating as float or None
+    """
+    if not _is_num(rating):
+        _output("Rating must be a number", color="red")
+        return None
+    if not _rating_in_range(rating):
+        _output("Rating must be between 0 - 10", color="red")
+        return None
+    return float(rating)
+
 
 def _get_movie_rating_optional(prompt: str) -> float | None:
     """Ask user to input a valid movie rating, or leave empty."""
