@@ -320,24 +320,34 @@ def list_movies_by_filter() -> None:
         _get_movie_filters()
     )
 
-    _output(
-        f"Movies filtered by rating ({filter_rating}), "
-        f"year start ({filter_release_start}), "
-        f"year end ({filter_release_end}):\n",
-        space_before=True,
-    )
-
-    for name, info in sorted(
-        _get_as_list_filtered(
-            db,
-            filter_rating,
-            filter_release_start,
-            filter_release_end,
-        ),
+    if (
+        not filter_rating
+        and not filter_release_start
+        and not filter_release_end
     ):
-        release = info["release"]
-        rating = info["rating"]
-        _output(f"{name} ({release}): {rating}")
+        _output(
+            "No filters provided. Here are all movies:",
+            space_before=True,
+        )
+        list_movies()
+    else:
+        _output(
+            f"Movies filtered by rating ({filter_rating}), "
+            f"year start ({filter_release_start}), "
+            f"year end ({filter_release_end}):\n",
+        )
+
+        for name, info in sorted(
+            _get_as_list_filtered(
+                db,
+                filter_rating,
+                filter_release_start,
+                filter_release_end,
+            ),
+        ):
+            release = info["release"]
+            rating = info["rating"]
+            _output(f"{name} ({release}): {rating}")
 
 
 def _get_as_list_filtered(
