@@ -1,0 +1,42 @@
+{
+    "The Shawshank Redemption": {
+        "rating": 9.5,
+        "release": 1991
+    },
+    "Pulp Fiction": {
+        "rating": 8.8,
+        "release": 1992
+    },
+    "The Room": {
+        "rating": 3.6,
+        "release": 1993
+    },
+    "The Godfather": {
+        "rating": 9.2,
+        "release": 1994
+    },
+    "The Godfather: Part II": {
+        "rating": 9.0,
+        "release": 1995
+    },
+    "The Dark Knight": {
+        "rating": 9.0,
+        "release": 1996
+    },
+    "12 Angry Men": {
+        "rating": 8.9,
+        "release": 1997
+    },
+    "Everything Everywhere All At Once": {
+        "rating": 8.9,
+        "release": 1998
+    },
+    "Forrest Gump": {
+        "rating": 8.8,
+        "release": 1999
+    },
+    "Star Wars: Episode V": {
+        "rating": 8.7,
+        "release": 2000
+    }
+}
