@@ -373,8 +373,6 @@ def _idle_after_input() -> None:
     get_user_input_colored("\npress Enter to continue ")
 
 
-
-
 def _quit_program() -> None:
     """Quit with farewell."""
     output("Bye!")
