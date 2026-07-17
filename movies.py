@@ -29,7 +29,7 @@ from data_handling.data_provider import (
 from data_handling.movie_search import movie_search
 from helpers.helpers import clear_screen, construct_filter_output, output
 from helpers.histogram import create_histogram
-from user_input import (
+from user_input.user_input import (
     get_file_name,
     get_menu_selection,
     get_movie_filters,
