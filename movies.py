@@ -223,24 +223,48 @@ def _get_movie_release(prompt: str) -> int:
         release = _get_user_input_colored(prompt).strip()
         if release == "":
             _output("Year required", color="red")
-        elif not _is_num(release):
-            _output("Year must be a number", color="red")
-        elif not _is_int(release):
-            _output("Year must be valid int", color="red")
-        elif int(release) < FIRST_MOVIE_RELEASE:
-            _output(
-                "Nice try. The first movie was released in "
-                f"{FIRST_MOVIE_RELEASE}.",
-                color="red",
-            )
-        elif int(release) > CURRENT_YEAR:
-            _output(
-                "Real futuristic movie - a rating from the future!",
-                color="red",
-            )
         else:
-            break
+            release = _validate_release(release)
+            if release is not None:
+                return int(release)
+
+
+def _validate_release(release: str) -> int | None:
+    """Validate release input.
+
+    Returns release as int or None
+    """
+    if not _is_num(release):
+        _output("Year must be a number", color="red")
+        return None
+    if not _is_int(release):
+        _output("Year must be valid int", color="red")
+        return None
+    if int(release) < FIRST_MOVIE_RELEASE:
+        _output(
+            "Nice try. The first movie was released in "
+            f"{FIRST_MOVIE_RELEASE}.",
+            color="red",
+        )
+        return None
+    if int(release) > CURRENT_YEAR:
+        _output(
+            "Real futuristic movie - a rating from the future!",
+            color="red",
+        )
+        return None
     return int(release)
+
+
+def _get_movie_release_optional(prompt: str) -> int | None:
+    """Ask user to input a valid movie release, or leave empty."""
+    while True:
+        release = _get_user_input_colored(prompt).strip()
+        if release == "":
+            return None
+        release = _validate_release(release)
+        if release is not None:
+            return release
 
 
 def _get_movie_rating(prompt: str) -> float:
@@ -249,13 +273,34 @@ def _get_movie_rating(prompt: str) -> float:
         rating = _get_user_input_colored(prompt).strip()
         if rating == "":
             _output("Rating required", color="red")
-        elif not _is_num(rating):
-            _output("Rating must be a number", color="red")
-        elif not _rating_in_range(rating):
-            _output("Rating must be between 0 - 10", color="red")
-        else:
-            break
-    return float(_strip_leading_zero(rating))
+        rating = _validate_rating(rating)
+        if rating is not None:
+            return rating
+
+
+def _validate_rating(rating: str) -> float | None:
+    """Validate rating input.
+
+    Returns rating as float or None
+    """
+    if not _is_num(rating):
+        _output("Rating must be a number", color="red")
+        return None
+    if not _rating_in_range(rating):
+        _output("Rating must be between 0 - 10", color="red")
+        return None
+    return float(rating)
+
+
+def _get_movie_rating_optional(prompt: str) -> float | None:
+    """Ask user to input a valid movie rating, or leave empty."""
+    while True:
+        rating = _get_user_input_colored(prompt).strip()
+        if rating == "":
+            return None
+        rating = _validate_rating(rating)
+        if rating is not None:
+            return rating
 
 
 def add_movie() -> None:
@@ -283,6 +328,117 @@ def add_movie() -> None:
             space_before=True,
         )
 
+def _get_movie_filters() -> tuple[float | None, int | None, int | None]:
+    filter_rating = _get_movie_rating_optional(
+        "\nEnter minimum rating (leave blank for no minimum rating): ",
+    )
+
+    filter_release_start = _get_movie_release_optional(
+        "Enter start year of range (leave blank for no start year): ",
+    )
+
+    while True:
+        filter_release_end = _get_movie_release_optional(
+            "Enter end year of range (inclusive) (leave blank "
+            "for no end year): ",
+        )
+        if (
+            filter_release_start
+            and filter_release_end
+            and (filter_release_start > filter_release_end)
+        ):
+            _output("Start hast do be before end", color="red")
+        else:
+            break
+    return (filter_rating, filter_release_start, filter_release_end)
+
+def _construct_filter_output(
+    rating: float | None,
+    start: int | None,
+    end: int | None,
+) -> str:
+    """Construct output based on provided filters."""
+    outp_start = "Movies filtered by "
+    outp_if_rating = f"rating ({rating})" if rating else ""
+    connector = " and " if rating and start else ""
+    outp_if_start = f"year start ({start})" if start else ""
+    connector2 = " and " if end else ""
+    outp_if_end = f"year end ({end})" if end else ""
+    outp_end = ":\n"
+
+    return (
+        outp_start
+        + outp_if_rating
+        + connector
+        + outp_if_start
+        + connector2
+        + outp_if_end
+        + outp_end
+    )
+
+
+def list_movies_by_filter() -> None:
+    """List filtered movies by user input.
+
+    Asks for rating, start and end year,
+    lists accordingly.
+    """
+    db: dict[str, dict] = db_get_movies()
+
+    filter_rating, filter_release_start, filter_release_end = (
+        _get_movie_filters()
+    )
+
+    if (
+        not filter_rating
+        and not filter_release_start
+        and not filter_release_end
+    ):
+        _output(
+            "No filters provided. Here are all movies:",
+            space_before=True,
+        )
+        list_movies()
+    else:
+
+        _output(
+            _construct_filter_output(
+                filter_rating,
+                filter_release_start,
+                filter_release_end,
+            ),
+            space_before=True,
+        )
+
+        filtered_results = _get_as_list_filtered(
+            db,
+            filter_rating,
+            filter_release_start,
+            filter_release_end,
+        )
+
+        _output("No movies match your filters.")
+
+        for name, info in sorted(filtered_results):
+            release = info["release"]
+            rating = info["rating"]
+            _output(f"{name} ({release}): {rating}")
+
+
+def _get_as_list_filtered(
+    dic: dict[str, dict],
+    rating: float | None = None,
+    start: int | None = None,
+    end: int | None = None,
+) -> list[tuple[str, dict]]:
+    """Return a list of all movies matching provided filters."""
+    return [
+        (title, info)
+        for title, info in dic.items()
+        if (rating is None or info["rating"] >= rating)
+        and (start is None or info["release"] >= start)
+        and (end is None or info["release"] <= end)
+    ]
 
 def remove_movie() -> None:
     """Remove an item from db."""
@@ -480,13 +636,14 @@ def present_menu(menu_items: list[str]) -> int:
         1:  List movies
         2:  List movies rating
         3:  List movies release
-        4:  Search movie
-        5:  Random movie
-        6:  Add movie
-        7:  Update movie
-        8:  Delete movie
-        9:  Stats
-        10. Create ratings histogram
+        4.  List movies by filter
+        5:  Search movie
+        6:  Random movie
+        7:  Add movie
+        8:  Update movie
+        9:  Delete movie
+        10:  Stats
+        11. Create ratings histogram
     """
 
     _output("")
@@ -498,7 +655,7 @@ def present_menu(menu_items: list[str]) -> int:
 
     while True:
         selection = _get_user_input_colored(
-            "\nEnter choice (0-9): ",
+            "\nEnter choice (0-11): ",
         ).strip()
 
         if selection == "" and insist_to_quit:
@@ -508,7 +665,7 @@ def present_menu(menu_items: list[str]) -> int:
             and not _menu_selection_in_range(selection, len(MENU_ITEMS))
         ):
             _output(
-                "Invalid input (Enter 0 - 10. Try again).\n"
+                "Invalid input (Enter 0 - 11. Try again).\n"
                 "Or press ENTER again to quit",
                 color="red",
             )
@@ -567,13 +724,14 @@ def run() -> None:
         1: list_movies,
         2: list_movies_by_rating,
         3: list_movies_by_release,
-        4: search_movie,
-        5: random_movie,
-        6: add_movie,
-        7: update_movie,
-        8: remove_movie,
-        9: list_statistics,
-        10: ratings_histogram,
+        4: list_movies_by_filter,
+        5: search_movie,
+        6: random_movie,
+        7: add_movie,
+        8: update_movie,
+        9: remove_movie,
+        10: list_statistics,
+        11: ratings_histogram,
         # 0: quit_program handled separately
     }
 
