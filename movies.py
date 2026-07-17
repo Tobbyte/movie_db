@@ -348,7 +348,7 @@ def _get_extremes(
     ]
 
 
-def get_statistics() -> None:
+def list_statistics() -> None:
     """Get statistics.
 
     - average
@@ -378,7 +378,7 @@ def get_statistics() -> None:
         _output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
 
 
-def get_random() -> None:
+def random_movie() -> None:
     """Return random movie."""
     db: dict[str, dict] = db_get_movies()
     name, info = list(db.items())[randint(0, len(db) - 1)]
@@ -568,11 +568,11 @@ def run() -> None:
         2: list_movies_by_rating,
         3: list_movies_by_release,
         4: search_movie,
-        5: get_random,
+        5: random_movie,
         6: add_movie,
         7: update_movie,
         8: remove_movie,
-        9: get_statistics,
+        9: list_statistics,
         10: ratings_histogram,
         # 0: quit_program handled separately
     }
