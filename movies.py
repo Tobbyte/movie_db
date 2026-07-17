@@ -283,17 +283,25 @@ def add_movie() -> None:
             space_before=True,
         )
 
-def _get_movie_filters() -> tuple[float, int, int]:
-    filter_rating = _get_movie_rating("\nEnter minimum rating: ")
-
-    filter_release_start = _get_movie_release(
-        "Enter start year of range: ",
+def _get_movie_filters() -> tuple[float | None, int | None, int | None]:
+    filter_rating = _get_movie_rating_optional(
+        "\nEnter minimum rating (leave blank for no minimum rating): ",
     )
+
+    filter_release_start = _get_movie_release_optional(
+        "Enter start year of range (leave blank for no start year): ",
+    )
+
     while True:
-        filter_release_end = _get_movie_release(
-            "Enter end year of range (inclusive): ",
+        filter_release_end = _get_movie_release_optional(
+            "Enter end year of range (inclusive) (leave blank "
+            "for no end year): ",
         )
-        if filter_release_start > filter_release_end:
+        if (
+            filter_release_start
+            and filter_release_end
+            and (filter_release_start > filter_release_end)
+        ):
             _output("Start hast do be before end", color="red")
         else:
             break
