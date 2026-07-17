@@ -38,12 +38,11 @@ def get_movies() -> dict[str, dict]:
         return json.load(file)
 
 
-def _save_movies(movies: dict[str, dict]) -> bool | Exception:
+def _save_movies(movies: dict[str, dict]) -> None:
     """Save whats given as argument and save to JSON."""
     # TODO: - add save handling of fail cases, f.e. missing permissions
     with Path(DATA_FILE_PATH).open("w") as file:
         json.dump(movies, file, indent=4)
-    return True
 
 
 def add_movie(title: str, year: int, rating: float) -> None:
