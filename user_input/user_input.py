@@ -161,8 +161,8 @@ def get_movie_filters() -> tuple[float | None, int | None, int | None]:
             "for no end year): ",
         )
         if (
-            filter_release_start
-            and filter_release_end
+            filter_release_start is not None
+            and filter_release_end is not None
             and (filter_release_start > filter_release_end)
         ):
             output("Start hast do be before end", color="red")
