@@ -29,3 +29,5 @@ def create_histogram(data: dict, filename: str) -> None:
             "pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)"
         )
         raise ValueError(error_msg) from e
+    finally:
+        plt.close()
