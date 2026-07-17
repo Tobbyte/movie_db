@@ -65,9 +65,50 @@ Version 1.1.0 <- submitted
 """
 
 
-def main() -> None:
-    """Run app."""
-    run()
+def run() -> None:
+    """Print welcome and loop menu."""
+    first_run = True
+    clear_screen()
+    output(
+        "********** My Movies Database **********",
+        color="blue",
+    )
+
+    menu_dispatch = {
+        0: _quit_program,
+        1: list_movies,
+        2: list_movies_by_rating,
+        3: list_movies_by_release,
+        4: list_movies_by_filter,
+        5: search_movie,
+        6: random_movie,
+        7: add_movie,
+        8: update_movie,
+        9: remove_movie,
+        10: list_statistics,
+        11: ratings_histogram,
+    }
+
+    while True:
+        if not first_run:
+            clear_screen()
+        first_run = False
+
+        selection = get_menu_selection()
+        if not selection:
+            _quit_program()
+        else:
+            clear_screen()
+            output(
+                f"~~~~~~~~~~\nSelected menu item: "
+                f"{MENU_ITEMS[selection + 1]}\n"
+                "~~~~~~~~~~",
+                color="yellow",
+            )
+
+            menu_dispatch[selection]()
+
+            _idle_after_input()
 
 
 def list_movies() -> None:
@@ -340,50 +381,9 @@ def _quit_program() -> None:
     sys.exit()
 
 
-def run() -> None:
-    """Print welcome and loop menu."""
-    first_run = True
-    clear_screen()
-    output(
-        "********** My Movies Database **********",
-        color="blue",
-    )
-
-    menu_dispatch = {
-        0: _quit_program,
-        1: list_movies,
-        2: list_movies_by_rating,
-        3: list_movies_by_release,
-        4: list_movies_by_filter,
-        5: search_movie,
-        6: random_movie,
-        7: add_movie,
-        8: update_movie,
-        9: remove_movie,
-        10: list_statistics,
-        11: ratings_histogram,
-    }
-
-    while True:
-        if not first_run:
-            clear_screen()
-        first_run = False
-
-        selection = get_menu_selection()
-        if not selection:
-            _quit_program()
-        else:
-            clear_screen()
-            output(
-                f"~~~~~~~~~~\nSelected menu item: "
-                f"{MENU_ITEMS[selection + 1]}\n"
-                "~~~~~~~~~~",
-                color="yellow",
-            )
-
-            menu_dispatch[selection]()
-
-            _idle_after_input()
+def main() -> None:
+    """Run app."""
+    run()
 
 
 if __name__ == "__main__":
