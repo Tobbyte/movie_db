@@ -550,6 +550,7 @@ def present_menu(menu_items: list[str]) -> int:
         8:  Delete movie
         9:  Stats
         10. Create ratings histogram
+        11. List movies by filter
     """
 
     _output("")
@@ -561,7 +562,7 @@ def present_menu(menu_items: list[str]) -> int:
 
     while True:
         selection = _get_user_input_colored(
-            "\nEnter choice (0-9): ",
+            "\nEnter choice (0-11): ",
         ).strip()
 
         if selection == "" and insist_to_quit:
@@ -571,7 +572,7 @@ def present_menu(menu_items: list[str]) -> int:
             and not _menu_selection_in_range(selection, len(MENU_ITEMS))
         ):
             _output(
-                "Invalid input (Enter 0 - 10. Try again).\n"
+                "Invalid input (Enter 0 - 11. Try again).\n"
                 "Or press ENTER again to quit",
                 color="red",
             )
@@ -637,6 +638,7 @@ def run() -> None:
         8: remove_movie,
         9: list_statistics,
         10: ratings_histogram,
+        11: list_movies_by_filter,
         # 0: quit_program handled separately
     }
 

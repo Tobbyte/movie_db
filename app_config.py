@@ -25,6 +25,7 @@ MENU_ITEMS = [
     "8.  Delete movie",
     "9.  Stats",
     "10. Create ratings histogram",
+    "11. List movies by filter",
 ]
 FIRST_MOVIE_RELEASE = 1878
 CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
