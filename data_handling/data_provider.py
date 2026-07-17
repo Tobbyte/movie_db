@@ -1,6 +1,7 @@
+from movie_storage import get_movies as db_get_movies
+
 """Module to provide data."""
 def get_as_list_sorted_by_rating(
-    dic: dict[str, dict],
     *,
     descending: bool = False,
 ) -> list[tuple]:
@@ -9,8 +10,9 @@ def get_as_list_sorted_by_rating(
     Return a list of (name, info) tuples for movies in db
     in ascending order of rating.
     """
+    db: dict[str, dict] = db_get_movies()
     return sorted(
-        dic.items(),
+        db.items(),
         key=lambda item: item[1]["rating"],
         reverse=descending,
     )
@@ -55,7 +57,7 @@ def get_extremes(
     descending: bool = True,
 ) -> list[tuple[str, dict]]:
     """Get the extreme values:[num] of dict."""
-    sorted_by_rating = get_as_list_sorted_by_rating(db, descending=descending)
+    sorted_by_rating = get_as_list_sorted_by_rating(descending=descending)
 
     # take rating of first item of sorted movies
     _, info = sorted_by_rating[0]

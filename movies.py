@@ -119,10 +119,9 @@ def list_movies() -> None:
 
 def list_movies_by_rating() -> None:
     """Return a list of all movies by rating."""
-    db: dict[str, dict] = db_get_movies()
     output("Movies by rating:\n", space_before=True)
 
-    for name, info in get_as_list_sorted_by_rating(db, descending=True):
+    for name, info in get_as_list_sorted_by_rating(descending=True):
         release = info["release"]
         rating = info["rating"]
         output(f"{name} ({release}): {rating}")
