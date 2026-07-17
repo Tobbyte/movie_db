@@ -21,10 +21,11 @@ def create_histogram(data: dict, filename: str) -> None:
         plt.savefig(DATA_DIR_PATH / filename)
 
     except ValueError as e:
+        invalid_extension = filename.split(".")[1]
         # From mathplotlob
         error_msg = (
-            "Format 'asd' is not supported (supported formats: "
-            "avif, eps, gif, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, "
-            "svgz, tif, tiff, webp)"
+            f'File extension "{invalid_extension}" is not supported '
+            "(supported formats: avif, eps, gif, jpeg, jpg, "
+            "pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)"
         )
         raise ValueError(error_msg) from e
