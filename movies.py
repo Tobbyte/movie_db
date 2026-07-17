@@ -91,6 +91,49 @@ def _get_yes_no_choice(prompt: str) -> bool:
 
     return name in {"Y", "y"}
 
+
+def _get_as_list_sorted_by_release(
+    dic: dict[str, dict],
+    *,
+    descending: bool = False,
+) -> list[tuple]:
+    """Sort movies by release year.
+
+    Return a list of (name, info) tuples for movies in db
+    in ascending order of release year.
+    """
+    return sorted(
+        dic.items(),
+        key=lambda item: item[1]["release"],
+        reverse=descending,
+    )
+
+
+def list_movies_by_release() -> None:
+    """Return a list of movies by release year.
+
+    Asks user for preferred sorting order.
+    """
+    db: dict[str, dict] = db_get_movies()
+    prompt = (
+        "Do you want to order the movies in descending order?\n"
+        "Choose (Y)es or (N)o: "
+    )
+    sort_descending = _get_yes_no_choice(prompt)
+
+    order = "descending" if sort_descending else "ascending"
+
+    _output(f"Movies by release ({order}):\n", space_before=True)
+
+    for name, info in _get_as_list_sorted_by_release(
+        db,
+        descending=sort_descending,
+    ):
+        release = info["release"]
+        rating = info["rating"]
+        _output(f"{name} ({rating}): {release}")
+
+
 def list_movies() -> None:
     """Return a list of all movies."""
     db: dict[str, dict] = db_get_movies()
