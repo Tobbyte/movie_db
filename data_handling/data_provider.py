@@ -21,7 +21,6 @@ def get_as_list_sorted_by_rating(
 
 
 def get_as_list_sorted_by_release(
-    dic: dict[str, dict],
     *,
     descending: bool = False,
 ) -> list[tuple]:
@@ -30,23 +29,24 @@ def get_as_list_sorted_by_release(
     Return a list of (name, info) tuples for movies in db
     in ascending order of release year.
     """
+    db: dict[str, dict] = db_get_movies()
     return sorted(
-        dic.items(),
+        db.items(),
         key=lambda item: item[1]["release"],
         reverse=descending,
     )
 
 
 def get_as_list_filtered(
-    dic: dict[str, dict],
     rating: float | None = None,
     start: int | None = None,
     end: int | None = None,
 ) -> list[tuple[str, dict]]:
     """Return a list of all movies matching provided filters."""
+    db: dict[str, dict] = db_get_movies()
     return [
         (title, info)
-        for title, info in dic.items()
+        for title, info in db.items()
         if (rating is None or info["rating"] >= rating)
         and (start is None or info["release"] >= start)
         and (end is None or info["release"] <= end)
@@ -54,7 +54,6 @@ def get_as_list_filtered(
 
 
 def get_extremes(
-    db: dict[str, dict],
     *,
     descending: bool = True,
 ) -> list[tuple[str, dict]]:

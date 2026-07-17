@@ -132,7 +132,6 @@ def list_movies_by_release() -> None:
 
     Asks user for preferred sorting order.
     """
-    db: dict[str, dict] = db_get_movies()
     prompt = (
         "\nDo you want to order the movies in descending order?\n"
         "Choose (Y)es or (N)o: "
@@ -144,7 +143,6 @@ def list_movies_by_release() -> None:
     output(f"Movies by release ({order}):\n", space_before=True)
 
     for name, info in get_as_list_sorted_by_release(
-        db,
         descending=sort_descending,
     ):
         release = info["release"]
@@ -158,8 +156,6 @@ def list_movies_by_filter() -> None:
     Asks for rating, start and end year,
     lists accordingly.
     """
-    db: dict[str, dict] = db_get_movies()
-
     filter_rating, filter_release_start, filter_release_end = (
         get_movie_filters()
     )
@@ -185,7 +181,6 @@ def list_movies_by_filter() -> None:
         )
 
         filtered_results = get_as_list_filtered(
-            db,
             filter_rating,
             filter_release_start,
             filter_release_end,
@@ -345,8 +340,8 @@ def list_statistics() -> None:
     val_list = [info["rating"] for info in db.values()]
     avg = mean_statistics(val_list)
     median = median_statistics(sorted(val_list))
-    rated_best = get_extremes(db)
-    rated_worst = get_extremes(db, descending=False)
+    rated_best = get_extremes()
+    rated_worst = get_extremes(descending=False)
 
     output(f"Average rating: {avg:.1f}", space_before=True)
     output(f"Median rating: {median:.1f}")
