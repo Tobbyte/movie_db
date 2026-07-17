@@ -26,9 +26,9 @@ from data_handling.data_provider import (
     _get_as_list_sorted_by_release,
     _get_extremes,
 )
+from data_handling.movie_search import movie_search
 from helpers.helpers import clear_screen, construct_filter_output, output
 from helpers.histogram import create_histogram
-from movie_search import movie_search
 from user_input import (
     get_file_name,
     get_menu_selection,
