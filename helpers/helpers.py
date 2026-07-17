@@ -34,17 +34,11 @@ def rating_in_range(inp: str) -> bool:
     return MOVIE_MIN_RATING <= float(inp) <= MOVIE_MAX_RATING
 
 
-def strip_leading_zero(num: str | float) -> str | int | float:
+def strip_leading_zero(inp: str) -> str:
     """Strip leading "0"s in input, returns same format."""
-    res = str(num)
-    while res[0] == "0" and len(res) > 1:
-        res = res[1:]
-
-    if isinstance(num, int):
-        return int(res)
-    if isinstance(num, float):
-        return float(res)
-    return res
+    while inp[0] == "0" and len(inp) > 1 and inp[1] != ".":
+        inp = inp[1:]
+    return inp
 
 
 def construct_filter_output(
