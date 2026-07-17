@@ -69,6 +69,28 @@ def main() -> None:
     run()
 
 
+def list_movies() -> None:
+    """Return a list of all movies."""
+    db: dict[str, dict] = db_get_movies()
+    output(f"{len(db)} movies in total:\n", space_before=True)
+
+    for name, info in db.items():
+        rating = info["rating"]
+        release = info["release"]
+        output(f"{name} ({release}): {rating}")
+
+
+def list_movies_by_rating() -> None:
+    """Return a list of all movies by rating."""
+    db: dict[str, dict] = db_get_movies()
+    output("Movies by rating:\n", space_before=True)
+
+    for name, info in _get_as_list_sorted_by_rating(db, descending=True):
+        release = info["release"]
+        rating = info["rating"]
+        output(f"{name} ({release}): {rating}")
+
+
 def list_movies_by_release() -> None:
     """Return a list of movies by release year.
 
@@ -92,54 +114,6 @@ def list_movies_by_release() -> None:
         release = info["release"]
         rating = info["rating"]
         output(f"{name} ({rating}): {release}")
-
-
-def list_movies() -> None:
-    """Return a list of all movies."""
-    db: dict[str, dict] = db_get_movies()
-    output(f"{len(db)} movies in total:\n", space_before=True)
-
-    for name, info in db.items():
-        rating = info["rating"]
-        release = info["release"]
-        output(f"{name} ({release}): {rating}")
-
-
-def list_movies_by_rating() -> None:
-    """Return a list of all movies by rating."""
-    db: dict[str, dict] = db_get_movies()
-    output("Movies by rating:\n", space_before=True)
-
-    for name, info in _get_as_list_sorted_by_rating(db, descending=True):
-        release = info["release"]
-        rating = info["rating"]
-        output(f"{name} ({release}): {rating}")
-
-
-def add_movie() -> None:
-    """Add an item to db."""
-    # TODO: - check if already exists early directly after input of name
-
-    name = get_movie_name("\nEnter new movies name: ")
-
-    release = get_movie_release("Enter new movies year of release: ")
-
-    rating = get_movie_rating("Enter new movies rating (0-10): ")
-
-    try:
-        db_add_movie(name, release, rating)
-    except ValueError as movie_exists_error:
-        output(
-            f"{movie_exists_error}",
-            space_before=True,
-            color="red",
-        )
-    else:
-        output(
-            f'Movie "{name}" ({release}) with '
-            f"rating {rating} successfully added",
-            space_before=True,
-        )
 
 
 def list_movies_by_filter() -> None:
@@ -187,6 +161,94 @@ def list_movies_by_filter() -> None:
             release = info["release"]
             rating = info["rating"]
             output(f"{name} ({release}): {rating}")
+
+
+def random_movie() -> None:
+    """Return random movie."""
+    db: dict[str, dict] = db_get_movies()
+    name, info = list(db.items())[randint(0, len(db) - 1)]
+    output(
+        f"Your movie for tonight: {name} ({info['release']}), "
+        f"it's rated {info['rating']}",
+        space_before=True,
+    )
+
+
+def search_movie() -> None:
+    """Search for movies by title."""
+    data: dict[str, dict] = db_get_movies()
+
+    query = get_movie_name("\nEnter part of movie name: ")
+    try:
+        results = movie_search(data, query)
+
+        if len(results) == 1:
+            name, info = results[0]
+            output(
+                f"{name} ({info['release']}), {info['rating']}",
+                space_before=True,
+            )
+        else:
+            output(
+                f'No movie titled "{query}" found. Did you mean:\n',
+                space_before=True,
+            )
+            for res in results:
+                name, info = res
+                output(f"• {name} ({info['release']}), {info['rating']}")
+
+    except ValueError:
+        output(
+            f'No Movie name similar to "{query}" '
+            "(remember that at least the first letter has to match)\n",
+            color="red",
+            space_before=True,
+        )
+
+
+def ratings_histogram() -> None:
+    """Create movie ratings histogram and save to disc."""
+    # TODO: - returns on fail to menu, should retry
+
+    data = db_get_movies()
+    filename = get_file_name(
+        "\nEnter filename (saved as png unless otherwise "
+        "specified) in your current working directory: ",
+    )
+    try:
+        create_histogram(data, filename)
+        output(
+            f'File "{filename}" successfully saved to disk.',
+            space_before=True,
+        )
+    except ValueError as err_msg:
+        output(str(err_msg), color="red", space_before=True)
+
+
+def add_movie() -> None:
+    """Add an item to db."""
+    # TODO: - check if already exists early directly after input of name
+
+    name = get_movie_name("\nEnter new movies name: ")
+
+    release = get_movie_release("Enter new movies year of release: ")
+
+    rating = get_movie_rating("Enter new movies rating (0-10): ")
+
+    try:
+        db_add_movie(name, release, rating)
+    except ValueError as movie_exists_error:
+        output(
+            f"{movie_exists_error}",
+            space_before=True,
+            color="red",
+        )
+    else:
+        output(
+            f'Movie "{name}" ({release}) with '
+            f"rating {rating} successfully added",
+            space_before=True,
+        )
 
 
 def remove_movie() -> None:
@@ -262,68 +324,6 @@ def list_statistics() -> None:
         worst_rating = worst_info["rating"]
         worst_release = worst_info["release"]
         output(f'   "{worst_name}" ({worst_release}), {worst_rating}')
-
-
-def random_movie() -> None:
-    """Return random movie."""
-    db: dict[str, dict] = db_get_movies()
-    name, info = list(db.items())[randint(0, len(db) - 1)]
-    output(
-        f"Your movie for tonight: {name} ({info['release']}), "
-        f"it's rated {info['rating']}",
-        space_before=True,
-    )
-
-
-def search_movie() -> None:
-    """Search for movies by title."""
-    data: dict[str, dict] = db_get_movies()
-
-    query = get_movie_name("\nEnter part of movie name: ")
-    try:
-        results = movie_search(data, query)
-
-        if len(results) == 1:
-            name, info = results[0]
-            output(
-                f"{name} ({info['release']}), {info['rating']}",
-                space_before=True,
-            )
-        else:
-            output(
-                f'No movie titled "{query}" found. Did you mean:\n',
-                space_before=True,
-            )
-            for res in results:
-                name, info = res
-                output(f"• {name} ({info['release']}), {info['rating']}")
-
-    except ValueError:
-        output(
-            f'No Movie name similar to "{query}" '
-            "(remember that at least the first letter has to match)\n",
-            color="red",
-            space_before=True,
-        )
-
-
-def ratings_histogram() -> None:
-    """Create movie ratings histogram and save to disc."""
-    # TODO: - returns on fail to menu, should retry
-
-    data = db_get_movies()
-    filename = get_file_name(
-        "\nEnter filename (saved as png unless otherwise "
-        "specified) in your current working directory: ",
-    )
-    try:
-        create_histogram(data, filename)
-        output(
-            f'File "{filename}" successfully saved to disk.',
-            space_before=True,
-        )
-    except ValueError as err_msg:
-        output(str(err_msg), color="red", space_before=True)
 
 
 def _idle_after_input() -> None:
