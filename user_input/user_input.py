@@ -205,6 +205,7 @@ def get_menu_selection() -> int | None:
 
     output("")
 
+    output("Menu:", color="blue")
     for item in MENU_ITEMS:
         output(item, color="blue")
 

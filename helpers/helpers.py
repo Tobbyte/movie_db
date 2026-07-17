@@ -113,14 +113,14 @@ def menu_selection_in_range(
     selection: str,
 ) -> bool:
     """Validate if menu selection is in valid range."""
-    max_range = len(MENU_ITEMS)
+    max_range = len(MENU_ITEMS) - 1
     min_range = 0
     try:
         int(selection)
     except ValueError:
         return False
     else:
-        return min_range <= int(selection) <= max_range + 1
+        return min_range <= int(selection) <= max_range
 
 
 def clear_screen() -> None:

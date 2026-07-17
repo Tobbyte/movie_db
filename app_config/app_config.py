@@ -13,7 +13,6 @@ OUTPUT_COLORS = {
 MOVIE_MIN_RATING = 0
 MOVIE_MAX_RATING = 10
 MENU_ITEMS = [
-    "Menu:",
     "0.  Exit",
     "1.  List movies",
     "2.  List movies rating",

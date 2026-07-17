@@ -96,7 +96,7 @@ def run() -> None:
             clear_screen()
             output(
                 f"~~~~~~~~~~\nSelected menu item: "
-                f"{MENU_ITEMS[selection + 1]}\n"
+                f"{MENU_ITEMS[selection]}\n"
                 "~~~~~~~~~~",
                 color="yellow",
             )
