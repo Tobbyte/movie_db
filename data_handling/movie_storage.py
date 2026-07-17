@@ -15,6 +15,15 @@ TODO:
 """
 
 
+def assure_db_exists() -> None:
+    """Check if db exists.
+
+    Creates empty if not.
+    """
+    if not Path.exists(DATA_FILE_PATH):
+        _save_movies({})
+
+
 def get_movies() -> dict[str, dict]:
     """Return the movies information from the database.
 
