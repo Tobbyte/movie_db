@@ -36,8 +36,11 @@ def rating_in_range(inp: str) -> bool:
 
 def strip_leading_zero(inp: str) -> str:
     """Strip leading "0"s in input, returns same format."""
-    while inp[0] == "0" and len(inp) > 1 and inp[1] != ".":
-        inp = inp[1:]
+    if inp == "":
+        return ""
+    while inp[0] == "0" and len(inp) > 1:
+        if inp[1] != ".":  # don't strip 0.n floats
+            inp = inp[1:]
     return inp
 
 
