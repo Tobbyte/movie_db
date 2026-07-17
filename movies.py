@@ -116,7 +116,7 @@ def list_movies_by_release() -> None:
     """
     db: dict[str, dict] = db_get_movies()
     prompt = (
-        "Do you want to order the movies in descending order?\n"
+        "\nDo you want to order the movies in descending order?\n"
         "Choose (Y)es or (N)o: "
     )
     sort_descending = _get_yes_no_choice(prompt)
@@ -493,6 +493,7 @@ def present_menu(menu_items: list[str]) -> int:
         8. List movies sorted descending, no input. Print.
         Return to menu.
         9. Create ratings histogram
+        10. List by release
         0. Exit.
     """
 
@@ -507,11 +508,15 @@ def present_menu(menu_items: list[str]) -> int:
         selection = _get_user_input_colored(
             "\nEnter choice (0-9): ",
         ).strip()
+
         if selection == "" and insist_to_quit:
             _quit_program()
-        elif len(selection) > 1 or not selection.isdecimal():
+        elif (
+            selection is not selection.isdecimal()
+            and not _menu_selection_in_range(selection, len(MENU_ITEMS))
+        ):
             _output(
-                "Invalid input (Enter 0 - 9. Try again).\n"
+                "Invalid input (Enter 0 - 10. Try again).\n"
                 "Or press ENTER again to quit",
                 color="red",
             )
@@ -576,6 +581,7 @@ def run() -> None:
         7: search_movie,
         8: list_movies_by_rating,
         9: ratings_histogram,
+        10: list_movies_by_release,
         # 0: quit_program handled separately
     }
 

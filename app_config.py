@@ -14,16 +14,17 @@ MOVIE_MIN_RATING = 0
 MOVIE_MAX_RATING = 10
 MENU_ITEMS = [
     "Menu:",
-    "0. Exit",
-    "1. List movies",
-    "2. Add movie",
-    "3. Delete movie",
-    "4. Update movie",
-    "5. Stats",
-    "6. Random movie",
-    "7. Search movie",
-    "8. Movies sorted by rating",
-    "9. Create ratings histogram",
+    "0.  Exit",
+    "1.  List movies",
+    "2.  Add movie",
+    "3.  Delete movie",
+    "4.  Update movie",
+    "5.  Stats",
+    "6.  Random movie",
+    "7.  Search movie",
+    "8.  List movies rating",
+    "9.  Create ratings histogram",
+    "10. List movies release",
 ]
 FIRST_MOVIE_RELEASE = 1878
 CURRENT_YEAR = datetime.datetime.now().year  # noqa: DTZ005
