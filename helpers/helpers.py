@@ -1,5 +1,5 @@
 """Module with helper methods."""
-from app_config import (
+from app_config.app_config import (
     MENU_ITEMS,
     MOVIE_MAX_RATING,
     MOVIE_MIN_RATING,

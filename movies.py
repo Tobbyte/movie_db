@@ -7,7 +7,7 @@ from random import randint
 from statistics import mean as mean_statistics
 from statistics import median as median_statistics
 
-from app_config import MENU_ITEMS
+from app_config.app_config import MENU_ITEMS
 from data_handling import (
     add_movie as db_add_movie,
 )
@@ -27,7 +27,7 @@ from data_handling.data_provider import (
     _get_extremes,
 )
 from helpers.helpers import clear_screen, construct_filter_output, output
-from histogram import create_histogram
+from helpers.histogram import create_histogram
 from movie_search import movie_search
 from user_input import (
     get_file_name,
