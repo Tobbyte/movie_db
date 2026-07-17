@@ -1,3 +1,4 @@
+# ruff: noqa: FIX002, TD002, TD003, TD005
 """Save a mathplotlob histogram to disk."""
 
 import matplotlib.pyplot as plt
