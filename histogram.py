@@ -2,7 +2,7 @@
 """Save a mathplotlob histogram to disk."""
 
 import matplotlib.pyplot as plt
-from app_config import DATA_DIR_PATH
+from app_config.app_config import DATA_DIR_PATH
 
 
 def create_histogram(data: dict, filename: str) -> None:
