@@ -28,6 +28,7 @@ from data_handling.data_provider import (
     get_movies_count,
 )
 from data_handling.movie_search import movie_search
+from data_handling.movie_storage import assure_db_exists
 from helpers.helpers import clear_screen, construct_filter_output, output
 from helpers.histogram import create_histogram
 from user_input.user_input import (
@@ -63,6 +64,7 @@ Version 2.2. <- submitted
 
 def run() -> None:
     """Print welcome and loop menu."""
+    assure_db_exists()
     first_run = True
     clear_screen()
     output(
