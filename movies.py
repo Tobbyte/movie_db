@@ -176,9 +176,9 @@ def list_movies_by_filter() -> None:
     )
 
     if (
-        not filter_rating
-        and not filter_release_start
-        and not filter_release_end
+        filter_rating is None
+        and filter_release_start is None
+        and filter_release_end is None
     ):
         output(
             "No filters provided. Here are all movies:",
