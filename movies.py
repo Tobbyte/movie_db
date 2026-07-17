@@ -223,23 +223,36 @@ def _get_movie_release(prompt: str) -> int:
         release = _get_user_input_colored(prompt).strip()
         if release == "":
             _output("Year required", color="red")
-        elif not _is_num(release):
-            _output("Year must be a number", color="red")
-        elif not _is_int(release):
-            _output("Year must be valid int", color="red")
-        elif int(release) < FIRST_MOVIE_RELEASE:
-            _output(
-                "Nice try. The first movie was released in "
-                f"{FIRST_MOVIE_RELEASE}.",
-                color="red",
-            )
-        elif int(release) > CURRENT_YEAR:
-            _output(
-                "Real futuristic movie - a rating from the future!",
-                color="red",
-            )
         else:
-            break
+            release = _validate_release(release)
+            if release is not None:
+                return int(release)
+
+
+def _validate_release(release: str) -> int | None:
+    """Validate release input.
+
+    Returns release as int or None
+    """
+    if not _is_num(release):
+        _output("Year must be a number", color="red")
+        return None
+    if not _is_int(release):
+        _output("Year must be valid int", color="red")
+        return None
+    if int(release) < FIRST_MOVIE_RELEASE:
+        _output(
+            "Nice try. The first movie was released in "
+            f"{FIRST_MOVIE_RELEASE}.",
+            color="red",
+        )
+        return None
+    if int(release) > CURRENT_YEAR:
+        _output(
+            "Real futuristic movie - a rating from the future!",
+            color="red",
+        )
+        return None
     return int(release)
 
 
