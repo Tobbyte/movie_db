@@ -64,7 +64,7 @@ def add_movie(title: str, year: int, rating: float) -> None:
     _save_movies(movies)
 
 
-def delete_movie(title: str) -> bool | Exception:
+def delete_movie(title: str) -> None:
     """Delete a movie from the movies database.
 
     Loads the latest file, deletes and saves.
@@ -78,10 +78,9 @@ def delete_movie(title: str) -> bool | Exception:
 
     del movies[title]
     _save_movies(movies)
-    return True
 
 
-def update_movie(title: str, rating: float) -> bool | Exception:
+def update_movie(title: str, rating: float) -> None:
     """Update a movie from the movies database.
 
     Loads the latest file, updates and saves.
@@ -95,4 +94,3 @@ def update_movie(title: str, rating: float) -> bool | Exception:
 
     movies[title]["rating"] = rating
     _save_movies(movies)
-    return True
