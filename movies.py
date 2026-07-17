@@ -21,10 +21,10 @@ from data_handling import (
     update_movie as db_update_movie,
 )
 from data_handling.data_provider import (
-    _get_as_list_filtered,
-    _get_as_list_sorted_by_rating,
-    _get_as_list_sorted_by_release,
-    _get_extremes,
+    get_as_list_filtered,
+    get_as_list_sorted_by_rating,
+    get_as_list_sorted_by_release,
+    get_extremes,
 )
 from data_handling.movie_search import movie_search
 from helpers.helpers import clear_screen, construct_filter_output, output
@@ -122,7 +122,7 @@ def list_movies_by_rating() -> None:
     db: dict[str, dict] = db_get_movies()
     output("Movies by rating:\n", space_before=True)
 
-    for name, info in _get_as_list_sorted_by_rating(db, descending=True):
+    for name, info in get_as_list_sorted_by_rating(db, descending=True):
         release = info["release"]
         rating = info["rating"]
         output(f"{name} ({release}): {rating}")
@@ -144,7 +144,7 @@ def list_movies_by_release() -> None:
 
     output(f"Movies by release ({order}):\n", space_before=True)
 
-    for name, info in _get_as_list_sorted_by_release(
+    for name, info in get_as_list_sorted_by_release(
         db,
         descending=sort_descending,
     ):
@@ -185,7 +185,7 @@ def list_movies_by_filter() -> None:
             space_before=True,
         )
 
-        filtered_results = _get_as_list_filtered(
+        filtered_results = get_as_list_filtered(
             db,
             filter_rating,
             filter_release_start,
@@ -346,8 +346,8 @@ def list_statistics() -> None:
     val_list = [info["rating"] for info in db.values()]
     avg = mean_statistics(val_list)
     median = median_statistics(sorted(val_list))
-    rated_best = _get_extremes(db)
-    rated_worst = _get_extremes(db, descending=False)
+    rated_best = get_extremes(db)
+    rated_worst = get_extremes(db, descending=False)
 
     output(f"Average rating: {avg:.1f}", space_before=True)
     output(f"Median rating: {median:.1f}")

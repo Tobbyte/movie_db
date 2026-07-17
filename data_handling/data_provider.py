@@ -1,5 +1,5 @@
 """Module to provide data."""
-def _get_as_list_sorted_by_rating(
+def get_as_list_sorted_by_rating(
     dic: dict[str, dict],
     *,
     descending: bool = False,
@@ -16,7 +16,7 @@ def _get_as_list_sorted_by_rating(
     )
 
 
-def _get_as_list_sorted_by_release(
+def get_as_list_sorted_by_release(
     dic: dict[str, dict],
     *,
     descending: bool = False,
@@ -33,7 +33,7 @@ def _get_as_list_sorted_by_release(
     )
 
 
-def _get_as_list_filtered(
+def get_as_list_filtered(
     dic: dict[str, dict],
     rating: float | None = None,
     start: int | None = None,
@@ -49,13 +49,13 @@ def _get_as_list_filtered(
     ]
 
 
-def _get_extremes(
+def get_extremes(
     db: dict[str, dict],
     *,
     descending: bool = True,
 ) -> list[tuple[str, dict]]:
     """Get the extreme values:[num] of dict."""
-    sorted_by_rating = _get_as_list_sorted_by_rating(db, descending=descending)
+    sorted_by_rating = get_as_list_sorted_by_rating(db, descending=descending)
 
     # take rating of first item of sorted movies
     _, info = sorted_by_rating[0]
