@@ -106,3 +106,8 @@ def menu_selection_in_range(
         return False
     else:
         return min_range <= int(selection) <= max_range + 1
+
+
+def clear_screen() -> None:
+    """Clear console hack."""
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")

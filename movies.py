@@ -26,7 +26,7 @@ from data_handling.data_provider import (
     _get_as_list_sorted_by_release,
     _get_extremes,
 )
-from helpers.helpers import construct_filter_output, output
+from helpers.helpers import clear_screen, construct_filter_output, output
 from histogram import create_histogram
 from movie_search import movie_search
 from user_input import (
@@ -340,16 +340,10 @@ def _quit_program() -> None:
     sys.exit()
 
 
-def _clear_screen() -> None:
-    """Clear console hack."""
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-
-
-
 def run() -> None:
     """Print welcome and loop menu."""
     first_run = True
-    _clear_screen()
+    clear_screen()
     output(
         "********** My Movies Database **********",
         color="blue",
@@ -372,14 +366,14 @@ def run() -> None:
 
     while True:
         if not first_run:
-            _clear_screen()
+            clear_screen()
         first_run = False
 
         selection = get_menu_selection()
         if not selection:
             _quit_program()
         else:
-            _clear_screen()
+            clear_screen()
             output(
                 f"~~~~~~~~~~\nSelected menu item: "
                 f"{MENU_ITEMS[selection + 1]}\n"
