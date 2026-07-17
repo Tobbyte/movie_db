@@ -216,10 +216,7 @@ def get_menu_selection() -> int | None:
 
         if selection == "" and insist_to_quit:
             return None
-        if (
-            selection is not selection.isdecimal()
-            and not menu_selection_in_range(selection)
-        ):
+        if not selection.isdecimal() or not menu_selection_in_range(selection):
             output(
                 "Invalid input (Enter 0 - 11. Try again).\n"
                 "Or press ENTER again to quit",
