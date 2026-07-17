@@ -183,7 +183,8 @@ def list_movies_by_filter() -> None:
             filter_release_end,
         )
 
-        output("No movies match your filters.")
+        if not filtered_results:
+            output("No movies match your filters.")
 
         for name, info in sorted(filtered_results):
             release = info["release"]
