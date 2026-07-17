@@ -283,6 +283,69 @@ def add_movie() -> None:
             space_before=True,
         )
 
+def _get_movie_filters() -> tuple[float, int, int]:
+    filter_rating = _get_movie_rating("\nEnter minimum rating: ")
+
+    filter_release_start = _get_movie_release(
+        "Enter start year of range: ",
+    )
+    while True:
+        filter_release_end = _get_movie_release(
+            "Enter end year of range (inclusive): ",
+        )
+        if filter_release_start > filter_release_end:
+            _output("Start hast do be before end", color="red")
+        else:
+            break
+    return (filter_rating, filter_release_start, filter_release_end)
+
+
+def list_movies_by_filter() -> None:
+    """List filtered movies by user input.
+
+    Asks for rating, start and end year,
+    lists accordingly.
+    """
+    db: dict[str, dict] = db_get_movies()
+
+    filter_rating, filter_release_start, filter_release_end = (
+        _get_movie_filters()
+    )
+
+    _output(
+        f"Movies filtered by rating ({filter_rating}), "
+        f"year start ({filter_release_start}), "
+        f"year end ({filter_release_end}):\n",
+        space_before=True,
+    )
+
+    for name, info in sorted(
+        _get_as_list_filtered(
+            db,
+            filter_rating,
+            filter_release_start,
+            filter_release_end,
+        ),
+    ):
+        release = info["release"]
+        rating = info["rating"]
+        _output(f"{name} ({release}): {rating}")
+
+
+def _get_as_list_filtered(
+    dic: dict[str, dict],
+    rating: float | None = None,
+    start: int | None = None,
+    end: int | None = None,
+) -> list[tuple[str, dict]]:
+    """Return a list of all movies matching provided filters."""
+    return [
+        (title, info)
+        for title, info in dic.items()
+        if (rating is None or info["rating"] >= rating)
+        and (start is None or info["release"] >= start)
+        and (end is None or info["release"] <= end)
+    ]
 
 def remove_movie() -> None:
     """Remove an item from db."""
