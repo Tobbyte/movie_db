@@ -460,6 +460,19 @@ def _idle_after_input() -> None:
     _get_user_input_colored("\npress Enter to continue ")
 
 
+def _menu_selection_in_range(
+    selection: str,
+    max_range: int,
+    min_range: int = 0,
+) -> bool:
+    try:
+        int(selection)
+    except ValueError:
+        return False
+    else:
+        return min_range <= int(selection) <= max_range + 1
+
+
 def present_menu(menu_items: list[str]) -> int:
     """Print the menu to the user, asks for input."""
     """ Options:
