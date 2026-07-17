@@ -41,12 +41,7 @@ from user_input import (
 )
 
 """
-
-
 TODO: (but out of scope of this exercise):
-  - unify user input and validation across all features:
-    - probably some prompt_validator that takes a list of tests
-      for that specific input to pass. Too early for now.
   - add movie: check if already exists, present option to update
   - update movie: check if not existing, present option to add
   - update / delete movie: fuzzy search
@@ -54,10 +49,10 @@ TODO: (but out of scope of this exercise):
   - fix fail on empty db
   - add real clear terminal
   - implement fname from matplotlib instead naive str as filename
-  -  pretty align movie outputs
+  - pretty align movie outputs
 
 
-Version 1.1.0 <- submitted
+Version 2.2. <- submitted
 """
 
 """
