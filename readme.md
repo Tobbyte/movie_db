@@ -70,6 +70,17 @@ data_dir/data.json         # the "database" (title -> {rating, release})
 - Fuzzy search is only used for the search menu, not for update/delete
 - "Clear screen" is a print-based hack, not a real terminal clear
 
+Fuzzy search specifically:
+- Naive Levenshtein distance, computed against every DB entry — no indexing
+  or other optimization
+- A match requires at least one word in the search term and the compared
+  title to share a first letter; otherwise it's excluded even if it's within
+  the distance threshold
+- Only "the" is filtered out as a filler word (excluded_terms); the list
+  isn't configurable/extensible yet
+- Searching for a filler word itself (e.g. "the") won't reliably return every
+  title containing it, since the edit-distance threshold still applies
+
 ## Notes
 
 Built with ❤️ and without AI code generation or autocomplete (aside from IntelliSense).<sup>*</sup>
