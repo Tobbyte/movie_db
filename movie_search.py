@@ -1,3 +1,4 @@
+# ruff: noqa: FIX002, TD002, TD003
 """Search in data by query."""
 
 from my_fuzzy_search import get_similar
