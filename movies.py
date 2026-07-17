@@ -344,7 +344,7 @@ def _menu_selection_in_range(
         return min_range <= int(selection) <= max_range + 1
 
 
-def present_menu(menu_items: list[str]) -> int:
+def get_menu_selection(menu_items: list[str]) -> int:
     """Print the menu to the user, asks for input."""
     """ Options:
         0:  Exit
@@ -432,7 +432,7 @@ def run() -> None:
             _clear_screen()
         first_run = False
 
-        selection = present_menu(MENU_ITEMS)
+        selection = get_menu_selection(MENU_ITEMS)
 
         _clear_screen()
         output(
