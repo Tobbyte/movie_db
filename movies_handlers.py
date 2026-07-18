@@ -175,12 +175,14 @@ def ratings_histogram() -> None:
         "\nEnter filename (saved as png unless otherwise specified): ",
     )
     try:
-        full_filename = create_histogram(data, filename)
-        output(
-            f'File "{filename}" successfully saved to '
-            f".{DATA_DIR_PATH}/{full_filename}.",
-            space_before=True,
-        )
+        res = create_histogram(data, filename)
+        if res is not None:
+            saved_filename, extension = res
+            output(
+                f'File "{saved_filename}" successfully saved to '
+                f".{DATA_DIR_PATH}/{saved_filename}{extension}.",
+                space_before=True,
+            )
     except ValueError as err_msg:
         output(str(err_msg), color="red", space_before=True)
 
