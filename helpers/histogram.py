@@ -31,3 +31,13 @@ def create_histogram(data: dict, filename: str) -> None:
         raise ValueError(error_msg) from e
     finally:
         plt.close()
+
+def _full_file_name(filename: str) -> str:
+    """Return the filename with extension of not present.
+
+    If the user has not put in an extension, return filename with
+    default extension (png)
+    """
+    if "." in filename:
+        return filename
+    return filename + ".png"
