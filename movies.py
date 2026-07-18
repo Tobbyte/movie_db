@@ -1,5 +1,13 @@
-# ruff: noqa: RUF015
-"""Main entry point with menu orchestration and handler dispatch."""
+# ruff: noqa: FIX002, TD002, TD003, RUF015
+"""Main entry point with menu orchestration and handler dispatch.
+
+Version 2.2. <- submitted
+( Fuzzy search unchanged from movie-project phase 1 )
+
+
+ ~ Made with ❤️ and without ai or code completion (except intelliSense) ~
+
+"""
 
 import sys
 
@@ -27,25 +35,15 @@ from user_input.user_input import (
     get_user_input_colored,
 )
 
-"""
-TODO: (but out of scope of this exercise):
-  - add movie: check if already exists, present option to update
-  - update movie: check if not existing, present option to add
-  - update / delete movie: fuzzy search
-  - delete movie: present list and let choose by inputting number
-  - fix fail on empty db
-  - add real clear terminal
-  - implement fname from matplotlib instead naive str as filename
-  - pretty align movie outputs
-
-
-Version 2.2. <- submitted
-( Fuzzy search unchanged from movie-project phase 1 )
-"""
-
-"""
- ~ Made with ❤️ and without ai or code completion (except intelliSense) ~
-"""
+# TODO: (but out of scope of this exercise):
+#   - add movie: check if already exists, present option to update
+#   - update movie: check if not existing, present option to add
+#   - update / delete movie: fuzzy search
+#   - delete movie: present list and let choose by inputting number
+#   - fix fail on empty db
+#   - add real clear terminal
+#   - implement fname from matplotlib instead naive str as filename
+#   - pretty align movie outputs
 
 
 def run() -> None:
