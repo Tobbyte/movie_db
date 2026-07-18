@@ -1,11 +1,11 @@
 # ruff: noqa: FIX002, TD002, TD003, TD005
 """Save a mathplotlob histogram to disk."""
-
 import matplotlib.pyplot as plt
+
 from app_config.app_config import DATA_DIR_PATH
 
 
-def create_histogram(data: dict, filename: str) -> None:
+def create_histogram(data: dict, filename: str) -> str | None:
     """Save a mathplotlob histogram to disk.
 
     Overrides if file already existing.
@@ -16,12 +16,13 @@ def create_histogram(data: dict, filename: str) -> None:
 
     ratings_list = [info["rating"] for info in data.values()]
     plt.hist(ratings_list)
-
     try:
         plt.savefig(DATA_DIR_PATH / filename)
+        return _full_file_name(filename)
 
     except ValueError as e:
-        invalid_extension = filename.split(".")[1]
+        split_filename = filename.split(".")
+        invalid_extension = split_filename[-1]
         # From mathplotlob
         error_msg = (
             f'File extension "{invalid_extension}" is not supported '
