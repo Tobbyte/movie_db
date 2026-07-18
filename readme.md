@@ -71,6 +71,7 @@ data_dir/data.json         # the "database" (title -> {rating, release})
 - "Clear screen" is a print-based hack, not a real terminal clear
 
 Fuzzy search specifically:
+( *--> __unchanged from movie phase 1__ <--* )
 - Naive Levenshtein distance, computed against every DB entry — no indexing
   or other optimization
 - A match requires at least one word in the search term and the compared

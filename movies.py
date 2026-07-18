@@ -40,6 +40,7 @@ TODO: (but out of scope of this exercise):
 
 
 Version 2.2. <- submitted
+( Fuzzy search unchanged from movie-project phase 1 )
 """
 
 """

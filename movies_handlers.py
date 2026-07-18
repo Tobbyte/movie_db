@@ -38,10 +38,10 @@ from user_input.user_input import (
 
 def list_movies() -> None:
     """Return a list of all movies."""
-    db: dict[str, dict] = db_get_movies()
-    output(f"{len(db)} movies in total:\n", space_before=True)
+    movies_data: dict[str, dict] = db_get_movies()
+    output(f"{len(movies_data)} movies in total:\n", space_before=True)
 
-    for name, info in db.items():
+    for name, info in movies_data.items():
         rating = info["rating"]
         release = info["release"]
         output(f"{name} ({release}): {rating}")
@@ -124,8 +124,8 @@ def list_movies_by_filter() -> None:
 
 def random_movie() -> None:
     """Return random movie."""
-    db: dict[str, dict] = db_get_movies()
-    name, info = list(db.items())[randint(0, len(db) - 1)]
+    movies_data: dict[str, dict] = db_get_movies()
+    name, info = list(movies_data.items())[randint(0, len(movies_data) - 1)]
     output(
         f"Your movie for tonight: {name} ({info['release']}), "
         f"it's rated {info['rating']}",
@@ -185,7 +185,7 @@ def ratings_histogram() -> None:
 
 
 def add_movie() -> None:
-    """Add an item to db."""
+    """Add a movie to movies collection."""
     # TODO: - check if already exists early directly after input of name
 
     name = get_movie_name("\nEnter new movies name: ")
@@ -211,7 +211,7 @@ def add_movie() -> None:
 
 
 def remove_movie() -> None:
-    """Remove an item from db."""
+    """Remove a movie from movies collection."""
     # TODO: - check if already exists early directly after input of name
 
     name = get_movie_name("\nEnter (exact) movie name to delete: ")
@@ -233,7 +233,7 @@ def remove_movie() -> None:
 
 
 def update_movie() -> None:
-    """Update movie rating."""
+    """Update a movies rating in movies collection."""
     # TODO: - check if already exists early directly after input of name
 
     name = get_movie_name("\nEnter (exact) movie name to update: ")
@@ -264,8 +264,8 @@ def list_statistics() -> None:
     - bottom-ranged items
     """
     # TODO: - sort best / worst if multiple by name
-    db: dict[str, dict] = db_get_movies()
-    val_list = [info["rating"] for info in db.values()]
+    movies_data: dict[str, dict] = db_get_movies()
+    val_list = [info["rating"] for info in movies_data.values()]
     avg = mean_statistics(val_list)
     median = median_statistics(sorted(val_list))
     rated_best = get_extremes()
