@@ -5,6 +5,7 @@ from random import randint
 from statistics import mean as mean_statistics
 from statistics import median as median_statistics
 
+from app_config.app_config import DATA_DIR_PATH
 from data_handling import (
     add_movie as db_add_movie,
 )
@@ -171,13 +172,13 @@ def ratings_histogram() -> None:
 
     data = db_get_movies()
     filename = get_file_name(
-        "\nEnter filename (saved as png unless otherwise "
-        "specified) in your current working directory: ",
+        "\nEnter filename (saved as png unless otherwise specified): ",
     )
     try:
-        create_histogram(data, filename)
+        full_filename = create_histogram(data, filename)
         output(
-            f'File "{filename}" successfully saved to disk.',
+            f'File "{filename}" successfully saved to '
+            f".{DATA_DIR_PATH}/{full_filename}.",
             space_before=True,
         )
     except ValueError as err_msg:
