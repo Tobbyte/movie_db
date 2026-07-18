@@ -39,6 +39,6 @@ def _full_file_name(filename: str) -> str:
     If the user has not put in an extension, return filename with
     default extension (png)
     """
-    if "." in filename:
+    if "." in filename and filename[-1] != ".":
         return filename
     return filename + ".png"
