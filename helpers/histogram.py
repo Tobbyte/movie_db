@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from app_config.app_config import DATA_DIR_PATH
 
 
-def create_histogram(data: dict, filename: str) -> str | None:
+def create_histogram(data: dict, filename: str) -> tuple[str, str] | None:
     """Save a mathplotlob histogram to disk.
 
     Overrides if file already existing.
@@ -33,12 +33,18 @@ def create_histogram(data: dict, filename: str) -> str | None:
     finally:
         plt.close()
 
-def _full_file_name(filename: str) -> str:
+def _full_file_name(filename: str) -> tuple[str, str]:
     """Return the filename with extension of not present.
 
     If the user has not put in an extension, return filename with
     default extension (png)
     """
-    if "." in filename and filename[-1] != ".":
-        return filename
-    return filename + ".png"
+    while filename[-1] == ".":
+        filename = filename[:-1]
+    if "." in filename:
+        split_filename = filename.split(".")
+
+        extension = "." + split_filename[-1]
+        name = ".".join(split_filename[:-1])
+        return name, extension
+    return filename, ".png"
