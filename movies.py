@@ -1,4 +1,4 @@
-# ruff: noqa: FIX002, TD002, TD003, RUF015
+# ruff: noqa: RUF015
 """Main entry point with menu orchestration and handler dispatch.
 
 Version 2.2. <- submitted
@@ -35,13 +35,12 @@ from user_input.user_input import (
     get_user_input_colored,
 )
 
-# TODO: (but out of scope of this exercise):
+# TODOs: (but out of scope of this exercise):
 #   - add movie: check if already exists, present option to update
 #   - update movie: check if not existing, present option to add
 #   - update / delete movie: fuzzy search
 #   - delete movie: present list and let choose by inputting number
-#   - fix fail on empty db
-#   - add real clear terminal
+#   - add real clear terminal (refrained from bc i cant test on nt)
 #   - implement fname from matplotlib instead naive str as filename
 #   - pretty align movie outputs
 
